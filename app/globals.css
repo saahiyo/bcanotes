@@ -33,6 +33,9 @@
     --radius-4xl: calc(var(--radius) * 2.6);
 
     --animate-marquee: marquee 25s linear infinite;
+    --animate-float-slow: float 8s ease-in-out infinite;
+    --animate-float-medium: float 6s ease-in-out infinite;
+    --animate-float-fast: float 4s ease-in-out infinite;
 
     @keyframes marquee {
         from {
@@ -40,6 +43,15 @@
         }
         to {
             transform: translateX(-50%);
+        }
+    }
+
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-20px);
         }
     }
 }

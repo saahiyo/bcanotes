@@ -1,16 +1,30 @@
 import Link from "next/link";
-import { ArrowRight, BookOpen, FileText, FolderOpen, Library } from "lucide-react";
+import { ArrowRight, BookOpen, FileText, FolderOpen, Library, Code2, Database, Terminal, Cpu, Monitor, Braces } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center">
-      <section className="w-full py-16 md:py-24 lg:py-32 xl:py-48 bg-muted/30">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="w-full py-16 md:py-24 lg:py-32 xl:py-40 bg-muted/30 relative overflow-hidden">
+        
+        {/* Floating background icons */}
+        <div className="absolute inset-0 pointer-events-none z-0">
+          <Code2 className="absolute top-[10%] left-[10%] md:left-[15%] h-12 w-12 text-blue-500/20 animate-float-slow -rotate-12" />
+          <Database className="absolute top-[25%] right-[5%] md:right-[15%] h-16 w-16 text-green-500/20 animate-float-medium rotate-12" />
+          <Terminal className="absolute bottom-[30%] left-[5%] md:left-[20%] h-14 w-14 text-purple-500/20 animate-float-fast rotate-6" />
+          <Cpu className="absolute bottom-[15%] right-[10%] md:right-[25%] h-10 w-10 text-orange-500/20 animate-float-slow -rotate-6" />
+          <Monitor className="absolute top-[40%] left-[8%] md:left-[5%] h-8 w-8 text-pink-500/20 animate-float-medium" />
+          <Braces className="absolute top-[15%] right-[25%] h-10 w-10 text-yellow-500/20 animate-float-fast rotate-45" />
+        </div>
+
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col items-center space-y-8 text-center">
             <div className="space-y-4">
-              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+              <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-4 animate-float-slow">
+                ✨ The ultimate hub for YCMOU students
+              </div>
+              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl drop-shadow-sm">
                 BCA YCMOU <br className="hidden sm:inline" />
                 <span className="text-primary">Learning Resources</span>
               </h1>
