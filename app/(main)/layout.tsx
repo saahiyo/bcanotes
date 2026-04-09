@@ -1,4 +1,6 @@
 import { Navbar } from '@/components/navbar';
+import Link from 'next/link';
+import { BookOpen, Github, Twitter, Globe } from 'lucide-react';
 
 export default function MainLayout({children}: {children: React.ReactNode}) {
   return (
@@ -7,11 +9,56 @@ export default function MainLayout({children}: {children: React.ReactNode}) {
       <main className="flex-1">
         {children}
       </main>
-      <footer className="border-t py-6 md:py-0">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-between gap-4 md:h-16 md:flex-row">
-          <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-            Built for BCA YCMOU students. Unofficial resource portal.
-          </p>
+      
+      <footer className="w-full border-t bg-muted/20 pb-8 pt-12 md:pb-12 md:pt-16 mt-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+            <div className="md:col-span-2 space-y-4">
+              <Link href="/" className="flex items-center gap-2 font-bold text-xl">
+                <BookOpen className="h-6 w-6 text-primary" />
+                <span>BCA YCMOU</span>
+              </Link>
+              <p className="max-w-md text-sm text-muted-foreground leading-relaxed">
+                The unofficial, community-driven resource portal exclusively built for BCA YCMOU students. Access notes, books, PYQs, and everything else you need to ace your exams completely free.
+              </p>
+            </div>
+            
+            <div className="space-y-4">
+              <h4 className="text-sm font-semibold uppercase tracking-wider text-foreground">Resources</h4>
+              <ul className="space-y-3 text-sm text-muted-foreground">
+                <li><Link href="/notes" className="hover:text-primary transition-colors">Subject Notes</Link></li>
+                <li><Link href="/books" className="hover:text-primary transition-colors">E-Books Reference</Link></li>
+                <li><Link href="/question-papers" className="hover:text-primary transition-colors">Previous Year Papers</Link></li>
+                <li><Link href="/practicals" className="hover:text-primary transition-colors">Solved Practicals</Link></li>
+              </ul>
+            </div>
+
+            <div className="space-y-4">
+              <h4 className="text-sm font-semibold uppercase tracking-wider text-foreground">Connect</h4>
+              <div className="flex items-center gap-4 text-muted-foreground">
+                <Link href="#" className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-colors" aria-label="GitHub">
+                  <Github className="h-5 w-5" />
+                </Link>
+                <Link href="#" className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-colors" aria-label="Twitter">
+                  <Twitter className="h-5 w-5" />
+                </Link>
+                <Link href="#" className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-colors" aria-label="Website">
+                  <Globe className="h-5 w-5" />
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 border-t border-border/40 text-sm text-muted-foreground">
+            <p>
+              © {new Date().getFullYear()} BCA YCMOU. Unofficial resource portal.
+            </p>
+            <div className="flex gap-6 font-medium">
+              <Link href="#" className="hover:text-foreground transition-colors">Contribute</Link>
+              <Link href="#" className="hover:text-foreground transition-colors">Privacy</Link>
+              <Link href="#" className="hover:text-foreground transition-colors">Terms of Service</Link>
+            </div>
+          </div>
         </div>
       </footer>
     </>
