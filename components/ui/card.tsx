@@ -66,10 +66,21 @@ function CardContent({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="card-footer"
+      className={cn("mt-auto px-4 py-3 group-data-[size=sm]/card:px-3 flex items-center", className)}
+      {...props}
+    />
+  )
+}
+
 export {
   Card,
   CardHeader,
   CardTitle,
   CardDescription,
   CardContent,
+  CardFooter,
 }
