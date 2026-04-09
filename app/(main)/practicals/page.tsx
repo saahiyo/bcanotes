@@ -217,16 +217,23 @@ export default async function PracticalsPage({
             // Extract the badge string
             const fileBadgeStr = !isFolder ? getFileBadgeText(file.name, file.mimeType) : '';
             
-            // If it's a folder, navigate within the app. If it's a file, open external drive link.
-            const href = isFolder ? `/practicals?folderId=${file.id}` : file.webViewLink;
-            const target = isFolder ? "_self" : "_blank";
+            // Build viewer URL for files
+            const driveViewerUrl = `https://drive.google.com/file/d/${file.id}/preview`;
+            const encodedUrl = encodeURIComponent(driveViewerUrl);
+            const encodedTitle = encodeURIComponent(file.name);
+            const encodedBackUrl = encodeURIComponent(`/practicals${currentFolderId !== ROOT_FOLDER_ID ? `?folderId=${currentFolderId}` : ""}`);
+            
+            const viewerHref = `/viewer?url=${encodedUrl}&title=${encodedTitle}&backUrl=${encodedBackUrl}`;
+
+            // If it's a folder, navigate within the app. If it's a file, open our internal viewer
+            const href = isFolder ? `/practicals?folderId=${file.id}` : viewerHref;
+            const target = "_self"; // Viewer and folders both open in same tab now
             
             return (
               <a 
                 key={file.id} 
                 href={href} 
                 target={target} 
-                rel={isFolder ? "" : "noopener noreferrer"}
                 className="group h-full flex"
               >
                 <Card className="w-full transition-all duration-200 hover:shadow-md hover:border-primary/50 cursor-pointer overflow-hidden flex flex-col h-full bg-card">

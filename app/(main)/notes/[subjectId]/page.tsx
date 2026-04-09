@@ -42,18 +42,25 @@ export default async function SubjectNotesPage({ params }: { params: Promise<{ s
       </div>
 
       <div className="grid gap-4">
-        {subject.units.map((unit, index) => (
-          <Card key={index} className="flex flex-col sm:flex-row sm:items-center justify-between p-6 hover:bg-muted/30 transition-colors">
-            <div className="mb-4 sm:mb-0">
-              <h3 className="text-lg font-semibold">{unit.title}</h3>
-            </div>
-            <Link href={unit.link} target="_blank" className="shrink-0">
-              <Button variant="outline" className="w-full sm:w-auto gap-2">
-                View Notes <ExternalLink className="h-4 w-4" />
-              </Button>
-            </Link>
-          </Card>
-        ))}
+        {subject.units.map((unit, index) => {
+          const encodedUrl = encodeURIComponent(unit.link);
+          const encodedTitle = encodeURIComponent(`${subject.title} - ${unit.title}`);
+          const encodedBackUrl = encodeURIComponent(`/notes/${subjectId}`);
+          const viewerHref = `/viewer?url=${encodedUrl}&title=${encodedTitle}&backUrl=${encodedBackUrl}`;
+
+          return (
+            <Card key={index} className="flex flex-col sm:flex-row sm:items-center justify-between p-6 hover:bg-muted/30 transition-colors">
+              <div className="mb-4 sm:mb-0">
+                <h3 className="text-lg font-semibold">{unit.title}</h3>
+              </div>
+              <Link href={viewerHref} className="shrink-0">
+                <Button variant="outline" className="w-full sm:w-auto gap-2">
+                  View Notes <ExternalLink className="h-4 w-4" />
+                </Button>
+              </Link>
+            </Card>
+          );
+        })}
       </div>
     </div>
   );
