@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { ModeToggle } from "@/components/mode-toggle";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -60,7 +61,8 @@ export function Navbar() {
             })}
           </nav>
 
-          <div className="hidden md:flex items-center ml-4">
+          <div className="hidden md:flex items-center ml-4 gap-2">
+            <ModeToggle />
             <Link href="/login">
               <Button variant="outline" size="sm" className="gap-2">
                 <LogIn className="h-4 w-4" />
@@ -69,7 +71,8 @@ export function Navbar() {
             </Link>
           </div>
 
-          <div className="md:hidden">
+          <div className="flex items-center gap-2 md:hidden">
+            <ModeToggle />
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger render={<Button variant="ghost" size="icon" aria-label="Open Menu" />}>
                 <Menu className="h-6 w-6" />
