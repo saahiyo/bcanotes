@@ -12,6 +12,7 @@ Built with **Next.js 16**, **React 19**, and **Tailwind CSS 4**.
 - **📖 E-Books** — Online textbooks curated for the BCA YCMOU syllabus
 - **📄 Question Papers** — Previous year question papers (2017–2024)
 - **🧪 Practicals** — Solved practicals for Semester 1 to 6
+- **🤝 Contribute Portal** — Direct Drag-and-Drop Google Drive upload integration via Google Apps Script
 - **🔐 Authentication** — Login & Signup pages with Google OAuth support
 - **📱 Responsive Design** — Fully responsive with a mobile-friendly slide-out navigation
 - **⚡ Loading Skeletons** — Route-specific loading states for a smooth UX
@@ -59,8 +60,11 @@ bcanotes/
 │   │   ├── books/             # E-Books page
 │   │   ├── question-papers/   # Question papers page
 │   │   ├── practicals/        # Practicals page
+│   │   ├── contribute/        # Community contribution & file upload portal
 │   │   ├── layout.tsx         # Main layout with Navbar
 │   │   └── loading.tsx        # Loading skeleton
+│   ├── api/
+│   │   └── upload/            # Next.js Server API for Apps Script proxy
 │   ├── globals.css
 │   └── layout.tsx             # Root layout
 ├── components/
@@ -95,7 +99,15 @@ bcanotes/
    cd bcanotes
    ```
 
-2. **Install dependencies**
+2. **Set up Environment Variables**
+   Create a `.env` file in the root directory and add the following keys:
+   ```env
+   GOOGLE_DRIVE_API_KEY=your_api_key_here
+   NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=your_web3forms_key_here
+   GOOGLE_APPS_SCRIPT_URL=your_google_apps_script_url_here
+   ```
+
+3. **Install dependencies**
    ```bash
    npm install
    ```
