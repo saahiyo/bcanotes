@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Send, UploadCloud, CheckCircle2, AlertCircle, Link as LinkIcon, GraduationCap, BookOpen, Clock, Heart, ExternalLink } from "lucide-react";
+import { Send, UploadCloud, CheckCircle2, AlertCircle, Link as LinkIcon, GraduationCap, BookOpen, Clock, Heart, ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
 import Link from "next/link";
 
 export default function ContributePage() {
@@ -15,6 +15,8 @@ export default function ContributePage() {
   const [isUploadSuccessDirect, setIsUploadSuccessDirect] = useState(false);
   const [uploadErrorDirect, setUploadErrorDirect] = useState("");
   const [dragActive, setDragActive] = useState(false);
+  
+  const [showLinkUrlForm, setShowLinkUrlForm] = useState(false);
 
   const handleDrag = function(e: React.DragEvent) {
     e.preventDefault();
@@ -233,13 +235,25 @@ export default function ContributePage() {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl">Submit Existing Link</CardTitle>
-              <CardDescription>Already have the file in your Drive? Submit the public link below.</CardDescription>
-            </CardHeader>
+          <Card className="overflow-hidden transition-all duration-200">
+            <button 
+              className="w-full text-left hover:bg-muted/30 transition-colors"
+              onClick={() => setShowLinkUrlForm(!showLinkUrlForm)}
+              type="button"
+            >
+              <CardHeader className="flex flex-row items-center justify-between pb-6">
+                <div className="space-y-1.5 pr-4">
+                  <CardTitle className="text-xl">Submit Existing Link</CardTitle>
+                  <CardDescription>Already have the file in your Drive? Submit the public link below.</CardDescription>
+                </div>
+                <div className="p-2 shrink-0 flex items-center justify-center rounded-full bg-primary/5 text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors">
+                  {showLinkUrlForm ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
+                </div>
+              </CardHeader>
+            </button>
             
-            <CardContent>
+            {showLinkUrlForm && (
+              <CardContent className="animate-in slide-in-from-top-4 fade-in duration-300">
               {isSuccess ? (
                 <div className="flex flex-col items-center justify-center py-10 space-y-4 text-center animate-fade-in">
                   <div className="w-16 h-16 rounded-full bg-green-500/10 flex items-center justify-center mb-2 shadow-[0_0_20px_rgba(34,197,94,0.3)]">
@@ -365,7 +379,8 @@ export default function ContributePage() {
                   </Button>
                 </form>
               )}
-            </CardContent>
+              </CardContent>
+            )}
           </Card>
         </div>
       </div>
