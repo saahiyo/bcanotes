@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowUpRight, BookOpen, FileText, FolderOpen, Home, Library, LogIn, Menu } from "lucide-react";
+import { ArrowUpRight, BookOpen, FileText, FolderOpen, Home, Library, LogIn, Menu, Heart } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -21,6 +21,7 @@ export function Navbar() {
     { href: "/books", label: "E-Books", icon: Library },
     { href: "/question-papers", label: "Question Papers", icon: FolderOpen },
     { href: "/practicals", label: "Practicals", icon: FolderOpen },
+    { href: "/contribute", label: "Contribute", icon: Heart },
   ];
 
   const isActive = (href: string) => {
