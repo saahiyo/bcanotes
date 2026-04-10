@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, FileText, FolderOpen, Home, Library, LogIn, Menu } from "lucide-react";
+import { ArrowUpRight, BookOpen, FileText, FolderOpen, Home, Library, LogIn, Menu } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -64,9 +64,10 @@ export function Navbar() {
           <div className="hidden md:flex items-center ml-4 gap-2">
             <ModeToggle />
             <Link href="/login">
-              <Button variant="outline" size="sm" className="gap-2">
-                <LogIn className="h-4 w-4" />
-                Login
+              <Button variant="link" size="sm" className="gap-2">
+                {/* <LogIn className="h-4 w-4" /> */}
+                <ArrowUpRight className="h-4 w-4"/>
+                Create a account 
               </Button>
             </Link>
           </div>
