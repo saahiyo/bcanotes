@@ -363,7 +363,8 @@ export default function ContributePage() {
 
                   <Button 
                     type="submit" 
-                    className="w-full transition-transform active:scale-[0.98] mt-2 group"
+                    size="lg"
+                    className="w-full h-12 text-base transition-transform active:scale-[0.98] mt-4 group"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
