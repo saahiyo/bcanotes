@@ -232,7 +232,7 @@ export default async function PracticalsPage({
                 const href = isFolder ? `/practicals?folderId=${file.id}` : viewerHref;
                 
                 return (
-                  <a 
+                  <Link 
                     key={file.id} 
                     href={href} 
                     className="group h-full flex"
@@ -279,7 +279,7 @@ export default async function PracticalsPage({
                         </CardFooter>
                       )}
                     </Card>
-                  </a>
+                  </Link>
                 );
               })}
             </div>
