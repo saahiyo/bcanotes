@@ -4,7 +4,8 @@ import {
   BookOpen, ExternalLink, FileText, Folder, AlertCircle, ArrowLeft, 
   FileImage, FileVideo, FileAudio, FileArchive, FileBarChart, FileSpreadsheet,
   Clock, Database,
-  ArrowRight
+  ArrowRight,
+  ChevronRight
 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
@@ -150,12 +151,36 @@ async function getDriveFiles(folderId: string): Promise<DriveFile[] | null> {
 export default async function PracticalsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ folderId?: string }>;
+  searchParams: Promise<{ folderId?: string; trail?: string }>;
 }) {
   const resolvedParams = await searchParams;
   const currentFolderId = resolvedParams.folderId || ROOT_FOLDER_ID;
   const isRootFolder = currentFolderId === ROOT_FOLDER_ID;
   
+  let trail: { id: string; name: string }[] = [];
+  if (resolvedParams.trail) {
+    try {
+      trail = JSON.parse(decodeURIComponent(resolvedParams.trail));
+    } catch (e) {
+      trail = [];
+    }
+  }
+
+  if (!Array.isArray(trail) || trail.length === 0) {
+    trail = [{ id: ROOT_FOLDER_ID, name: "Practicals" }];
+  }
+
+  const parentFolder = trail.length > 1 ? trail[trail.length - 2] : null;
+  let backHref = "/practicals";
+  if (parentFolder) {
+    if (parentFolder.id === ROOT_FOLDER_ID) {
+      backHref = "/practicals";
+    } else {
+      const parentTrail = trail.slice(0, trail.length - 1);
+      backHref = `/practicals?folderId=${parentFolder.id}&trail=${encodeURIComponent(JSON.stringify(parentTrail))}`;
+    }
+  }
+
   const files = await getDriveFiles(currentFolderId);
 
   return (
@@ -170,13 +195,38 @@ export default async function PracticalsPage({
       </div>
 
       {!isRootFolder && (
-        <div className="mb-6">
-          <Link href="/practicals">
-            <Button variant="ghost" className="gap-2 -ml-4 hover:bg-muted/50 rounded-full px-4">
-              <ArrowLeft className="h-4 w-4" />
-              Back to Semesters
-            </Button>
-          </Link>
+        <div className="mb-6 flex flex-col gap-4">
+          <nav aria-label="Breadcrumb" className="flex items-center text-sm font-medium text-muted-foreground overflow-x-auto whitespace-nowrap pb-1 scrollbar-hide">
+            {trail.map((item, idx) => {
+              const isLast = idx === trail.length - 1;
+              const trailParam = JSON.stringify(trail.slice(0, idx + 1));
+              const href = idx === 0 
+                ? "/practicals" 
+                : `/practicals?folderId=${item.id}&trail=${encodeURIComponent(trailParam)}`;
+              
+              return (
+                <div key={item.id} className="flex items-center">
+                  {idx > 0 && <ChevronRight className="h-4 w-4 mx-2 shrink-0" />}
+                  {isLast ? (
+                    <span className="text-foreground">{item.name}</span>
+                  ) : (
+                    <Link href={href} className="hover:text-foreground transition-colors hover:underline">
+                      {item.name}
+                    </Link>
+                  )}
+                </div>
+              );
+            })}
+          </nav>
+          
+          <div>
+            <Link href={backHref}>
+              <Button variant="ghost" className="gap-2 -ml-4 hover:bg-muted/50 rounded-full px-4">
+                <ArrowLeft className="h-4 w-4" />
+                Back
+              </Button>
+            </Link>
+          </div>
         </div>
       )}
 
@@ -229,7 +279,9 @@ export default async function PracticalsPage({
                 const viewerHref = `/viewer?url=${encodedUrl}&title=${encodedTitle}&backUrl=${encodedBackUrl}`;
 
                 // If it's a folder, navigate within the app. If it's a file, open our internal viewer
-                const href = isFolder ? `/practicals?folderId=${file.id}` : viewerHref;
+                const nextTrail = [...trail, { id: file.id, name: file.name }];
+                const trailParamStr = encodeURIComponent(JSON.stringify(nextTrail));
+                const href = isFolder ? `/practicals?folderId=${file.id}&trail=${trailParamStr}` : viewerHref;
                 
                 return (
                   <Link 

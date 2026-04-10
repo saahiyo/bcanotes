@@ -36,13 +36,13 @@ export default function MainLayout({children}: {children: React.ReactNode}) {
             <div className="space-y-4">
               <h4 className="text-sm font-semibold uppercase tracking-wider text-foreground">Connect</h4>
               <div className="flex items-center gap-4 text-muted-foreground">
-                <Link href="#" className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-colors" aria-label="GitHub">
+                <Link href="https://github.com/saahiyo" className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-colors" aria-label="GitHub" target='_blank'>
                   <Github className="h-5 w-5" />
                 </Link>
-                <Link href="#" className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-colors" aria-label="Twitter">
+                <Link href="https://twitter.com/saahiyo75" className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-colors" aria-label="Twitter" target="_blank">
                   <Twitter className="h-5 w-5" />
                 </Link>
-                <Link href="#" className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-colors" aria-label="Website">
+                <Link href="https://www.instagram.com/linkg518/" className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-colors" aria-label="Website" target='_blank'>
                   <Globe className="h-5 w-5" />
                 </Link>
               </div>
