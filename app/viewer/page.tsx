@@ -2,7 +2,7 @@
 
 import { use, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ExternalLink, AlertTriangle, ChevronUp, ChevronDown } from "lucide-react";
+import { ArrowLeft, ExternalLink, AlertTriangle, ChevronUp, ChevronDown, Download } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -24,6 +24,12 @@ export default function ViewerPage({
   const targetUrl = decodeURIComponent(url);
   const displayTitle = decodeSafe(title);
   const backTarget = backUrl ? decodeURIComponent(backUrl) : "javascript:history.back()";
+
+  let downloadUrl = targetUrl;
+  const driveIdMatch = targetUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if (driveIdMatch && driveIdMatch[1]) {
+    downloadUrl = `https://drive.google.com/uc?export=download&id=${driveIdMatch[1]}`;
+  }
 
   return (
     <div className="flex flex-col h-[100dvh] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-900 relative">
@@ -58,6 +64,15 @@ export default function ViewerPage({
           </div>
           
           <div className="flex items-center gap-2 shrink-0">
+            <Link href={downloadUrl} target="_blank" rel="noopener noreferrer">
+              <Button variant="outline" size="sm" className="gap-2 hidden sm:flex">
+                <Download className="h-4 w-4" /> Download
+              </Button>
+              <Button variant="outline" size="sm" className="flex sm:hidden px-2">
+                <Download className="h-4 w-4" />
+              </Button>
+            </Link>
+
             <Link href={targetUrl} target="_blank" rel="noopener noreferrer">
               <Button variant="outline" size="sm" className="gap-2 hidden sm:flex">
                 Open externally <ExternalLink className="h-4 w-4" />
