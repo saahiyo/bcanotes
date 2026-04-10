@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { 
   BookOpen, ExternalLink, FileText, Folder, AlertCircle, ArrowLeft, 
   FileImage, FileVideo, FileAudio, FileArchive, FileBarChart, FileSpreadsheet,
-  Clock, Database
+  Clock, Database,
+  ArrowRight
 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
@@ -209,79 +210,131 @@ export default async function PracticalsPage({
           <CardDescription>No practical files were found in this Google Drive folder.</CardDescription>
         </Card>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-          {files.map((file) => {
-            const isFolder = file.mimeType === "application/vnd.google-apps.folder";
-            const { icon: FileIconComponent, color } = getFileIconStyle(file.mimeType);
-            
-            // Extract the badge string
-            const fileBadgeStr = !isFolder ? getFileBadgeText(file.name, file.mimeType) : '';
-            
-            // Build viewer URL for files
-            const driveViewerUrl = `https://drive.google.com/file/d/${file.id}/preview`;
-            const encodedUrl = encodeURIComponent(driveViewerUrl);
-            const encodedTitle = encodeURIComponent(file.name);
-            const encodedBackUrl = encodeURIComponent(`/practicals${currentFolderId !== ROOT_FOLDER_ID ? `?folderId=${currentFolderId}` : ""}`);
-            
-            const viewerHref = `/viewer?url=${encodedUrl}&title=${encodedTitle}&backUrl=${encodedBackUrl}`;
+        (() => {
+          const renderFilesList = (fileList: DriveFile[]) => (
+            <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+              {fileList.map((file) => {
+                const isFolder = file.mimeType === "application/vnd.google-apps.folder";
+                const { icon: FileIconComponent, color } = getFileIconStyle(file.mimeType);
+                
+                // Extract the badge string
+                const fileBadgeStr = !isFolder ? getFileBadgeText(file.name, file.mimeType) : '';
+                
+                // Build viewer URL for files
+                const driveViewerUrl = `https://drive.google.com/file/d/${file.id}/preview`;
+                const encodedUrl = encodeURIComponent(driveViewerUrl);
+                const encodedTitle = encodeURIComponent(file.name);
+                const encodedBackUrl = encodeURIComponent(`/practicals${currentFolderId !== ROOT_FOLDER_ID ? `?folderId=${currentFolderId}` : ""}`);
+                
+                const viewerHref = `/viewer?url=${encodedUrl}&title=${encodedTitle}&backUrl=${encodedBackUrl}`;
 
-            // If it's a folder, navigate within the app. If it's a file, open our internal viewer
-            const href = isFolder ? `/practicals?folderId=${file.id}` : viewerHref;
-            const target = "_self"; // Viewer and folders both open in same tab now
-            
-            return (
-              <a 
-                key={file.id} 
-                href={href} 
-                target={target} 
-                className="group h-full flex"
-              >
-                <Card className="w-full transition-all duration-200 hover:shadow-md hover:border-primary/50 cursor-pointer overflow-hidden flex flex-col h-full bg-card">
-                  <CardHeader className="p-4 flex flex-row items-start gap-4 space-y-0 flex-grow">
-                    <div className="mt-1 transition-transform duration-200 group-hover:scale-110 shrink-0">
-                      {isFolder ? (
-                        <FileIconComponent className="h-10 w-10 text-blue-500" fill="currentColor" fillOpacity={0.2} />
-                      ) : (
-                        <FileIconComponent className={`h-10 w-10 ${color}`} />
-                      )}
-                    </div>
-                    <div className="flex flex-col flex-1 overflow-hidden">
-                      <CardTitle className="text-base font-semibold leading-tight line-clamp-2" title={file.name}>
-                        {file.name}
-                      </CardTitle>
-                      {(fileBadgeStr || isFolder) && (
-                        <CardDescription className="text-xs mt-1.5 font-medium flex gap-2 items-center">
+                // If it's a folder, navigate within the app. If it's a file, open our internal viewer
+                const href = isFolder ? `/practicals?folderId=${file.id}` : viewerHref;
+                
+                return (
+                  <a 
+                    key={file.id} 
+                    href={href} 
+                    className="group h-full flex"
+                  >
+                    <Card className="w-full transition-all duration-200 hover:shadow-md hover:border-primary/50 cursor-pointer overflow-hidden flex flex-col h-full bg-card">
+                      <CardHeader className="p-4 flex flex-row items-start gap-4 space-y-0 flex-grow">
+                        <div className="mt-1 transition-transform duration-200 group-hover:scale-110 shrink-0">
                           {isFolder ? (
-                             <span className="inline-flex items-center rounded-sm bg-blue-500/10 px-2 py-0.5 text-xs font-semibold text-blue-600 border border-blue-500/20">
-                               Folder
-                             </span>
-                          ) : (fileBadgeStr &&
-                            <span className="inline-flex items-center rounded-sm bg-muted px-2 py-0.5 text-xs font-semibold text-muted-foreground border">
-                              {fileBadgeStr}
-                            </span>
+                            <FileIconComponent className="h-10 w-10 text-blue-500" fill="currentColor" fillOpacity={0.2} />
+                          ) : (
+                            <FileIconComponent className={`h-10 w-10 ${color}`} />
                           )}
-                        </CardDescription>
+                        </div>
+                        <div className="flex flex-col flex-1 overflow-hidden">
+                          <CardTitle className="text-base font-semibold leading-tight line-clamp-2" title={file.name}>
+                            {file.name}
+                          </CardTitle>
+                          {(fileBadgeStr || isFolder) && (
+                            <CardDescription className="text-xs mt-1.5 font-medium flex gap-2 items-center">
+                              {isFolder ? (
+                                 <span className="inline-flex items-center rounded-sm bg-blue-500/10 px-2 py-0.5 text-xs font-semibold text-blue-600 border border-blue-500/20">
+                                   Folder
+                                 </span>
+                              ) : (fileBadgeStr &&
+                                <span className="inline-flex items-center rounded-sm bg-muted px-2 py-0.5 text-xs font-semibold text-muted-foreground border">
+                                  {fileBadgeStr}
+                                </span>
+                              )}
+                            </CardDescription>
+                          )}
+                        </div>
+                      </CardHeader>
+                      
+                      {(!isFolder && (file.size || file.modifiedTime)) && (
+                        <CardFooter className="p-3 bg-muted/20 border-t flex flex-row justify-between text-xs text-muted-foreground mt-auto">
+                          <div className="flex items-center gap-1.5" title="File Size">
+                            <Database className="h-3 w-3" />
+                            <span>{formatBytes(file.size)}</span>
+                          </div>
+                          <div className="flex items-center gap-1.5" title="Last Modified">
+                            <Clock className="h-3 w-3" />
+                            <span>{formatDate(file.modifiedTime)}</span>
+                          </div>
+                        </CardFooter>
                       )}
-                    </div>
-                  </CardHeader>
-                  
-                  {(!isFolder && (file.size || file.modifiedTime)) && (
-                    <CardFooter className="p-3 bg-muted/20 border-t flex flex-row justify-between text-xs text-muted-foreground mt-auto">
-                      <div className="flex items-center gap-1.5" title="File Size">
-                        <Database className="h-3 w-3" />
-                        <span>{formatBytes(file.size)}</span>
-                      </div>
-                      <div className="flex items-center gap-1.5" title="Last Modified">
-                        <Clock className="h-3 w-3" />
-                        <span>{formatDate(file.modifiedTime)}</span>
-                      </div>
-                    </CardFooter>
-                  )}
-                </Card>
-              </a>
-            );
-          })}
-        </div>
+                    </Card>
+                  </a>
+                );
+              })}
+            </div>
+          );
+
+          if (!isRootFolder) {
+            return renderFilesList(files);
+          }
+
+          // If in root folder, group by year
+          const firstYear = files.filter(f => f.name.includes("Semester 1") || f.name.includes("Semester 2"));
+          const secondYear = files.filter(f => f.name.includes("Semester 3") || f.name.includes("Semester 4"));
+          const thirdYear = files.filter(f => f.name.includes("Semester 5") || f.name.includes("Semester 6"));
+          const otherFiles = files.filter(f => !(f.name.includes("Semester 1") || f.name.includes("Semester 2") || f.name.includes("Semester 3") || f.name.includes("Semester 4") || f.name.includes("Semester 5") || f.name.includes("Semester 6")));
+
+          return (
+            <div className="flex flex-col space-y-12">
+              {firstYear.length > 0 && (
+                <section>
+                  <h2 className="text-2xl font-bold tracking-tight mb-4 flex items-center gap-2 border-b pb-2">
+                    <ArrowRight className="h-5 w-5" /> 1st Year
+                  </h2>
+                  {renderFilesList(firstYear)}
+                </section>
+              )}
+              
+              {secondYear.length > 0 && (
+                <section>
+                  <h2 className="text-2xl font-bold tracking-tight mb-4 flex items-center gap-2 border-b pb-2">
+                    <ArrowRight className="h-5 w-5" /> 2nd Year
+                  </h2>
+                  {renderFilesList(secondYear)}
+                </section>
+              )}
+              
+              {thirdYear.length > 0 && (
+                <section>
+                  <h2 className="text-2xl font-bold tracking-tight mb-4 flex items-center gap-2 border-b pb-2">
+                   <ArrowRight className="h-5 w-5" /> 3rd Year
+                  </h2>
+                  {renderFilesList(thirdYear)}
+                </section>
+              )}
+              
+              {otherFiles.length > 0 && (
+                <section>
+                  <h2 className="text-xl font-bold tracking-tight mb-4 flex items-center gap-2 border-b pb-2 text-muted-foreground">
+                   Other Files
+                  </h2>
+                  {renderFilesList(otherFiles)}
+                </section>
+              )}
+            </div>
+          );
+        })()
       )}
     </div>
   );
