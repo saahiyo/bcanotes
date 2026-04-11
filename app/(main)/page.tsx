@@ -21,7 +21,7 @@ export default function Home() {
 
         {/* Mascot - absolutely positioned, completely out of content flow */}
         <div className="absolute top-8 sm:top-12 md:top-16 left-0 right-0 flex justify-center z-10 pointer-events-none">
-          <BlobMascot className="w-28 sm:w-36 md:w-44 h-auto pointer-events-auto" />
+          <BlobMascot className="w-28 sm:w-36 md:w-44 h-auto pointer-events-auto hidden sm:block" />
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

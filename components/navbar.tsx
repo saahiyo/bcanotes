@@ -111,15 +111,15 @@ export function Navbar() {
                     })}
                   </nav>
                 </div>
-                <div className="mt-auto pt-4 flex flex-col gap-3 border-t">
+                <div className="mt-auto pt-6 flex flex-col gap-4 border-t pb-4">
                   <Link href="/login" onClick={closeMenu}>
-                    <Button variant="outline" className="w-full gap-2">
-                      <LogIn className="h-4 w-4" />
+                    <Button variant="outline" size="lg" className="w-full gap-2 h-12 text-base">
+                      <LogIn className="h-5 w-5" />
                       Login
                     </Button>
                   </Link>
                   <Link href="/signup" onClick={closeMenu}>
-                    <Button className="w-full">Sign up</Button>
+                    <Button size="lg" className="w-full h-12 text-base font-semibold">Sign up</Button>
                   </Link>
                 </div>
               </SheetContent>
