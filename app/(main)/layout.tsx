@@ -1,6 +1,6 @@
 import { Navbar } from '@/components/navbar';
 import Link from 'next/link';
-import { BookOpen, Github, Twitter, Globe } from 'lucide-react';
+import { BookOpen, Github, Twitter, Globe, MessageSquare } from 'lucide-react';
 
 export default function MainLayout({children}: {children: React.ReactNode}) {
   return (
@@ -42,8 +42,8 @@ export default function MainLayout({children}: {children: React.ReactNode}) {
                 <Link href="https://twitter.com/saahiyo75" className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-colors" aria-label="Twitter" target="_blank">
                   <Twitter className="h-5 w-5" />
                 </Link>
-                <Link href="https://www.instagram.com/linkg518/" className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-colors" aria-label="Website" target='_blank'>
-                  <Globe className="h-5 w-5" />
+                <Link href="/contact" className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-colors" aria-label="Contact">
+                  <MessageSquare className="h-5 w-5" />
                 </Link>
               </div>
             </div>
@@ -54,9 +54,9 @@ export default function MainLayout({children}: {children: React.ReactNode}) {
               © {new Date().getFullYear()} BCA YCMOU. Unofficial resource portal.
             </p>
             <div className="flex gap-6 font-medium">
-              <Link href="#" className="hover:text-foreground transition-colors">Contribute</Link>
-              <Link href="#" className="hover:text-foreground transition-colors">Privacy</Link>
-              <Link href="#" className="hover:text-foreground transition-colors">Terms of Service</Link>
+              <Link href="https://github.com/saahiyo/bcanotes" className="hover:text-foreground transition-colors">Contribute</Link>
+              <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>
+              <Link href="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link>
             </div>
           </div>
         </div>
