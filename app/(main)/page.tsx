@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, BookOpen, FileText, FolderOpen, Library, Code2, Database, Terminal, Cpu, Monitor, Braces } from "lucide-react";
+import { ArrowRight, BookOpen, FileText, FolderOpen, Library, Code2, Database, Terminal, Cpu, Monitor, Braces, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BlobMascot } from "@/components/blob-mascot";
@@ -28,7 +28,7 @@ export default function Home() {
           <div className="flex flex-col items-center text-center">
             <div className="space-y-4 relative z-10">
               <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-4 animate-float-slow">
-                ✨ The ultimate hub for YCMOU students
+                <Sparkles className="w-4 h-4 mr-2 text-yellow-500" /> The ultimate hub for YCMOU students
               </div>
               <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl drop-shadow-sm">
                 BCA YCMOU <br className="hidden sm:inline" />

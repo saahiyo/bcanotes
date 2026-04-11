@@ -106,6 +106,12 @@
   body {
     @apply bg-background text-foreground;
     }
+
+  ::selection {
+    background: color-mix(in oklch, var(--primary) 25%, transparent);
+    color: var(--foreground);
+  }
+
   html {
     @apply font-sans;
     font-size: 14px;
