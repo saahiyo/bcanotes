@@ -110,3 +110,36 @@
     @apply font-sans;
     }
 }
+
+/* Cursor follower styles */
+.cursor-follower-outer,
+.cursor-follower-inner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 50%;
+  transition: width 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+              height 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+              opacity 0.3s ease,
+              border-color 0.3s ease,
+              background-color 0.2s ease;
+  will-change: transform, width, height;
+}
+
+.cursor-follower-outer {
+  border: 1.5px solid color-mix(in oklch, var(--primary) 50%, transparent);
+  background: transparent;
+}
+
+.cursor-follower-inner {
+}
+
+/* Hide on mobile / touch devices */
+@media (max-width: 767px), (hover: none) {
+  .cursor-follower-outer,
+  .cursor-follower-inner {
+    display: none !important;
+  }
+}
