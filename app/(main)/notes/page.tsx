@@ -71,12 +71,12 @@ export default function NotesPage() {
       </div>
 
       <Tabs defaultValue="sem1" className="w-full">
-        <TabsList className="flex flex-wrap w-full justify-start gap-3 bg-transparent p-0 group-data-horizontal/tabs:h-auto">
+        <TabsList className="flex flex-wrap w-full justify-start gap-2 sm:gap-3 bg-transparent p-0 group-data-horizontal/tabs:h-auto">
           {semesters.map((sem) => (
             <TabsTrigger 
               key={sem.id} 
               value={sem.id}
-              className="data-active:bg-primary data-active:text-primary-foreground border bg-muted/50 px-6 py-2.5 text-sm rounded-full transition-all h-auto flex-none"
+              className="data-active:bg-primary data-active:text-primary-foreground border bg-muted/50 px-3 py-1.5 sm:px-6 sm:py-2.5 text-xs sm:text-sm rounded-full transition-all h-auto flex-none"
             >
               {sem.title}
             </TabsTrigger>
