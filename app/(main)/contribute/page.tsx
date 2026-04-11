@@ -14,6 +14,7 @@ export default function ContributePage() {
   const [isUploadingDirect, setIsUploadingDirect] = useState(false);
   const [isUploadSuccessDirect, setIsUploadSuccessDirect] = useState(false);
   const [uploadErrorDirect, setUploadErrorDirect] = useState("");
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [dragActive, setDragActive] = useState(false);
   
   const [showLinkUrlForm, setShowLinkUrlForm] = useState(false);
@@ -47,6 +48,7 @@ export default function ContributePage() {
   const handleFileUpload = async (file: File) => {
     setIsUploadingDirect(true);
     setUploadErrorDirect("");
+    setUploadProgress(0);
     
     // Check file size limit (e.g. 20MB)
     if (file.size > 20 * 1024 * 1024) {
@@ -58,22 +60,42 @@ export default function ContributePage() {
     const formData = new FormData();
     formData.append("file", file);
 
-    try {
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-      const data = await res.json();
-      if (data.success) {
-        setIsUploadSuccessDirect(true);
-      } else {
-        setUploadErrorDirect(data.message || "Failed to upload file.");
+    const xhr = new XMLHttpRequest();
+
+    xhr.upload.addEventListener("progress", (e) => {
+      if (e.lengthComputable) {
+        const percent = Math.round((e.loaded / e.total) * 100);
+        setUploadProgress(percent);
       }
-    } catch (err) {
+    });
+
+    xhr.addEventListener("load", () => {
+      try {
+        const data = JSON.parse(xhr.responseText);
+        if (xhr.status >= 200 && xhr.status < 300 && data.success) {
+          setIsUploadSuccessDirect(true);
+        } else {
+          setUploadErrorDirect(data.message || "Failed to upload file.");
+        }
+      } catch {
+        setUploadErrorDirect("Unexpected response from server.");
+      } finally {
+        setIsUploadingDirect(false);
+      }
+    });
+
+    xhr.addEventListener("error", () => {
       setUploadErrorDirect("Network error. Please try again later.");
-    } finally {
       setIsUploadingDirect(false);
-    }
+    });
+
+    xhr.addEventListener("abort", () => {
+      setUploadErrorDirect("Upload cancelled.");
+      setIsUploadingDirect(false);
+    });
+
+    xhr.open("POST", "/api/upload");
+    xhr.send(formData);
   };
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -216,9 +238,20 @@ export default function ContributePage() {
                     />
                     
                     {isUploadingDirect ? (
-                      <div className="flex flex-col items-center gap-4">
+                      <div className="flex flex-col items-center gap-4 w-full px-8">
                         <div className="h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-                        <span className="text-sm font-medium text-primary animate-pulse">Uploading directly to Drive...</span>
+                        <div className="w-full max-w-xs space-y-2">
+                          <div className="flex items-center justify-between text-xs font-medium">
+                            <span className="text-primary">Uploading to Server...</span>
+                            <span className="text-primary tabular-nums">{uploadProgress}%</span>
+                          </div>
+                          <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                            <div 
+                              className="h-full bg-primary rounded-full transition-all duration-300 ease-out"
+                              style={{ width: `${uploadProgress}%` }}
+                            />
+                          </div>
+                        </div>
                       </div>
                     ) : (
                       <div className="flex flex-col items-center gap-2 text-center px-4">
