@@ -42,15 +42,15 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b  backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2">
-            <BookOpen className="h-6 w-6 text-primary" />
+        <div className="flex h-20 items-center justify-between">
+          <div className="flex items-center gap-3">
+            <BookOpen className="h-7 w-7 text-primary" />
             <Link href="/" className="flex items-center space-x-2">
-              <span className="font-bold text-xl tracking-tight">BCA YCMOU</span>
+              <span className="font-bold text-2xl tracking-tight">BCA YCMOU</span>
             </Link>
           </div>
 
-          <nav className="hidden md:flex items-center space-x-1 text-sm font-medium">
+          <nav className="hidden md:flex items-center space-x-2 text-base font-medium">
             {navLinks.map((link) => {
               const Icon = link.icon;
               const active = isActive(link.href);
@@ -59,41 +59,41 @@ export function Navbar() {
                   key={link.href}
                   href={link.href} 
                   className={cn(
-                    "relative flex items-center gap-2 px-3 py-2 rounded-md transition-colors",
+                    "relative flex items-center gap-2 px-3 py-2.5 rounded-md transition-colors",
                     active
                       ? "text-primary font-semibold after:absolute after:bottom-0 after:left-3 after:right-3 after:h-[1.5px] after:bg-gradient-to-r after:from-[#4285f4] after:to-[#1a73e8] after:rounded-t-full"
                       : "text-foreground/60 hover:text-foreground hover:bg-muted/50"
                   )}
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon className="h-5 w-5" />
                   {link.label}
                 </Link>
               );
             })}
           </nav>
 
-          <div className="hidden md:flex items-center ml-4 gap-2">
+          <div className="hidden md:flex items-center ml-4 gap-3">
             <ModeToggle />
             {!loading && (
               user ? (
-                <div className="flex items-center gap-3">
-                  <Link href="/profile" className="flex items-center gap-2 text-sm hover:opacity-80 transition-opacity">
-                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-xs uppercase">
+                <div className="flex items-center gap-4">
+                  <Link href="/profile" className="flex items-center gap-3 text-base hover:opacity-80 transition-opacity">
+                    <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-sm uppercase">
                       {user.displayName?.charAt(0) || user.email?.charAt(0) || "U"}
                     </div>
-                    <span className="max-w-[100px] truncate font-medium hidden lg:inline">
+                    <span className="max-w-[120px] truncate font-medium hidden lg:inline">
                       {user.displayName || user.email?.split("@")[0]}
                     </span>
                   </Link>
-                  <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground" onClick={handleSignOut}>
-                    <LogOut className="h-4 w-4" />
+                  <Button variant="ghost" size="sm" className="gap-2 h-10 text-base text-muted-foreground hover:text-foreground" onClick={handleSignOut}>
+                    <LogOut className="h-5 w-5" />
                     Sign out
                   </Button>
                 </div>
               ) : (
                 <Link href="/login">
-                  <Button variant="link" size="sm" className="gap-2">
-                    <ArrowUpRight className="h-4 w-4"/>
+                  <Button variant="link" size="sm" className="gap-2 text-base h-10">
+                    <ArrowUpRight className="h-5 w-5"/>
                     Create a account 
                   </Button>
                 </Link>
@@ -101,17 +101,17 @@ export function Navbar() {
             )}
           </div>
 
-          <div className="flex items-center gap-2 md:hidden">
+          <div className="flex items-center gap-3 md:hidden">
             <ModeToggle />
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger render={<Button variant="ghost" size="icon" aria-label="Open Menu" />}>
-                <Menu className="h-6 w-6" />
+              <SheetTrigger render={<Button variant="ghost" size="icon" className="h-10 w-10" aria-label="Open Menu" />}>
+                <Menu className="h-7 w-7" />
               </SheetTrigger>
-              <SheetContent side="left" className="w-[280px] sm:w-[300px] flex flex-col">
-                <SheetHeader className="text-left pb-2 border-b">
-                  <SheetTitle className="flex items-center gap-2 text-primary">
-                    <BookOpen className="h-6 w-6" />
-                    <span className="font-bold text-xl tracking-tight">BCA YCMOU</span>
+              <SheetContent side="left" className="w-[300px] sm:w-[320px] flex flex-col">
+                <SheetHeader className="text-left pb-4 border-b">
+                  <SheetTitle className="flex items-center gap-3 text-primary">
+                    <BookOpen className="h-7 w-7" />
+                    <span className="font-bold text-2xl tracking-tight">BCA YCMOU</span>
                   </SheetTitle>
                 </SheetHeader>
                 <div className="flex-1 overflow-y-auto py-4">
@@ -125,13 +125,13 @@ export function Navbar() {
                           href={link.href} 
                           onClick={closeMenu}
                           className={cn(
-                            "flex items-center gap-3 py-3 px-4 text-[15px] font-medium rounded-lg transition-all",
+                            "flex items-center gap-4 py-3.5 px-4 text-[17px] font-medium rounded-lg transition-all",
                             active
                               ? "bg-primary/10 text-primary font-semibold"
                               : "text-foreground/70 hover:text-foreground hover:bg-muted/60"
                           )}
                         >
-                          <Icon className={cn("h-5 w-5", active ? "text-primary" : "text-foreground/50")} />
+                          <Icon className={cn("h-6 w-6", active ? "text-primary" : "text-foreground/50")} />
                           {link.label}
                         </Link>
                       );
