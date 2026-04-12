@@ -1,19 +1,28 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { ArrowUpRight, BookOpen, FileText, FolderOpen, Home, Library, LogIn, Menu, Heart, MessageSquare } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { ArrowUpRight, BookOpen, FileText, FolderOpen, Home, Library, LogIn, LogOut, Menu, Heart, MessageSquare, User } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { ModeToggle } from "@/components/mode-toggle";
+import { useAuth } from "@/components/auth-provider";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, loading, signOut } = useAuth();
 
   const closeMenu = () => setIsOpen(false);
+
+  const handleSignOut = async () => {
+    await signOut();
+    closeMenu();
+    router.push("/");
+  };
 
   const navLinks = [
     { href: "/", label: "Home", icon: Home },
@@ -65,13 +74,31 @@ export function Navbar() {
 
           <div className="hidden md:flex items-center ml-4 gap-2">
             <ModeToggle />
-            <Link href="/login">
-              <Button variant="link" size="sm" className="gap-2">
-                {/* <LogIn className="h-4 w-4" /> */}
-                <ArrowUpRight className="h-4 w-4"/>
-                Create a account 
-              </Button>
-            </Link>
+            {!loading && (
+              user ? (
+                <div className="flex items-center gap-3">
+                  <Link href="/profile" className="flex items-center gap-2 text-sm hover:opacity-80 transition-opacity">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-xs uppercase">
+                      {user.displayName?.charAt(0) || user.email?.charAt(0) || "U"}
+                    </div>
+                    <span className="max-w-[100px] truncate font-medium hidden lg:inline">
+                      {user.displayName || user.email?.split("@")[0]}
+                    </span>
+                  </Link>
+                  <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground" onClick={handleSignOut}>
+                    <LogOut className="h-4 w-4" />
+                    Sign out
+                  </Button>
+                </div>
+              ) : (
+                <Link href="/login">
+                  <Button variant="link" size="sm" className="gap-2">
+                    <ArrowUpRight className="h-4 w-4"/>
+                    Create a account 
+                  </Button>
+                </Link>
+              )
+            )}
           </div>
 
           <div className="flex items-center gap-2 md:hidden">
@@ -112,15 +139,37 @@ export function Navbar() {
                   </nav>
                 </div>
                 <div className="mt-auto pt-6 flex flex-col gap-4 border-t pb-4">
-                  <Link href="/login" onClick={closeMenu}>
-                    <Button variant="outline" size="lg" className="w-full gap-2 h-12 text-base">
-                      <LogIn className="h-5 w-5" />
-                      Login
-                    </Button>
-                  </Link>
-                  <Link href="/signup" onClick={closeMenu}>
-                    <Button size="lg" className="w-full h-12 text-base font-semibold">Sign up</Button>
-                  </Link>
+                  {!loading && (
+                    user ? (
+                      <>
+                        <Link href="/profile" onClick={closeMenu} className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-muted/60 transition-colors">
+                          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-sm uppercase">
+                            {user.displayName?.charAt(0) || user.email?.charAt(0) || "U"}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-semibold truncate">{user.displayName || "User"}</p>
+                            <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                          </div>
+                        </Link>
+                        <Button variant="outline" size="lg" className="w-full gap-2 h-12 text-base" onClick={handleSignOut}>
+                          <LogOut className="h-5 w-5" />
+                          Sign out
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Link href="/login" onClick={closeMenu}>
+                          <Button variant="outline" size="lg" className="w-full gap-2 h-12 text-base">
+                            <LogIn className="h-5 w-5" />
+                            Login
+                          </Button>
+                        </Link>
+                        <Link href="/signup" onClick={closeMenu}>
+                          <Button size="lg" className="w-full h-12 text-base font-semibold">Sign up</Button>
+                        </Link>
+                      </>
+                    )
+                  )}
                 </div>
               </SheetContent>
             </Sheet>

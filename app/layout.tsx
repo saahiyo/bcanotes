@@ -3,6 +3,7 @@ import './globals.css';
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
+import { AuthProvider } from "@/components/auth-provider";
 import { CursorFollower } from "@/components/cursor-follower";
 import { Analytics } from "@vercel/analytics/next";
 
@@ -18,8 +19,10 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
     <html lang="en" className={cn("font-sans", geist.variable)} suppressHydrationWarning>
       <body className="min-h-screen bg-background font-sans antialiased flex flex-col" suppressHydrationWarning>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <CursorFollower />
-          {children}
+          <AuthProvider>
+            <CursorFollower />
+            {children}
+          </AuthProvider>
         </ThemeProvider>
         <Analytics />
       </body>
