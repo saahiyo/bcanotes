@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AuthProvider } from "@/components/auth-provider";
 import { CursorFollower } from "@/components/cursor-follower";
+import { BackToTop } from "@/components/back-to-top";
 import { Analytics } from "@vercel/analytics/next";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
@@ -21,6 +22,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <AuthProvider>
             <CursorFollower />
+            <BackToTop />
             {children}
           </AuthProvider>
         </ThemeProvider>
