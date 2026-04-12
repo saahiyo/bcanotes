@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, BookOpen, FileText, FolderOpen, Library, Code2, Database, Terminal, Cpu, Monitor, Braces, Sparkles } from "lucide-react";
+import { ArrowRight, BookOpen, FileText, FolderOpen, Library, Code2, Database, Terminal, Cpu, Monitor, Braces, Sparkles, ClipboardPen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BlobMascot } from "@/components/blob-mascot";
@@ -21,7 +21,7 @@ export default function Home() {
           <Database className="absolute top-[25%] right-[5%] md:right-[15%] h-16 w-16 text-green-500/20 animate-float-medium rotate-12" />
           <Terminal className="absolute bottom-[30%] left-[5%] md:left-[20%] h-14 w-14 text-purple-500/20 animate-float-fast rotate-6" />
           <Cpu className="absolute bottom-[15%] right-[10%] md:right-[25%] h-10 w-10 text-orange-500/20 animate-float-slow -rotate-6" />
-          <Monitor className="absolute top-[40%] left-[8%] md:left-[5%] h-8 w-8 text-pink-500/20 animate-float-medium" />
+          <ClipboardPen className="absolute top-[40%] left-[8%] md:left-[5%] h-8 w-8 text-pink-500/20 animate-float-medium" />
           <Braces className="absolute top-[15%] right-[25%] h-10 w-10 text-yellow-500/20 animate-float-fast rotate-45" />
         </div>
 

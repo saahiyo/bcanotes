@@ -115,7 +115,7 @@ export function StatsCounter() {
       {/* Subtle background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.02] to-transparent pointer-events-none" />
       {/* Technical Grid */}
-      <div className="absolute inset-0 technical-grid pointer-events-none opacity-30 dark:opacity-15" />
+      <div className="absolute inset-0 technical-grid pointer-events-none opacity-30 dark:opacity-20" />
 
       <div className="w-full px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Grid Container with faint subtle dividers */}
