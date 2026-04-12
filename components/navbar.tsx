@@ -42,15 +42,15 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b  backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-20 items-center justify-between">
-          <div className="flex items-center gap-3">
-            <BookOpen className="h-7 w-7 text-primary" />
+        <div className="flex h-20 md:h-16 items-center justify-between">
+          <div className="flex items-center gap-3 md:gap-2">
+            <BookOpen className="h-7 w-7 md:h-6 md:w-6 text-primary" />
             <Link href="/" className="flex items-center space-x-2">
-              <span className="font-bold text-2xl tracking-tight">BCA YCMOU</span>
+              <span className="font-bold text-2xl md:text-xl tracking-tight">BCA YCMOU</span>
             </Link>
           </div>
 
-          <nav className="hidden md:flex items-center space-x-2 text-base font-medium">
+          <nav className="hidden md:flex items-center space-x-1 text-sm font-medium">
             {navLinks.map((link) => {
               const Icon = link.icon;
               const active = isActive(link.href);
@@ -59,41 +59,41 @@ export function Navbar() {
                   key={link.href}
                   href={link.href} 
                   className={cn(
-                    "relative flex items-center gap-2 px-3 py-2.5 rounded-md transition-colors",
+                    "relative flex items-center gap-2 px-3 py-2 rounded-md transition-colors",
                     active
                       ? "text-primary font-semibold after:absolute after:bottom-0 after:left-3 after:right-3 after:h-[1.5px] after:bg-gradient-to-r after:from-[#4285f4] after:to-[#1a73e8] after:rounded-t-full"
                       : "text-foreground/60 hover:text-foreground hover:bg-muted/50"
                   )}
                 >
-                  <Icon className="h-5 w-5" />
+                  <Icon className="h-5 w-5 md:h-4 md:w-4" />
                   {link.label}
                 </Link>
               );
             })}
           </nav>
 
-          <div className="hidden md:flex items-center ml-4 gap-3">
+          <div className="hidden md:flex items-center ml-4 gap-2">
             <ModeToggle />
             {!loading && (
               user ? (
-                <div className="flex items-center gap-4">
-                  <Link href="/profile" className="flex items-center gap-3 text-base hover:opacity-80 transition-opacity">
-                    <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-sm uppercase">
+                <div className="flex items-center gap-3">
+                  <Link href="/profile" className="flex items-center gap-2 text-sm hover:opacity-80 transition-opacity">
+                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-xs uppercase">
                       {user.displayName?.charAt(0) || user.email?.charAt(0) || "U"}
                     </div>
-                    <span className="max-w-[120px] truncate font-medium hidden lg:inline">
+                    <span className="max-w-[100px] truncate font-medium hidden lg:inline">
                       {user.displayName || user.email?.split("@")[0]}
                     </span>
                   </Link>
-                  <Button variant="ghost" size="sm" className="gap-2 h-10 text-base text-muted-foreground hover:text-foreground" onClick={handleSignOut}>
-                    <LogOut className="h-5 w-5" />
+                  <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground" onClick={handleSignOut}>
+                    <LogOut className="h-4 w-4" />
                     Sign out
                   </Button>
                 </div>
               ) : (
                 <Link href="/login">
-                  <Button variant="link" size="sm" className="gap-2 text-base h-10">
-                    <ArrowUpRight className="h-5 w-5"/>
+                  <Button variant="link" size="sm" className="gap-2">
+                    <ArrowUpRight className="h-4 w-4"/>
                     Create a account 
                   </Button>
                 </Link>
