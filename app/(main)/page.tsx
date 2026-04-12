@@ -12,6 +12,9 @@ export default function Home() {
     <div className="flex flex-col items-center justify-center">
       <section className="w-full py-16 md:py-24 lg:py-32 xl:py-40 bg-muted/30 relative overflow-hidden">
         
+        {/* Technical Grid Background */}
+        <div className="absolute inset-0 technical-grid pointer-events-none opacity-50 dark:opacity-30" />
+
         {/* Floating background icons */}
         <div className="absolute inset-0 pointer-events-none z-0">
           <Code2 className="absolute top-[10%] left-[10%] md:left-[15%] h-12 w-12 text-blue-500/20 animate-float-slow -rotate-12" />
