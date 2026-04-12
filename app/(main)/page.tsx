@@ -5,6 +5,7 @@ import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/ca
 import { BlobMascot } from "@/components/blob-mascot";
 import { StatsCounter } from "@/components/stats-counter";
 import { ScrollReveal } from "@/components/scroll-reveal";
+import { ScribbleUnderline } from "@/components/scribble-underline";
 
 export default function Home() {
   return (
@@ -33,7 +34,11 @@ export default function Home() {
                 <Sparkles className="w-4 h-4 mr-2 text-yellow-500" /> The ultimate hub for YCMOU students
               </div>
               <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl drop-shadow-sm">
-                BCA YCMOU <br className="hidden sm:inline" />
+                <span className="relative inline-block">
+                  BCA
+                  <ScribbleUnderline className="text-primary" />
+                </span>{" "}
+                YCMOU <br className="hidden sm:inline" />
                 <span className="bg-gradient-to-r from-[#4285f4] to-[#1a73e8] bg-clip-text text-transparent">Learning Resources</span>
               </h1>
               <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl leading-relaxed">
