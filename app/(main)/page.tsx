@@ -3,6 +3,7 @@ import { ArrowRight, BookOpen, FileText, FolderOpen, Library, Code2, Database, T
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BlobMascot } from "@/components/blob-mascot";
+import { StatsCounter } from "@/components/stats-counter";
 
 export default function Home() {
   return (
@@ -74,6 +75,8 @@ export default function Home() {
 
         </div>
       </section>
+
+      <StatsCounter />
 
       <section className="w-full py-16 md:py-24 lg:py-32 relative">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
