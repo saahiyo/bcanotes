@@ -32,7 +32,7 @@ export default function Home() {
               </div>
               <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl drop-shadow-sm">
                 BCA YCMOU <br className="hidden sm:inline" />
-                <span className="text-primary">Learning Resources</span>
+                <span className="bg-gradient-to-r from-[#4285f4] to-[#1a73e8] bg-clip-text text-transparent">Learning Resources</span>
               </h1>
               <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl leading-relaxed">
                 Your one-stop destination for BCA notes, e-books, previous year question papers, and solved practicals.
@@ -80,7 +80,7 @@ export default function Home() {
           
           <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12 sm:mb-16">
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-foreground">
-              Everything you need to <span className="text-primary">excel</span>.
+              Everything you need to <span className="bg-gradient-to-r from-[#4285f4] to-[#1a73e8] bg-clip-text text-transparent">excel</span>.
             </h2>
             <p className="max-w-[700px] text-muted-foreground md:text-lg">
               Access carefully curated study materials designed specifically for the YCMOU syllabus. 
