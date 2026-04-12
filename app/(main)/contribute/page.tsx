@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Send, UploadCloud, CheckCircle2, AlertCircle, Link as LinkIcon, GraduationCap, BookOpen, Clock, Heart, ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
 import Link from "next/link";
+import { toast } from "@/hooks/use-toast";
 
 export default function ContributePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -52,7 +53,11 @@ export default function ContributePage() {
     
     // Check file size limit (e.g. 20MB)
     if (file.size > 20 * 1024 * 1024) {
-      setUploadErrorDirect("File is too large. Please upload files under 20MB.");
+      toast({
+        title: "File too large",
+        description: "Please upload files under 20MB.",
+        variant: "error",
+      });
       setIsUploadingDirect(false);
       return;
     }
@@ -74,23 +79,44 @@ export default function ContributePage() {
         const data = JSON.parse(xhr.responseText);
         if (xhr.status >= 200 && xhr.status < 300 && data.success) {
           setIsUploadSuccessDirect(true);
+          toast({
+            title: "Upload successful!",
+            description: "Your file has been uploaded to the Drive folder.",
+            variant: "success",
+          });
         } else {
-          setUploadErrorDirect(data.message || "Failed to upload file.");
+          toast({
+            title: "Upload failed",
+            description: data.message || "Failed to upload file.",
+            variant: "error",
+          });
         }
       } catch {
-        setUploadErrorDirect("Unexpected response from server.");
+        toast({
+          title: "Upload failed",
+          description: "Unexpected response from server.",
+          variant: "error",
+        });
       } finally {
         setIsUploadingDirect(false);
       }
     });
 
     xhr.addEventListener("error", () => {
-      setUploadErrorDirect("Network error. Please try again later.");
+      toast({
+        title: "Network error",
+        description: "Could not upload file. Please try again later.",
+        variant: "error",
+      });
       setIsUploadingDirect(false);
     });
 
     xhr.addEventListener("abort", () => {
-      setUploadErrorDirect("Upload cancelled.");
+      toast({
+        title: "Upload cancelled",
+        description: "The upload was cancelled.",
+        variant: "info",
+      });
       setIsUploadingDirect(false);
     });
 
@@ -104,14 +130,17 @@ export default function ContributePage() {
     setError("");
 
     const formData = new FormData(e.currentTarget);
-    // You should put your actual key in .env.local like: NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=your_key_here
     const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "YOUR_ACCESS_KEY_HERE";
     
     if (accessKey === "YOUR_ACCESS_KEY_HERE") {
-      // Mock Success for demonstration until User adds Key
       setTimeout(() => {
         setIsSuccess(true);
         setIsSubmitting(false);
+        toast({
+          title: "Contribution submitted!",
+          description: "Thank you! We'll review and add it to the portal soon.",
+          variant: "success",
+        });
       }, 1500);
       return;
     }
@@ -131,11 +160,26 @@ export default function ContributePage() {
       if (data.success) {
         setIsSuccess(true);
         e.currentTarget.reset();
+        toast({
+          title: "Contribution submitted!",
+          description: "Thank you! We'll review and add it to the portal soon.",
+          variant: "success",
+        });
       } else {
         setError(data.message || "An error occurred while submitting the form.");
+        toast({
+          title: "Submission failed",
+          description: data.message || "An error occurred. Please try again.",
+          variant: "error",
+        });
       }
     } catch (err) {
       setError("Network error. Please try again later.");
+      toast({
+        title: "Network error",
+        description: "Could not submit. Please try again later.",
+        variant: "error",
+      });
     } finally {
       setIsSubmitting(false);
     }

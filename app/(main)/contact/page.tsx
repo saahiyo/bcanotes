@@ -1,20 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, MessageSquare, Send, CheckCircle2, AlertCircle } from "lucide-react";
+import { Mail, MessageSquare, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/hooks/use-toast";
 
 export default function ContactPage() {
-  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
-  const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStatus("submitting");
+    setIsSubmitting(true);
 
     const formData = new FormData(e.currentTarget);
     formData.append("access_key", process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "");
@@ -35,23 +35,28 @@ export default function ContactPage() {
       const result = await response.json();
 
       if (response.status === 200) {
-        setStatus("success");
-        setMessage("Thank you for reaching out! We'll get back to you soon.");
+        toast({
+          title: "Message sent!",
+          description: "Thank you for reaching out. We'll get back to you soon.",
+          variant: "success",
+        });
         (e.target as HTMLFormElement).reset();
-        
-        // Reset status after a few seconds
-        setTimeout(() => {
-          setStatus("idle");
-          setMessage("");
-        }, 5000);
       } else {
-        setStatus("error");
-        setMessage(result.message || "Something went wrong. Please try again.");
+        toast({
+          title: "Failed to send",
+          description: result.message || "Something went wrong. Please try again.",
+          variant: "error",
+        });
       }
     } catch (error) {
       console.error(error);
-      setStatus("error");
-      setMessage("Something went wrong! Please try again later.");
+      toast({
+        title: "Network error",
+        description: "Something went wrong! Please try again later.",
+        variant: "error",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -84,7 +89,7 @@ export default function ContactPage() {
                   name="name" 
                   placeholder="John Doe" 
                   required 
-                  disabled={status === "submitting"}
+                  disabled={isSubmitting}
                   className="bg-background/50"
                 />
               </div>
@@ -99,7 +104,7 @@ export default function ContactPage() {
                     placeholder="john@example.com" 
                     className="pl-9 bg-background/50"
                     required 
-                    disabled={status === "submitting"}
+                    disabled={isSubmitting}
                   />
                 </div>
               </div>
@@ -112,7 +117,7 @@ export default function ContactPage() {
                 name="subject" 
                 placeholder="How can we help?" 
                 required 
-                disabled={status === "submitting"}
+                disabled={isSubmitting}
                 className="bg-background/50"
               />
             </div>
@@ -125,30 +130,18 @@ export default function ContactPage() {
                 placeholder="Your deeply thoughtful message goes here..." 
                 rows={5} 
                 required 
-                disabled={status === "submitting"}
+                disabled={isSubmitting}
                 className="resize-none bg-background/50"
               />
             </div>
 
-            {status !== "idle" && (
-              <div className={`p-4 rounded-lg flex items-center gap-3 text-sm font-medium ${
-                status === "success" ? "bg-green-500/10 text-green-600 dark:text-green-400 border border-green-500/20" : 
-                status === "error" ? "bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20" : 
-                ""
-              }`}>
-                {status === "success" && <CheckCircle2 className="h-5 w-5" />}
-                {status === "error" && <AlertCircle className="h-5 w-5" />}
-                {status === "submitting" ? "Sending message..." : message}
-              </div>
-            )}
-
             <Button 
               type="submit" 
               className="w-full gap-2 text-primary-foreground font-semibold"
-              disabled={status === "submitting"}
+              disabled={isSubmitting}
               size="lg"
             >
-              {status === "submitting" ? "Sending..." : (
+              {isSubmitting ? "Sending..." : (
                 <>
                   Send Message
                   <Send className="h-4 w-4" />
