@@ -13,7 +13,7 @@ export default function Home() {
       <section className="w-full py-16 md:py-24 lg:py-32 xl:py-40 bg-muted/30 relative overflow-hidden">
         
         {/* Technical Grid Background */}
-        <div className="absolute inset-0 technical-grid pointer-events-none opacity-50 dark:opacity-30" />
+        <div className="absolute inset-0 technical-grid pointer-events-none opacity-80 dark:opacity-50" />
 
         {/* Floating background icons */}
         <div className="absolute inset-0 pointer-events-none z-0">
@@ -89,8 +89,10 @@ export default function Home() {
 
       <StatsCounter />
 
-      <section className="w-full py-16 md:py-24 lg:py-32 relative">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="w-full py-16 md:py-24 lg:py-32 relative overflow-hidden">
+        {/* Technical Grid */}
+        <div className="absolute inset-0 technical-grid pointer-events-none opacity-30 dark:opacity-15" />
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           <ScrollReveal>
             <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12 sm:mb-16">
