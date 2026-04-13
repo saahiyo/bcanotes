@@ -26,36 +26,39 @@ const semesters = [
     id: "sem3",
     title: "Semester 3",
     subjects: [
-      { name: "Operating System", link: "#" },
-      { name: "Database Management System", link: "#" },
-      { name: "Software Engineering", link: "#" },
+      { name: "Operating System", link: "/notes/operating-system" },
+      { name: "Web Technology", link: "/notes/web-technology" },
+      { name: "D.B.M.S", link: "/notes/dbms" },
+      { name: "Python", link: "/notes/python" },
     ]
   },
   {
     id: "sem4",
     title: "Semester 4",
     subjects: [
-      { name: "Java Programming", link: "#" },
-      { name: "Web Technologies", link: "#" },
-      { name: "Computer Architecture", link: "#" },
+      { name: "Financial & Investment Skills", link: "/notes/financial-and-investment-skills" },
+      { name: "Software Engineering", link: "/notes/software-engineering" },
+      { name: "JAVA", link: "/notes/java" },
+      { name: "C.S.A", link: "/notes/csa" },
     ]
   },
   {
     id: "sem5",
     title: "Semester 5",
     subjects: [
-      { name: "Advanced Java", link: "#" },
-      { name: "Python Programming", link: "#" },
-      { name: "Software Testing", link: "#" },
+      { name: "Linux Administration", link: "/notes/linux-administration" },
+      { name: "Advance JAVA", link: "/notes/advance-java" },
+      { name: "Quantitative Aptitude", link: "/notes/quantitative-aptitude" },
+      { name: "Ecommerce Technology", link: "/notes/ecommerce-technology" },
     ]
   },
   {
     id: "sem6",
     title: "Semester 6",
     subjects: [
-      { name: "Cloud Computing", link: "#" },
-      { name: "Information Security", link: "#" },
-      { name: "Project", link: "#" },
+      { name: "PHP Programming", link: "/notes/php-programming" },
+      { name: "Android Programming", link: "/notes/android-programming" },
+      { name: "Personality & Career Skills", link: "/notes/personality-and-career-skills" },
     ]
   }
 ];

@@ -27,6 +27,12 @@ export default function ViewerPage({
   const displayTitle = decodeSafe(title);
   const backTarget = backUrl ? decodeURIComponent(backUrl) : null;
 
+  // Use Google Docs Viewer for PDFs to bypass frame blocking (SAMEORIGIN)
+  const isPdf = targetUrl.toLowerCase().endsWith('.pdf') || targetUrl.includes('.pdf?');
+  const iframeUrl = isPdf 
+    ? `https://docs.google.com/viewer?url=${encodeURIComponent(targetUrl)}&embedded=true`
+    : targetUrl;
+
   let downloadUrl = targetUrl;
   const driveIdMatch = targetUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
   if (driveIdMatch && driveIdMatch[1]) {
@@ -124,15 +130,15 @@ export default function ViewerPage({
       </div>
 
       {/* Iframe container */}
-      <div className={`flex-1 w-full bg-zinc-100 dark:bg-zinc-900 border-none relative transition-all duration-300 ${isHeaderVisible ? 'mt-[88px]' : 'mt-0'}`}>
+      <div className={`flex-1 w-full bg-zinc-100 dark:bg-zinc-900 border-none relative transition-all duration-300 hide-cursor-area ${isHeaderVisible ? 'mt-[88px]' : 'mt-0'}`}>
         <iframe
-          src={targetUrl}
+          src={iframeUrl}
           className={`w-full h-full border-none absolute inset-0 transition-opacity duration-500 ${
             iframeStatus === "loaded" ? "opacity-100" : "opacity-0"
           }`}
           title={displayTitle}
           allowFullScreen
-          sandbox="allow-scripts allow-same-origin allow-popups"
+          sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
           onLoad={handleIframeLoad}
           onError={handleIframeError}
         />

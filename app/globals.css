@@ -195,6 +195,17 @@
   }
 }
 
+/* Hide cursor follower when inside iframe or specific areas */
+.hide-cursor-area {
+  cursor: none !important;
+}
+
+body:has(.hide-cursor-area:hover) .cursor-follower-outer,
+body:has(.hide-cursor-area:hover) .cursor-follower-inner {
+  opacity: 0 !important;
+  visibility: hidden;
+}
+
 /* Technical Grid Pattern */
 .technical-grid {
   background-image: 
