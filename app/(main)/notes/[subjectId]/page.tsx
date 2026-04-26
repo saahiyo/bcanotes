@@ -1,9 +1,24 @@
+import type { Metadata } from "next";
 import { subjectsData } from "@/data/subjects";
 import { notFound } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download, ExternalLink, FileText } from "lucide-react";
 import Link from "next/link";
+
+export async function generateMetadata({ params }: { params: Promise<{ subjectId: string }> }): Promise<Metadata> {
+  const { subjectId } = await params;
+  const subject = subjectsData[subjectId];
+
+  if (!subject) {
+    return { title: "Subject Not Found" };
+  }
+
+  return {
+    title: `${subject.title} Notes`,
+    description: `Read unit-wise ${subject.title} notes for BCA YCMOU. ${subject.units.length} units covering the complete syllabus.`,
+  };
+}
 
 export default async function SubjectNotesPage({ params }: { params: Promise<{ subjectId: string }> }) {
   const { subjectId } = await params;

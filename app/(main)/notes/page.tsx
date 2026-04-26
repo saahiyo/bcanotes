@@ -1,8 +1,15 @@
+import type { Metadata } from "next";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "BCA Notes – Semester 1 to 6",
+  description:
+    "Browse comprehensive, unit-wise BCA YCMOU notes for all 6 semesters. Covers C, C++, Java, Python, DBMS, OS, Web Technology, and more.",
+};
 
 const semesters = [
   {

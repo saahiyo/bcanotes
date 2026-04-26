@@ -2,6 +2,8 @@
 
 A modern, responsive web portal for **BCA YCMOU** students to access notes, e-books, previous year question papers, and solved practicals — all in one place.
 
+Official URL: **[https://bcanotes.tech/](https://bcanotes.tech/)**
+
 Built with **Next.js 16**, **React 19**, and **Tailwind CSS 4**.
 
 ---
@@ -17,6 +19,9 @@ Built with **Next.js 16**, **React 19**, and **Tailwind CSS 4**.
 - **📱 Responsive Design** — Fully responsive with a mobile-friendly slide-out navigation
 - **⚡ Loading Skeletons** — Route-specific loading states for a smooth UX
 - **🎨 Modern UI** — Clean, glassmorphism-inspired design with the Geist font
+- **🔍 SEO Optimized** — Dynamic `sitemap.xml`, `robots.txt`, and comprehensive meta tags for search engine visibility
+- **📲 PWA Support** — Web manifest and icons for a native app experience on mobile and desktop
+- **🛠️ Error Resilience** — Custom 404 (Not Found) and global error boundary pages for a polished user experience
 
 ---
 
@@ -29,6 +34,9 @@ Built with **Next.js 16**, **React 19**, and **Tailwind CSS 4**.
 | Computer Network | 6 |
 | Environmental Studies (E.V.S) | 7 |
 | Data Structures & Algorithms (D.S.A) | 9 |
+| Operating System | 8 |
+| Web Technology | 8 |
+| ... and many more! | |
 
 ---
 
@@ -51,34 +59,19 @@ Built with **Next.js 16**, **React 19**, and **Tailwind CSS 4**.
 bcanotes/
 ├── app/
 │   ├── (auth)/               # Auth route group
-│   │   ├── login/page.tsx
-│   │   ├── signup/page.tsx
-│   │   └── layout.tsx
 │   ├── (main)/               # Main app route group
-│   │   ├── page.tsx           # Landing / Home page
-│   │   ├── notes/             # Notes listing & subject detail
-│   │   ├── books/             # E-Books page
-│   │   ├── question-papers/   # Question papers page
-│   │   ├── practicals/        # Practicals page
-│   │   ├── contribute/        # Community contribution & file upload portal
-│   │   ├── layout.tsx         # Main layout with Navbar
-│   │   └── loading.tsx        # Loading skeleton
-│   ├── api/
-│   │   └── upload/            # Next.js Server API for Apps Script proxy
-│   ├── globals.css
-│   └── layout.tsx             # Root layout
-├── components/
-│   ├── navbar.tsx             # Responsive navigation bar
-│   └── ui/                    # Reusable UI components
-│       ├── button.tsx
-│       ├── card.tsx
-│       ├── sheet.tsx
-│       ├── skeleton.tsx
-│       └── tabs.tsx
-├── data/
-│   └── subjects.ts            # Subject data & unit links
-├── lib/
-│   └── utils.ts               # Utility functions (cn)
+│   ├── api/                  # API routes
+│   ├── layout.tsx             # Root layout with SEO metadata
+│   ├── robots.ts              # Dynamic robots.txt
+│   ├── sitemap.ts             # Dynamic sitemap.xml
+│   ├── manifest.ts            # Web app manifest
+│   ├── not-found.tsx          # Custom 404 page
+│   ├── error.tsx              # Global error boundary
+│   └── icon.png               # Site logo/favicon
+├── components/                # Reusable React components
+├── data/                      # Static subject and book data
+├── lib/                       # Utility functions
+├── public/                    # Static assets
 └── package.json
 ```
 
@@ -102,6 +95,7 @@ bcanotes/
 2. **Set up Environment Variables**
    Create a `.env` file in the root directory and add the following keys:
    ```env
+   NEXT_PUBLIC_SITE_URL=https://bcanotes.tech
    GOOGLE_DRIVE_API_KEY=your_api_key_here
    NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=your_web3forms_key_here
    GOOGLE_APPS_SCRIPT_URL=your_google_apps_script_url_here
@@ -118,7 +112,6 @@ bcanotes/
    ```
 
 4. **Open in browser**
-
    Navigate to [http://localhost:3000](http://localhost:3000)
 
 ---
@@ -156,3 +149,4 @@ This project is open source and available under the [MIT License](LICENSE).
 <div align="center">
   <strong>Made with ❤️ for BCA YCMOU students</strong>
 </div>
+

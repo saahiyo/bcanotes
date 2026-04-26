@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 
@@ -9,6 +10,12 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+
+export const metadata: Metadata = {
+  title: "Solved Practicals – BCA YCMOU",
+  description:
+    "Access complete, verified solutions for BCA YCMOU lab practicals from Semester 1 to 6. Covering C, C++, Java, Python, PHP, Android, and more.",
+};
 
 interface DriveFile {
   id: string;

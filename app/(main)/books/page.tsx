@@ -1,9 +1,16 @@
+import type { Metadata } from "next";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BookOpen, ExternalLink, Library } from "lucide-react";
 import Link from "next/link";
 import { semesterBooks } from "@/data/books";
+
+export const metadata: Metadata = {
+  title: "E-Books – BCA YCMOU Textbooks",
+  description:
+    "Access official BCA YCMOU e-books and reference textbooks online. Read semester-wise digital textbooks covering the entire BCA curriculum.",
+};
 
 export default function BooksPage() {
   return (

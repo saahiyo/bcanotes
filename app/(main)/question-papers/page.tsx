@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 
@@ -7,6 +8,12 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+
+export const metadata: Metadata = {
+  title: "Previous Year Question Papers – BCA YCMOU",
+  description:
+    "Download BCA YCMOU previous year question papers from 2017 to 2024. Browse PYQs by semester and year to understand exam patterns.",
+};
 
 interface DriveFile {
   id: string;
