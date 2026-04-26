@@ -67,7 +67,7 @@ bcanotes/
 │   ├── manifest.ts            # Web app manifest
 │   ├── not-found.tsx          # Custom 404 page
 │   ├── error.tsx              # Global error boundary
-│   └── icon.png               # Site logo/favicon
+│   └── icon.svg               # Site logo/favicon (Mascot)
 ├── components/                # Reusable React components
 ├── data/                      # Static subject and book data
 ├── lib/                       # Utility functions
