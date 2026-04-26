@@ -14,9 +14,9 @@ export default function manifest(): MetadataRoute.Manifest {
     categories: ['education', 'reference'],
     icons: [
       {
-        src: '/icon.png',
+        src: '/icon.svg',
         sizes: 'any',
-        type: 'image/png',
+        type: 'image/svg+xml',
       },
     ],
   };
