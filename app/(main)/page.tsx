@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, BookOpen, FileText, FolderOpen, Library, Code2, Database, Terminal, Cpu, Monitor, Braces, Sparkles, ClipboardPen } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "BCA YCMOU - The Ultimate Learning Hub",
+  description:
+    "The one-stop destination for BCA YCMOU students. Access comprehensive notes, official e-books, previous year question papers, and solved practicals — 100% free.",
+};
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BlobMascot } from "@/components/blob-mascot";
