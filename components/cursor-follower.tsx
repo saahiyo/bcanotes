@@ -1,20 +1,38 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function CursorFollower() {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [visible, setVisible] = useState(false);
-  const [clicking, setClicking] = useState(false);
-  const [hovering, setHovering] = useState(false);
   const [isMobile, setIsMobile] = useState(true);
   const outerRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<number>(0);
   const outerPos = useRef({ x: 0, y: 0 });
+  const targetPos = useRef({ x: 0, y: 0 });
+  const visible = useRef(false);
+  const clicking = useRef(false);
+  const hovering = useRef(false);
+
+  const updateVisualState = () => {
+    const outer = outerRef.current;
+    const inner = innerRef.current;
+
+    if (!outer || !inner) return;
+
+    outer.style.opacity = visible.current ? "1" : "0";
+    outer.style.width = hovering.current ? "48px" : clicking.current ? "28px" : "36px";
+    outer.style.height = hovering.current ? "48px" : clicking.current ? "28px" : "36px";
+    outer.style.borderColor = hovering.current
+      ? "var(--primary)"
+      : "color-mix(in oklch, var(--primary) 50%, transparent)";
+
+    inner.style.opacity = visible.current ? "1" : "0";
+    inner.style.width = clicking.current ? "10px" : hovering.current ? "6px" : "5px";
+    inner.style.height = clicking.current ? "10px" : hovering.current ? "6px" : "5px";
+    inner.style.backgroundColor = "var(--primary)";
+  };
 
   useEffect(() => {
-    // Disable on touch/mobile devices
     const checkMobile = () => {
       const hasTouchScreen =
         "ontouchstart" in window ||
@@ -31,28 +49,38 @@ export function CursorFollower() {
   useEffect(() => {
     if (isMobile) return;
 
-    const handleMouseMove = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
-      if (!visible) setVisible(true);
-    };
+    const handleMouseMove = (event: MouseEvent) => {
+      targetPos.current = { x: event.clientX, y: event.clientY };
+      visible.current = true;
 
-    const handleMouseDown = () => setClicking(true);
-    const handleMouseUp = () => setClicking(false);
-
-    const handleMouseEnter = () => setVisible(true);
-    const handleMouseLeave = () => setVisible(false);
-
-    // Detect hovering over interactive elements
-    const handleElementHover = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const interactive = target.closest(
-        "a, button, [role='button'], input, textarea, select, [data-cursor-hover]"
+      const target = event.target as HTMLElement;
+      hovering.current = Boolean(
+        target.closest("a, button, [role='button'], input, textarea, select, [data-cursor-hover]")
       );
-      setHovering(!!interactive);
+      updateVisualState();
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mousemove", handleElementHover);
+    const handleMouseDown = () => {
+      clicking.current = true;
+      updateVisualState();
+    };
+
+    const handleMouseUp = () => {
+      clicking.current = false;
+      updateVisualState();
+    };
+
+    const handleMouseEnter = () => {
+      visible.current = true;
+      updateVisualState();
+    };
+
+    const handleMouseLeave = () => {
+      visible.current = false;
+      updateVisualState();
+    };
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
     window.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mouseup", handleMouseUp);
     document.documentElement.addEventListener("mouseenter", handleMouseEnter);
@@ -60,27 +88,25 @@ export function CursorFollower() {
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mousemove", handleElementHover);
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mouseup", handleMouseUp);
       document.documentElement.removeEventListener("mouseenter", handleMouseEnter);
       document.documentElement.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, [isMobile, visible]);
+  }, [isMobile]);
 
-  // Smooth animation loop for the outer ring
   useEffect(() => {
     if (isMobile) return;
 
     const animate = () => {
-      outerPos.current.x += (position.x - outerPos.current.x) * 0.12;
-      outerPos.current.y += (position.y - outerPos.current.y) * 0.12;
+      outerPos.current.x += (targetPos.current.x - outerPos.current.x) * 0.12;
+      outerPos.current.y += (targetPos.current.y - outerPos.current.y) * 0.12;
 
       if (outerRef.current) {
         outerRef.current.style.transform = `translate(${outerPos.current.x}px, ${outerPos.current.y}px) translate(-50%, -50%)`;
       }
       if (innerRef.current) {
-        innerRef.current.style.transform = `translate(${position.x}px, ${position.y}px) translate(-50%, -50%)`;
+        innerRef.current.style.transform = `translate(${targetPos.current.x}px, ${targetPos.current.y}px) translate(-50%, -50%)`;
       }
 
       requestRef.current = requestAnimationFrame(animate);
@@ -88,36 +114,22 @@ export function CursorFollower() {
 
     requestRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(requestRef.current);
-  }, [position, isMobile]);
+  }, [isMobile]);
 
   if (isMobile) return null;
 
   return (
     <>
-      {/* Outer ring — follows with smooth lag */}
       <div
         ref={outerRef}
         className="cursor-follower-outer"
-        style={{
-          opacity: visible ? 1 : 0,
-          width: hovering ? 48 : clicking ? 28 : 36,
-          height: hovering ? 48 : clicking ? 28 : 36,
-          borderColor: hovering
-            ? "var(--primary)"
-            : "color-mix(in oklch, var(--primary) 50%, transparent)",
-        }}
+        style={{ opacity: 0 }}
         aria-hidden="true"
       />
-      {/* Inner dot — follows instantly */}
       <div
         ref={innerRef}
         className="cursor-follower-inner"
-        style={{
-          opacity: visible ? 1 : 0,
-          width: clicking ? 10 : hovering ? 6 : 5,
-          height: clicking ? 10 : hovering ? 6 : 5,
-          backgroundColor: "var(--primary)",
-        }}
+        style={{ opacity: 0 }}
         aria-hidden="true"
       />
     </>

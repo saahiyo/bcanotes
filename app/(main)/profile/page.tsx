@@ -113,6 +113,7 @@ export default function ProfilePage() {
             <div className="h-32 w-32 sm:h-40 sm:w-40 rounded-full bg-card p-1.5 shadow-lg shrink-0 relative transition-transform hover:scale-[1.02] duration-300">
               <div className="h-full w-full rounded-full bg-gradient-to-br from-primary/80 to-primary flex items-center justify-center text-white font-bold text-4xl sm:text-5xl uppercase overflow-hidden">
                 {user.photoURL ? (
+                  // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={user.photoURL}
                     alt="Profile"

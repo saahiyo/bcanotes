@@ -65,7 +65,7 @@ export default function ContactPage() {
       <div className="text-center mb-10 space-y-4">
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Get in Touch</h1>
         <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-          Have a question, suggestion, or want to contribute? We'd love to hear from you. Fill out the form below and we'll be in touch.
+          Have a question, suggestion, or want to contribute? We&apos;d love to hear from you. Fill out the form below and we&apos;ll be in touch.
         </p>
       </div>
 

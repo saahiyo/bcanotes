@@ -219,7 +219,7 @@ export default function ContributePage() {
                 </div>
                 <div>
                   <h3 className="font-medium text-sm">2. Copy Public Link</h3>
-                  <p className="text-muted-foreground text-xs">Set access to "Anyone with the link".</p>
+                  <p className="text-muted-foreground text-xs">Set access to &quot;Anyone with the link&quot;.</p>
                 </div>
               </div>
               <div className="flex gap-3 items-start">
@@ -228,7 +228,7 @@ export default function ContributePage() {
                 </div>
                 <div>
                   <h3 className="font-medium text-sm">3. Submit Form</h3>
-                  <p className="text-muted-foreground text-xs">Drop the link here and we'll add it.</p>
+                  <p className="text-muted-foreground text-xs">Drop the link here and we&apos;ll add it.</p>
                 </div>
               </div>
             </CardContent>
@@ -338,7 +338,7 @@ export default function ContributePage() {
                   </div>
                   <h3 className="text-xl font-bold">Thank you for contributing!</h3>
                   <p className="text-muted-foreground text-sm max-w-[300px]">
-                    Your contribution has been submitted. We'll review and add it to the portal soon.
+                    Your contribution has been submitted. We&apos;ll review and add it to the portal soon.
                   </p>
                   <Button 
                     className="mt-6 px-6"
