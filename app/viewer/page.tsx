@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { redirect, useRouter } from "next/navigation";
+import { PdfJsViewer } from "@/components/pdf-js-viewer";
 
 function decodeParam(value?: string, fallback = "") {
   if (!value) return fallback;
@@ -53,12 +54,14 @@ function getViewerUrl(targetUrl: string) {
     return `https://drive.google.com/file/d/${driveFileId}/preview`;
   }
 
-  const cleanUrl = targetUrl.toLowerCase().split("#")[0].split("?")[0];
-  const isPdf = cleanUrl.endsWith(".pdf");
+  return targetUrl;
+}
 
-  return isPdf
-    ? `https://docs.google.com/viewer?url=${encodeURIComponent(targetUrl)}&embedded=true`
-    : targetUrl;
+function isDirectPdfUrl(targetUrl: string) {
+  const isDriveUrl = targetUrl.includes("drive.google.com") || targetUrl.includes("docs.google.com");
+  const cleanUrl = targetUrl.toLowerCase().split("#")[0].split("?")[0];
+
+  return !isDriveUrl && cleanUrl.endsWith(".pdf");
 }
 
 function getDownloadUrl(targetUrl: string) {
@@ -92,6 +95,7 @@ export default function ViewerPage({
   const backTarget = backUrl ? decodeParam(backUrl) : null;
   const iframeUrl = useMemo(() => getViewerUrl(targetUrl), [targetUrl]);
   const downloadUrl = useMemo(() => getDownloadUrl(targetUrl), [targetUrl]);
+  const shouldUsePdfJs = useMemo(() => isDirectPdfUrl(targetUrl), [targetUrl]);
   const iframeStatus =
     iframeStatusState.url === iframeUrl ? iframeStatusState.value : "loading";
 
@@ -238,20 +242,28 @@ export default function ViewerPage({
 
       {/* Iframe container */}
       <div className={`flex-1 w-full bg-zinc-100 dark:bg-zinc-900 border-none relative transition-all duration-300 hide-cursor-area ${isHeaderVisible ? 'mt-[88px]' : 'mt-0'}`}>
-        <iframe
-          key={iframeKey}
-          src={iframeUrl}
-          className={`absolute inset-0 z-0 w-full h-full border-none transition-opacity duration-500 ${
-            iframeStatus === "loaded" ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
-          title={displayTitle}
-          allowFullScreen
-          sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-          onLoad={handleIframeLoad}
-          onError={handleIframeError}
-        />
+        {shouldUsePdfJs ? (
+          <PdfJsViewer
+            sourceUrl={targetUrl}
+            title={displayTitle}
+            onOpenExternally={() => window.open(targetUrl, "_blank", "noopener,noreferrer")}
+          />
+        ) : (
+          <iframe
+            key={iframeKey}
+            src={iframeUrl}
+            className={`absolute inset-0 z-0 w-full h-full border-none transition-opacity duration-500 ${
+              iframeStatus === "loaded" ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
+            title={displayTitle}
+            allowFullScreen
+            sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+            onLoad={handleIframeLoad}
+            onError={handleIframeError}
+          />
+        )}
 
-        {iframeStatus !== "loaded" && (
+        {!shouldUsePdfJs && iframeStatus !== "loaded" && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-muted-foreground p-4 text-center">
           {iframeStatus === "error" || iframeStatus === "stalled" ? (
             <div className="flex flex-col items-center gap-4">
