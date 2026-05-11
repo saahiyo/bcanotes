@@ -4,24 +4,25 @@ A modern, responsive web portal for **BCA YCMOU** students to access notes, e-bo
 
 Official URL: **[https://bcanotes.tech/](https://bcanotes.tech/)**
 
-Built with **Next.js 16**, **React 19**, and **Tailwind CSS 4**.
+Built with **Next.js**, **React 19**, and **Tailwind CSS 4**.
 
 ---
 
 ## ✨ Features
 
-- **📝 Notes** — Comprehensive unit-wise notes for subjects across all semesters
-- **📖 E-Books** — Online textbooks curated for the BCA YCMOU syllabus
-- **📄 Question Papers** — Previous year question papers (2017–2024)
-- **🧪 Practicals** — Solved practicals for Semester 1 to 6
-- **🤝 Contribute Portal** — Direct Drag-and-Drop Google Drive upload integration via Google Apps Script
-- **🔐 Authentication** — Login & Signup pages with Google OAuth support
-- **📱 Responsive Design** — Fully responsive with a mobile-friendly slide-out navigation
-- **⚡ Loading Skeletons** — Route-specific loading states for a smooth UX
-- **🎨 Modern UI** — Clean, glassmorphism-inspired design with the Geist font
-- **🔍 SEO Optimized** — Dynamic `sitemap.xml`, `robots.txt`, and comprehensive meta tags for search engine visibility
-- **📲 PWA Support** — Web manifest and icons for a native app experience on mobile and desktop
-- **🛠️ Error Resilience** — Custom 404 (Not Found) and global error boundary pages for a polished user experience
+- **📝 Notes** — Comprehensive unit-wise notes for subjects across all semesters.
+- **📖 E-Books** — Online textbooks curated for the BCA YCMOU syllabus.
+- **📄 Question Papers** — Previous year question papers (2017–2024).
+- **🧪 Practicals** — Solved practicals for Semester 1 to 6.
+- **📄 Advanced Document Viewer** — Built-in `pdf.js` integration for native PDF rendering and an intelligent iframe fallback with automatic blocked-provider detection (e.g., Zoho) to ensure a seamless reading experience.
+- **🤝 Contribute Portal** — Direct Drag-and-Drop Google Drive upload integration via Google Apps Script.
+- **🔐 Authentication** — Secure Login & Signup pages powered by Firebase Auth with Google OAuth support.
+- **📱 Responsive Design** — Fully responsive with a mobile-friendly slide-out navigation.
+- **⚡ Performance** — Route-specific loading skeletons for a smooth UX and Vercel Analytics for tracking.
+- **🎨 Modern UI** — Clean, glassmorphism-inspired design with the Geist font, dark/light mode toggle, and interactive elements like a custom cursor follower.
+- **🔍 SEO Optimized** — Dynamic `sitemap.xml`, `robots.txt`, and comprehensive meta tags for search engine visibility.
+- **📲 PWA Support** — Web manifest and icons for a native app experience on mobile and desktop.
+- **🛠️ Error Resilience** — Custom 404 (Not Found) and global error boundary pages.
 
 ---
 
@@ -42,36 +43,40 @@ Built with **Next.js 16**, **React 19**, and **Tailwind CSS 4**.
 
 ## 🛠️ Tech Stack
 
-| Technology | Version |
+| Category | Technology |
 |---|---|
-| [Next.js](https://nextjs.org/) | 16 |
-| [React](https://react.dev/) | 19 |
-| [Tailwind CSS](https://tailwindcss.com/) | 4 |
-| [TypeScript](https://www.typescriptlang.org/) | 5.9 |
-| [Lucide Icons](https://lucide.dev/) | Latest |
-| [Base UI](https://base-ui.com/) | Latest |
+| **Framework** | [Next.js](https://nextjs.org/) (App Router) |
+| **Library** | [React](https://react.dev/) 19 |
+| **Styling** | [Tailwind CSS](https://tailwindcss.com/) 4 |
+| **Language** | [TypeScript](https://www.typescriptlang.org/) 5.9 |
+| **Authentication**| [Firebase](https://firebase.google.com/) 12 |
+| **Icons & UI** | [Lucide React](https://lucide.dev/), [Base UI](https://base-ui.com/), Shadcn UI |
+| **Animations** | [Framer Motion](https://www.framer.com/motion/) |
+| **PDF Rendering** | [PDF.js](https://mozilla.github.io/pdf.js/) |
+| **Analytics** | [Vercel Analytics](https://vercel.com/analytics) |
 
 ---
 
 ## 📁 Project Structure
 
-```
+```text
 bcanotes/
 ├── app/
-│   ├── (auth)/               # Auth route group
-│   ├── (main)/               # Main app route group
-│   ├── api/                  # API routes
-│   ├── layout.tsx             # Root layout with SEO metadata
-│   ├── robots.ts              # Dynamic robots.txt
-│   ├── sitemap.ts             # Dynamic sitemap.xml
-│   ├── manifest.ts            # Web app manifest
-│   ├── not-found.tsx          # Custom 404 page
-│   ├── error.tsx              # Global error boundary
-│   └── icon.svg               # Site logo/favicon (Mascot)
-├── components/                # Reusable React components
-├── data/                      # Static subject and book data
-├── lib/                       # Utility functions
-├── public/                    # Static assets
+│   ├── (auth)/               # Firebase Auth routes (login/signup)
+│   ├── (main)/               # Main app pages (notes, books, profile, contribute)
+│   ├── api/                  # Next.js API routes
+│   ├── viewer/               # Advanced document viewer with PDF.js & Iframe fallback
+│   ├── layout.tsx            # Root layout with SEO metadata & Providers
+│   ├── robots.ts             # Dynamic robots.txt
+│   ├── sitemap.ts            # Dynamic sitemap.xml
+│   ├── manifest.ts           # Web app manifest
+│   ├── not-found.tsx         # Custom 404 page
+│   └── error.tsx             # Global error boundary
+├── components/               # Reusable React & Shadcn UI components
+├── data/                     # Static subject and book data
+├── hooks/                    # Custom React hooks
+├── lib/                      # Utility functions (utils, Firebase config, etc.)
+├── public/                   # Static assets (images, fonts, icons)
 └── package.json
 ```
 
@@ -93,12 +98,17 @@ bcanotes/
    ```
 
 2. **Set up Environment Variables**
-   Create a `.env` file in the root directory and add the following keys:
+   Create a `.env` file in the root directory by copying `.env.example`:
+   ```bash
+   cp .env.example .env
+   ```
+   Add the necessary keys:
    ```env
    NEXT_PUBLIC_SITE_URL=https://bcanotes.tech
    GOOGLE_DRIVE_API_KEY=your_api_key_here
    NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=your_web3forms_key_here
    GOOGLE_APPS_SCRIPT_URL=your_google_apps_script_url_here
+   # Add your Firebase config keys here as required by lib/firebase.ts
    ```
 
 3. **Install dependencies**
@@ -106,12 +116,12 @@ bcanotes/
    npm install
    ```
 
-3. **Run the development server**
+4. **Run the development server**
    ```bash
    npm run dev
    ```
 
-4. **Open in browser**
+5. **Open in browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
 ---
@@ -149,4 +159,3 @@ This project is open source and available under the [MIT License](LICENSE).
 <div align="center">
   <strong>Made with ❤️ for BCA YCMOU students</strong>
 </div>
-
