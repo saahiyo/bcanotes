@@ -74,6 +74,20 @@ function getDownloadUrl(targetUrl: string) {
   return targetUrl;
 }
 
+function isIframeBlocked(targetUrl: string) {
+  const blockedDomains = [
+    "notebook.zohopublic.in",
+    "notebook.zohopublic.com",
+    "github.com",
+  ];
+  try {
+    const urlObj = new URL(targetUrl);
+    return blockedDomains.some((domain) => urlObj.hostname.includes(domain));
+  } catch {
+    return false;
+  }
+}
+
 export default function ViewerPage({
   searchParams,
 }: {
@@ -96,6 +110,7 @@ export default function ViewerPage({
   const iframeUrl = useMemo(() => getViewerUrl(targetUrl), [targetUrl]);
   const downloadUrl = useMemo(() => getDownloadUrl(targetUrl), [targetUrl]);
   const shouldUsePdfJs = useMemo(() => isDirectPdfUrl(targetUrl), [targetUrl]);
+  const isBlockedProvider = useMemo(() => isIframeBlocked(targetUrl), [targetUrl]);
   const iframeStatus =
     iframeStatusState.url === iframeUrl ? iframeStatusState.value : "loading";
 
@@ -217,10 +232,15 @@ export default function ViewerPage({
 
         {/* Warning banner — visible on all screen sizes */}
         <div className="bg-muted p-2 text-xs text-center text-muted-foreground flex items-center justify-center gap-1.5 opacity-80 border-b">
-          <AlertTriangle className="h-3 w-3" />
-          {iframeStatus === "stalled"
-            ? "Still loading? Try reload, download, or open externally."
-            : "If the document does not load, click Open externally."}
+          <AlertTriangle className="h-3 w-3 shrink-0" />
+          <span>
+            {iframeStatus === "stalled"
+              ? "Still loading? "
+              : "If the document does not load, "}
+            <Link href={targetUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-foreground underline hover:text-primary transition-colors">
+              click here to open externally
+            </Link>.
+          </span>
         </div>
       </div>
 
@@ -242,7 +262,26 @@ export default function ViewerPage({
 
       {/* Iframe container */}
       <div className={`flex-1 w-full bg-zinc-100 dark:bg-zinc-900 border-none relative transition-all duration-300 hide-cursor-area ${isHeaderVisible ? 'mt-[88px]' : 'mt-0'}`}>
-        {shouldUsePdfJs ? (
+        {isBlockedProvider ? (
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-muted-foreground p-4 text-center">
+            <div className="flex flex-col items-center gap-4">
+              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+                <ExternalLink className="h-8 w-8 text-primary" />
+              </div>
+              <p className="text-lg font-semibold text-foreground">
+                External View Required
+              </p>
+              <p className="text-sm opacity-80 max-w-[320px]">
+                This provider does not allow embedding documents directly. Please open it in a new tab to view.
+              </p>
+              <Link href={targetUrl} target="_blank" rel="noopener noreferrer" className="mt-4">
+                <Button size="lg" className="gap-2">
+                  Open Document <ExternalLink className="h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        ) : shouldUsePdfJs ? (
           <PdfJsViewer
             sourceUrl={targetUrl}
             title={displayTitle}
@@ -263,7 +302,7 @@ export default function ViewerPage({
           />
         )}
 
-        {!shouldUsePdfJs && iframeStatus !== "loaded" && (
+        {!isBlockedProvider && !shouldUsePdfJs && iframeStatus !== "loaded" && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-muted-foreground p-4 text-center">
           {iframeStatus === "error" || iframeStatus === "stalled" ? (
             <div className="flex flex-col items-center gap-4">
