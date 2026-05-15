@@ -172,11 +172,11 @@ export default function ViewerPage({
         <div className="flex items-center justify-between px-4 py-3 border-b bg-background/95 backdrop-blur shadow-sm">
           <div className="flex items-center gap-4 overflow-hidden">
             <Button variant="ghost" size="sm" className="gap-2 shrink-0" onClick={handleBack}>
-              <ArrowLeft className="h-4 w-4" />
+              <ArrowLeft className="size-4" />
               Back
             </Button>
             
-            <div className="h-4 w-[1px] bg-border hidden sm:block shrink-0" />
+            <div className="size-4 w-[1px] bg-border hidden sm:block shrink-0" />
             <h1 className="text-sm font-semibold truncate max-w-[150px] sm:max-w-md lg:max-w-xl">
               {displayTitle}
             </h1>
@@ -190,7 +190,7 @@ export default function ViewerPage({
               onClick={handleReload}
               title="Reload document"
             >
-              <RefreshCw className="h-4 w-4" />
+              <RefreshCw className="size-4" />
             </Button>
             <Button
               variant="outline"
@@ -199,23 +199,23 @@ export default function ViewerPage({
               onClick={handleCopyLink}
               title="Copy document link"
             >
-              {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+              {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
             </Button>
             <Link href={downloadUrl} target="_blank" rel="noopener noreferrer">
               <Button variant="outline" size="sm" className="gap-2 hidden sm:flex">
-                <Download className="h-4 w-4" /> Download
+                <Download className="size-4" /> Download
               </Button>
               <Button variant="outline" size="sm" className="flex sm:hidden px-2">
-                <Download className="h-4 w-4" />
+                <Download className="size-4" />
               </Button>
             </Link>
 
             <Link href={targetUrl} target="_blank" rel="noopener noreferrer">
               <Button variant="outline" size="sm" className="gap-2 hidden sm:flex">
-                Open externally <ExternalLink className="h-4 w-4" />
+                Open externally <ExternalLink className="size-4" />
               </Button>
               <Button variant="outline" size="sm" className="flex sm:hidden px-2">
-                <ExternalLink className="h-4 w-4" />
+                <ExternalLink className="size-4" />
               </Button>
             </Link>
             <Button 
@@ -225,14 +225,14 @@ export default function ViewerPage({
               onClick={() => setIsHeaderVisible(false)}
               title="Full screen reading mode"
             >
-              <ChevronUp className="h-4 w-4" />
+              <ChevronUp className="size-4" />
             </Button>
           </div>
         </div>
 
         {/* Warning banner — visible on all screen sizes */}
         <div className="bg-muted p-2 text-xs text-center text-muted-foreground flex items-center justify-center gap-1.5 opacity-80 border-b">
-          <AlertTriangle className="h-3 w-3 shrink-0" />
+          <AlertTriangle className="size-3 shrink-0" />
           <span>
             {iframeStatus === "stalled"
               ? "Still loading? "
@@ -256,7 +256,7 @@ export default function ViewerPage({
           className="rounded-full shadow-md px-3 bg-background/80 backdrop-blur"
           onClick={() => setIsHeaderVisible(true)}
         >
-          <ChevronDown className="h-4 w-4 mr-1" /> Menu
+          <ChevronDown className="size-4 mr-1" /> Menu
         </Button>
       </div>
 
@@ -265,8 +265,8 @@ export default function ViewerPage({
         {isBlockedProvider ? (
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-muted-foreground p-4 text-center">
             <div className="flex flex-col items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-                <ExternalLink className="h-8 w-8 text-primary" />
+              <div className="size-16 rounded-full bg-primary/10 flex items-center justify-center">
+                <ExternalLink className="size-8 text-primary" />
               </div>
               <p className="text-lg font-semibold text-foreground">
                 External View Required
@@ -276,7 +276,7 @@ export default function ViewerPage({
               </p>
               <Link href={targetUrl} target="_blank" rel="noopener noreferrer" className="mt-4">
                 <Button size="lg" className="gap-2">
-                  Open Document <ExternalLink className="h-4 w-4" />
+                  Open Document <ExternalLink className="size-4" />
                 </Button>
               </Link>
             </div>
@@ -306,8 +306,8 @@ export default function ViewerPage({
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-muted-foreground p-4 text-center">
           {iframeStatus === "error" || iframeStatus === "stalled" ? (
             <div className="flex flex-col items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center">
-                <AlertTriangle className="h-6 w-6 text-red-500" />
+              <div className="size-12 rounded-full bg-red-500/10 flex items-center justify-center">
+                <AlertTriangle className="size-6 text-red-500" />
               </div>
               <p className="text-sm font-medium">
                 {iframeStatus === "stalled" ? "Document is taking longer than expected" : "Failed to load document"}
@@ -317,28 +317,28 @@ export default function ViewerPage({
               </p>
               <div className="flex flex-wrap items-center justify-center gap-2">
                 <Button variant="outline" size="sm" className="gap-2" onClick={handleReload}>
-                  <RefreshCw className="h-4 w-4" /> Reload
+                  <RefreshCw className="size-4" /> Reload
                 </Button>
                 <Link href={targetUrl} target="_blank" rel="noopener noreferrer">
                   <Button variant="outline" size="sm" className="gap-2">
-                    Open externally <ExternalLink className="h-4 w-4" />
+                    Open externally <ExternalLink className="size-4" />
                   </Button>
                 </Link>
                 <Link href={downloadUrl} target="_blank" rel="noopener noreferrer">
                   <Button variant="outline" size="sm" className="gap-2">
-                    Download <Download className="h-4 w-4" />
+                    Download <Download className="size-4" />
                   </Button>
                 </Link>
               </div>
               <Button variant="ghost" size="sm" className="gap-2" onClick={handleCopyLink}>
-                {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
                 {copied ? "Copied link" : "Copy link"}
               </Button>
             </div>
           ) : (
             <div className="animate-pulse flex flex-col items-center">
-              <div className="h-8 w-8 rounded-full border-4 border-primary border-t-transparent animate-spin mb-4" />
-              <p className="text-sm font-medium">Loading document viewer...</p>
+              <div className="size-8 rounded-full border-4 border-primary border-t-transparent animate-spin mb-4" />
+              <p className="text-sm font-semibold">Loading document viewer...</p>
               <p className="text-xs opacity-70 mt-2 max-w-[250px]">
                 If this takes too long, the provider might be blocking embedded views.
               </p>

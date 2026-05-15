@@ -19,17 +19,21 @@ export function CursorFollower() {
 
     if (!outer || !inner) return;
 
-    outer.style.opacity = visible.current ? "1" : "0";
-    outer.style.width = hovering.current ? "48px" : clicking.current ? "28px" : "36px";
-    outer.style.height = hovering.current ? "48px" : clicking.current ? "28px" : "36px";
-    outer.style.borderColor = hovering.current
-      ? "var(--primary)"
-      : "color-mix(in oklch, var(--primary) 50%, transparent)";
+    Object.assign(outer.style, {
+      opacity: visible.current ? "1" : "0",
+      width: hovering.current ? "48px" : clicking.current ? "28px" : "36px",
+      height: hovering.current ? "48px" : clicking.current ? "28px" : "36px",
+      borderColor: hovering.current
+        ? "var(--primary)"
+        : "color-mix(in oklch, var(--primary) 50%, transparent)",
+    });
 
-    inner.style.opacity = visible.current ? "1" : "0";
-    inner.style.width = clicking.current ? "10px" : hovering.current ? "6px" : "5px";
-    inner.style.height = clicking.current ? "10px" : hovering.current ? "6px" : "5px";
-    inner.style.backgroundColor = "var(--primary)";
+    Object.assign(inner.style, {
+      opacity: visible.current ? "1" : "0",
+      width: clicking.current ? "10px" : hovering.current ? "6px" : "5px",
+      height: clicking.current ? "10px" : hovering.current ? "6px" : "5px",
+      backgroundColor: "var(--primary)",
+    });
   };
 
   useEffect(() => {

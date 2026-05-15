@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion, useInView, useSpring, useMotionValue, useTransform } from "framer-motion";
+import { LazyMotion, domAnimation, m as motion, useInView, useSpring, useMotionValue, useTransform } from "framer-motion";
 import { FileText, Library, FolderOpen, BookOpen, Users, GraduationCap } from "lucide-react";
 
 interface StatItem {
@@ -111,55 +111,57 @@ export function StatsCounter() {
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
 
   return (
-    <section ref={sectionRef} className="w-full py-12 md:py-16 relative overflow-hidden">
-      {/* Subtle background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.02] to-transparent pointer-events-none" />
-      {/* Technical Grid */}
-      <div className="absolute inset-0 technical-grid pointer-events-none opacity-30 dark:opacity-20" />
+    <LazyMotion features={domAnimation}>
+      <section ref={sectionRef} className="w-full py-12 md:py-16 relative overflow-hidden">
+        {/* Subtle background gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.02] to-transparent pointer-events-none" />
+        {/* Technical Grid */}
+        <div className="absolute inset-0 technical-grid pointer-events-none opacity-30 dark:opacity-20" />
 
-      <div className="w-full px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Grid Container with faint subtle dividers */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-12 gap-x-4 lg:gap-8 lg:divide-x divide-border/20 py-8 relative">
-          {stats.map((stat, index) => {
-            const Icon = stat.icon;
-            const colors = colorMap[stat.color];
+        <div className="w-full px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Grid Container with faint subtle dividers */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-12 gap-x-4 lg:gap-8 lg:divide-x divide-border/20 py-8 relative">
+            {stats.map((stat, index) => {
+              const Icon = stat.icon;
+              const colors = colorMap[stat.color];
 
-            return (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                transition={{
-                  duration: 0.5,
-                  delay: index * 0.12,
-                  ease: [0.25, 0.1, 0.25, 1],
-                }}
-                className="group relative flex flex-col items-center text-center px-4"
-              >
-                {/* Massive Ambient Glow (Triggered on hover) */}
-                <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 sm:w-32 sm:h-32 rounded-full ${colors.bg.replace('/10', '/30')} blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`} />
+              return (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                  transition={{
+                    duration: 0.5,
+                    delay: index * 0.12,
+                    ease: [0.25, 0.1, 0.25, 1],
+                  }}
+                  className="group relative flex flex-col items-center text-center px-4"
+                >
+                  {/* Massive Ambient Glow (Triggered on hover) */}
+                  <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-24 sm:size-32 rounded-full ${colors.bg.replace('/10', '/30')} blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`} />
 
-                {/* Raw Minimal Icon */}
-                <div className="relative z-10 mb-4 inline-flex items-center justify-center transform group-hover:-translate-y-1 transition-transform duration-500">
-                  <Icon className={`h-8 w-8 md:h-10 md:w-10 ${colors.text} drop-shadow-sm`} strokeWidth={2} />
-                </div>
+                  {/* Raw Minimal Icon */}
+                  <div className="relative z-10 mb-4 inline-flex items-center justify-center transform group-hover:-translate-y-1 transition-transform duration-500">
+                    <Icon className={`size-8 md:size-10 ${colors.text} drop-shadow-sm`} strokeWidth={2} />
+                  </div>
 
-                {/* Typography Number */}
-                <div className="relative z-10 text-4xl lg:text-5xl font-extrabold tracking-tighter mb-2 group-hover:scale-105 transition-transform duration-500 origin-bottom">
-                  <span className={`bg-gradient-to-b ${stat.gradient} bg-clip-text text-transparent`}>
-                    <AnimatedNumber value={stat.value} suffix={stat.suffix} inView={isInView} />
-                  </span>
-                </div>
+                  {/* Typography Number */}
+                  <div className="relative z-10 text-4xl lg:text-5xl font-extrabold tracking-tighter mb-2 group-hover:scale-105 transition-transform duration-500 origin-bottom">
+                    <span className={colors.text}>
+                      <AnimatedNumber value={stat.value} suffix={stat.suffix} inView={isInView} />
+                    </span>
+                  </div>
 
-                {/* Sleek Uppercase Label */}
-                <p className="relative z-10 text-xs sm:text-sm text-foreground/60 font-semibold uppercase tracking-[0.15em] sm:tracking-[0.2em] group-hover:text-foreground/80 transition-colors">
-                  {stat.label}
-                </p>
-              </motion.div>
-            );
-          })}
+                  {/* Sleek Uppercase Label */}
+                  <p className="relative z-10 text-xs sm:text-sm text-foreground/60 font-semibold uppercase tracking-[0.15em] sm:tracking-[0.2em] group-hover:text-foreground/80 transition-colors">
+                    {stat.label}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </LazyMotion>
   );
 }

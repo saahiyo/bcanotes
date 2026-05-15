@@ -15,7 +15,7 @@ export default function MainLayout({children}: {children: React.ReactNode}) {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
             <div className="md:col-span-2 space-y-4">
               <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-                <BookOpen className="h-6 w-6 text-primary" />
+                <BookOpen className="size-6 text-primary" />
                 <span>BCA YCMOU</span>
               </Link>
               <p className="max-w-md text-sm text-muted-foreground leading-relaxed">
@@ -37,20 +37,20 @@ export default function MainLayout({children}: {children: React.ReactNode}) {
               <h4 className="text-sm font-semibold uppercase tracking-wider text-foreground">Connect</h4>
               <div className="flex items-center gap-4 text-muted-foreground">
                 <Link href="https://github.com/saahiyo" className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-colors" aria-label="GitHub" target='_blank'>
-                  <Github className="h-5 w-5" />
+                  <Github className="size-5" />
                 </Link>
                 <Link href="https://twitter.com/saahiyo75" className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-colors" aria-label="Twitter" target="_blank">
-                  <Twitter className="h-5 w-5" />
+                  <Twitter className="size-5" />
                 </Link>
                 <Link href="/contact" className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-colors" aria-label="Contact">
-                  <MessageSquare className="h-5 w-5" />
+                  <MessageSquare className="size-5" />
                 </Link>
               </div>
             </div>
           </div>
 
           <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 border-t border-border/40 text-sm text-muted-foreground">
-            <p>
+            <p suppressHydrationWarning>
               © {new Date().getFullYear()} BCA YCMOU. Unofficial resource portal.
             </p>
             <div className="flex gap-6 font-medium">

@@ -80,13 +80,13 @@ export function BackToTop() {
       <Button
         size="icon"
         onClick={scrollToTop}
-        className="flex h-12 w-12 items-center justify-center rounded-full bg-background border border-border text-foreground shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary"
+        className="flex size-12 items-center justify-center rounded-full bg-background border border-border text-foreground shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary"
         aria-label="Back to top"
       >
-        <ArrowUp className="h-5 w-5 transition-transform duration-300 group-hover:-translate-y-1" />
+        <ArrowUp className="size-5 transition-transform duration-300 group-hover:-translate-y-1" />
       </Button>
 
-      <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-2 py-1 rounded bg-foreground text-background text-[10px] font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap hidden sm:block">
+      <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-2 py-1 rounded bg-foreground text-background text-[10px] font-semibold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap hidden sm:block">
         Back to Top
       </span>
     </div>

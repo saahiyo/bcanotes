@@ -32,13 +32,13 @@ export default async function SubjectNotesPage({ params }: { params: Promise<{ s
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 max-w-5xl">
       <div className="mb-8">
         <Link href="/notes" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors mb-6">
-          <ArrowLeft className="mr-2 h-4 w-4" />
+          <ArrowLeft className="mr-2 size-4" />
           Back to Notes
         </Link>
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight flex items-center gap-3">
-              <FileText className="h-8 w-8 text-primary" />
+            <h1 className="text-3xl md:text-4xl font-semibold tracking-tight flex items-center gap-3">
+              <FileText className="size-8 text-primary" />
               {subject.title}
             </h1>
             <p className="text-lg text-muted-foreground mt-2">
@@ -48,7 +48,7 @@ export default async function SubjectNotesPage({ params }: { params: Promise<{ s
           {subject.downloadLink && (
             <Link href={subject.downloadLink} target="_blank">
               <Button size="lg" className="gap-2 w-full md:w-auto">
-                <Download className="h-4 w-4" />
+                <Download className="size-4" />
                 Download Full PDF
               </Button>
             </Link>
@@ -64,13 +64,13 @@ export default async function SubjectNotesPage({ params }: { params: Promise<{ s
           const viewerHref = `/viewer?url=${encodedUrl}&title=${encodedTitle}&backUrl=${encodedBackUrl}`;
 
           return (
-            <Card key={index} className="flex flex-col sm:flex-row sm:items-center justify-between p-6 hover:bg-muted/30 transition-colors">
+            <Card key={unit.link} className="flex flex-col sm:flex-row sm:items-center justify-between p-6 hover:bg-muted/30 transition-colors">
               <div className="mb-4 sm:mb-0">
                 <h3 className="text-lg font-semibold">{unit.title}</h3>
               </div>
               <Link href={viewerHref} className="shrink-0">
                 <Button variant="outline" className="w-full sm:w-auto gap-2">
-                  View Notes <ExternalLink className="h-4 w-4" />
+                  View Notes <ExternalLink className="size-4" />
                 </Button>
               </Link>
             </Card>

@@ -11,7 +11,7 @@ export default function Loading() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-3 w-full">
             <div className="flex items-center gap-3">
-              <Skeleton className="h-8 w-8 rounded-full shrink-0" />
+              <Skeleton className="size-8 rounded-full shrink-0" />
               <Skeleton className="h-10 w-3/4 max-w-md" />
             </div>
             <Skeleton className="h-6 w-48" />

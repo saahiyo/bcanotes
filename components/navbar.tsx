@@ -13,7 +13,7 @@ import { useAuth } from "@/components/auth-provider";
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
-  const router = useRouter();
+  const { push } = useRouter();
   const { user, loading, signOut } = useAuth();
 
   const closeMenu = () => setIsOpen(false);
@@ -21,7 +21,7 @@ export function Navbar() {
   const handleSignOut = async () => {
     await signOut();
     closeMenu();
-    router.push("/");
+    push("/");
   };
 
   const navLinks = [
@@ -44,13 +44,13 @@ export function Navbar() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 md:h-16 items-center justify-between">
           <div className="flex items-center gap-3 md:gap-2">
-            <BookOpen className="h-7 w-7 md:h-6 md:w-6 text-primary" />
-            <Link href="/" className="flex items-center space-x-2">
+            <BookOpen className="size-7 md:size-6 text-primary" />
+            <Link href="/" className="flex items-center gap-x-2">
               <span className="font-bold text-2xl md:text-xl tracking-tight">BCA YCMOU</span>
             </Link>
           </div>
 
-          <nav className="hidden md:flex items-center space-x-1 text-sm font-medium">
+          <nav className="hidden md:flex items-center gap-x-1 text-sm font-medium">
             {navLinks.map((link) => {
               const Icon = link.icon;
               const active = isActive(link.href);
@@ -65,7 +65,7 @@ export function Navbar() {
                       : "text-foreground/60 hover:text-foreground hover:bg-muted/50"
                   )}
                 >
-                  <Icon className="h-5 w-5 md:h-4 md:w-4" />
+                  <Icon className="size-5 md:size-4" />
                   {link.label}
                 </Link>
               );
@@ -78,7 +78,7 @@ export function Navbar() {
               user ? (
                 <div className="flex items-center gap-3">
                   <Link href="/profile" className="flex items-center gap-2 text-sm hover:opacity-80 transition-opacity">
-                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-xs uppercase">
+                    <div className="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-xs uppercase">
                       {user.displayName?.charAt(0) || user.email?.charAt(0) || "U"}
                     </div>
                     <span className="max-w-[100px] truncate font-medium hidden lg:inline">
@@ -86,14 +86,14 @@ export function Navbar() {
                     </span>
                   </Link>
                   <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground" onClick={handleSignOut}>
-                    <LogOut className="h-4 w-4" />
+                    <LogOut className="size-4" />
                     Sign out
                   </Button>
                 </div>
               ) : (
                 <Link href="/login">
                   <Button variant="link" size="sm" className="gap-2">
-                    <ArrowUpRight className="h-4 w-4"/>
+                    <ArrowUpRight className="size-4"/>
                     Create a account 
                   </Button>
                 </Link>
@@ -104,13 +104,13 @@ export function Navbar() {
           <div className="flex items-center gap-3 md:hidden">
             <ModeToggle />
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger render={<Button variant="ghost" size="icon" className="h-10 w-10" aria-label="Open Menu" />}>
-                <Menu className="h-7 w-7" />
+              <SheetTrigger render={<Button variant="ghost" size="icon" className="size-10" aria-label="Open Menu" />}>
+                <Menu className="size-7" />
               </SheetTrigger>
               <SheetContent side="left" className="w-[300px] sm:w-[320px] flex flex-col">
                 <SheetHeader className="text-left pb-4 border-b">
                   <SheetTitle className="flex items-center gap-3 text-primary">
-                    <BookOpen className="h-7 w-7" />
+                    <BookOpen className="size-7" />
                     <span className="font-bold text-2xl tracking-tight">BCA YCMOU</span>
                   </SheetTitle>
                 </SheetHeader>
@@ -131,7 +131,7 @@ export function Navbar() {
                               : "text-foreground/70 hover:text-foreground hover:bg-muted/60"
                           )}
                         >
-                          <Icon className={cn("h-6 w-6", active ? "text-primary" : "text-foreground/50")} />
+                          <Icon className={cn("size-6", active ? "text-primary" : "text-foreground/50")} />
                           {link.label}
                         </Link>
                       );
@@ -143,7 +143,7 @@ export function Navbar() {
                     user ? (
                       <>
                         <Link href="/profile" onClick={closeMenu} className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-muted/60 transition-colors">
-                          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-sm uppercase">
+                          <div className="size-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-sm uppercase">
                             {user.displayName?.charAt(0) || user.email?.charAt(0) || "U"}
                           </div>
                           <div className="flex-1 min-w-0">
@@ -152,18 +152,18 @@ export function Navbar() {
                           </div>
                         </Link>
                         <Button variant="outline" size="lg" className="w-full gap-2 h-12 text-base" onClick={handleSignOut}>
-                          <LogOut className="h-5 w-5" />
+                          <LogOut className="size-5" />
                           Sign out
                         </Button>
                       </>
                     ) : (
                       <>
-                        <Link href="/login" onClick={closeMenu}>
-                          <Button variant="outline" size="lg" className="w-full gap-2 h-12 text-base">
-                            <LogIn className="h-5 w-5" />
-                            Login
-                          </Button>
-                        </Link>
+                      <Link href="/login" onClick={closeMenu}>
+                        <Button variant="outline" size="lg" className="w-full gap-2 h-12 text-base">
+                          <LogIn className="size-5" />
+                          Login
+                        </Button>
+                      </Link>
                         <Link href="/signup" onClick={closeMenu}>
                           <Button size="lg" className="w-full h-12 text-base font-semibold">Sign up</Button>
                         </Link>
