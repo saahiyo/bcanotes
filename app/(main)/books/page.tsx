@@ -15,9 +15,9 @@ export const metadata: Metadata = {
 export default function BooksPage() {
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 max-w-7xl">
-      <div className="flex flex-col space-y-4 mb-12">
-        <h1 className="text-4xl font-extrabold tracking-tight flex items-center gap-3">
-          <Library className="h-10 w-10 text-primary" /> E-Books
+      <div className="flex flex-col gap-y-4 mb-12">
+        <h1 className="text-4xl font-semibold tracking-tight flex items-center gap-3">
+          <Library className="size-10 text-primary" /> E-Books
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl">
           Access official BCA YCMOU textbooks online. Select your semester to browse available e-books.
@@ -47,11 +47,11 @@ export default function BooksPage() {
                 const viewerHref = `/viewer?url=${encodedUrl}&title=${encodedTitle}&backUrl=${encodedBackUrl}`;
 
                 return (
-                  <Card key={index}>
+                  <Card key={book.code}>
                     <CardHeader>
                       <div className="flex items-start gap-3">
                         <div className="rounded-lg bg-primary/10 p-2.5 shrink-0">
-                          <BookOpen className="h-5 w-5 text-primary" />
+                          <BookOpen className="size-5 text-primary" />
                         </div>
                         <div>
                           <CardTitle className="text-lg">{book.title}</CardTitle>
@@ -67,7 +67,7 @@ export default function BooksPage() {
                       </Link>
                       <Link href={book.pdfUrl} target="_blank">
                         <Button variant="outline" size="icon" title="Open PDF directly">
-                          <ExternalLink className="h-4 w-4" />
+                          <ExternalLink className="size-4" />
                         </Button>
                       </Link>
                     </CardContent>

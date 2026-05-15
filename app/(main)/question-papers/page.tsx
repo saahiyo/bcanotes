@@ -139,9 +139,9 @@ export default async function QuestionPapersPage({
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 max-w-7xl">
-      <div className="flex flex-col space-y-4 mb-8">
-        <h1 className="text-4xl font-extrabold tracking-tight flex items-center gap-3">
-          <FolderOpen className="h-10 w-10 text-primary" /> Question Papers
+      <div className="flex flex-col gap-y-4 mb-8">
+        <h1 className="text-4xl font-semibold tracking-tight flex items-center gap-3">
+          <FolderOpen className="size-10 text-primary" /> Question Papers
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl">
           Previous year question papers - 2024, 2023, 2022, 2021, 2019, 2018, 2017.
@@ -160,7 +160,7 @@ export default async function QuestionPapersPage({
               
               return (
                 <div key={item.id} className="flex items-center">
-                  {idx > 0 && <ChevronRight className="h-4 w-4 mx-2 shrink-0" />}
+                  {idx > 0 && <ChevronRight className="size-4 mx-2 shrink-0" />}
                   {isLast ? (
                     <span className="text-foreground">{item.name}</span>
                   ) : (
@@ -176,7 +176,7 @@ export default async function QuestionPapersPage({
           <div>
             <Link href={backHref}>
               <Button variant="ghost" className="gap-2 -ml-4 hover:bg-muted/50 rounded-full px-4">
-                <ArrowLeft className="h-4 w-4" />
+                <ArrowLeft className="size-4" />
                 Back
               </Button>
             </Link>
@@ -189,7 +189,7 @@ export default async function QuestionPapersPage({
           <Card className="border-warning border">
             <CardHeader className="pb-3 border-b border-border/40 bg-muted/20">
               <div className="flex items-center gap-2 text-amber-500 mb-2">
-                <AlertCircle className="h-5 w-5" />
+                <AlertCircle className="size-5" />
                 <span className="text-sm font-semibold">API Key Needed</span>
               </div>
               <CardTitle>Google Drive Setup</CardTitle>
@@ -200,7 +200,7 @@ export default async function QuestionPapersPage({
             <CardContent className="pt-6">
               <Link href={`https://drive.google.com/drive/folders/${currentFolderId}`} target="_blank">
                 <Button className="w-full gap-2">
-                  Open Google Drive Folder <ExternalLink className="h-4 w-4" />
+                  Open Google Drive Folder <ExternalLink className="size-4" />
                 </Button>
               </Link>
             </CardContent>
@@ -208,7 +208,7 @@ export default async function QuestionPapersPage({
         </div>
       ) : files.length === 0 ? (
         <Card className="p-12 flex flex-col items-center justify-center text-center">
-          <Folder className="h-16 w-16 text-muted-foreground mb-4 opacity-50" />
+          <Folder className="size-16 text-muted-foreground mb-4 opacity-50" />
           <CardTitle className="text-xl mb-2">Folder is Empty</CardTitle>
           <CardDescription>No question files were found in this Google Drive folder.</CardDescription>
         </Card>
@@ -238,12 +238,12 @@ export default async function QuestionPapersPage({
                 className="group h-full flex"
               >
                 <Card className="w-full transition-all duration-200 hover:shadow-md hover:border-primary/50 cursor-pointer overflow-hidden flex flex-col h-full bg-card">
-                  <CardHeader className="p-4 flex flex-row items-start gap-4 space-y-0 flex-grow">
+                  <CardHeader className="p-4 flex flex-row items-start gap-4 gap-y-0 flex-grow">
                     <div className="mt-1 transition-transform duration-200 group-hover:scale-110 shrink-0">
                       {isFolder ? (
-                        <FileIconComponent className="h-10 w-10 text-blue-500" fill="currentColor" fillOpacity={0.2} />
+                        <FileIconComponent className="size-10 text-blue-500" fill="currentColor" fillOpacity={0.2} />
                       ) : (
-                        <FileIconComponent className={`h-10 w-10 ${color}`} />
+                        <FileIconComponent className={`size-10 ${color}`} />
                       )}
                     </div>
                     <div className="flex flex-col flex-1 overflow-hidden">
@@ -269,11 +269,11 @@ export default async function QuestionPapersPage({
                   {(!isFolder && (file.size || file.modifiedTime)) && (
                     <CardFooter className="p-3 bg-muted/20 border-t flex flex-row justify-between text-xs text-muted-foreground mt-auto">
                       <div className="flex items-center gap-1.5" title="File Size">
-                        <Database className="h-3 w-3" />
+                        <Database className="size-3" />
                         <span>{formatBytes(file.size)}</span>
                       </div>
                       <div className="flex items-center gap-1.5" title="Last Modified">
-                        <Clock className="h-3 w-3" />
+                        <Clock className="size-3" />
                         <span>{formatDate(file.modifiedTime)}</span>
                       </div>
                     </CardFooter>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useReducer } from "react";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, Loader2 } from "lucide-react";
 import type { PDFDocumentProxy } from "pdfjs-dist";
@@ -13,6 +13,54 @@ type PdfJsViewerProps = {
   onOpenExternally: () => void;
 };
 
+type State = {
+  pdf: PDFDocumentProxy | null;
+  pageNumber: number;
+  scale: number;
+  isLoadingDocument: boolean;
+  renderingPageCount: number;
+  error: string | null;
+};
+
+type Action =
+  | { type: "LOAD_START" }
+  | { type: "LOAD_SUCCESS"; pdf: PDFDocumentProxy }
+  | { type: "LOAD_ERROR"; error: string }
+  | { type: "SET_PAGE"; pageNumber: number }
+  | { type: "SET_SCALE"; scale: number }
+  | { type: "RENDER_START" }
+  | { type: "RENDER_END" };
+
+const initialState: State = {
+  pdf: null,
+  pageNumber: 1,
+  scale: 1.1,
+  isLoadingDocument: true,
+  renderingPageCount: 0,
+  error: null,
+};
+
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case "LOAD_START":
+      return { ...initialState, isLoadingDocument: true };
+    case "LOAD_SUCCESS":
+      return { ...state, pdf: action.pdf, isLoadingDocument: false, error: null };
+    case "LOAD_ERROR":
+      return { ...state, error: action.error, isLoadingDocument: false };
+    case "SET_PAGE":
+      return { ...state, pageNumber: action.pageNumber };
+    case "SET_SCALE":
+      return { ...state, scale: action.scale };
+    case "RENDER_START":
+      return { ...state, renderingPageCount: state.renderingPageCount + 1 };
+    case "RENDER_END":
+      return { ...state, renderingPageCount: Math.max(0, state.renderingPageCount - 1) };
+    default:
+      return state;
+  }
+}
+
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
@@ -20,27 +68,16 @@ function clamp(value: number, min: number, max: number) {
 export function PdfJsViewer({ sourceUrl, title, onOpenExternally }: PdfJsViewerProps) {
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const pageContainerRefs = useRef<Array<HTMLDivElement | null>>([]);
-  const [pdf, setPdf] = useState<PDFDocumentProxy | null>(null);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [scale, setScale] = useState(1.1);
-  const [isLoadingDocument, setIsLoadingDocument] = useState(true);
-  const [renderingPageCount, setRenderingPageCount] = useState(0);
-  const [error, setError] = useState<string | null>(null);
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { pdf, pageNumber, scale, isLoadingDocument, renderingPageCount, error } = state;
 
-  const proxyUrl = useMemo(
-    () => `/api/pdf-proxy?url=${encodeURIComponent(sourceUrl)}`,
-    [sourceUrl]
-  );
+  const proxyUrl = `/api/pdf-proxy?url=${encodeURIComponent(sourceUrl)}`;
 
   useEffect(() => {
     let isMounted = true;
     let loadingTask: { destroy: () => void; promise: Promise<PDFDocumentProxy> } | null = null;
 
-    setIsLoadingDocument(true);
-    setError(null);
-    setPdf(null);
-    setPageNumber(1);
-    setRenderingPageCount(0);
+    dispatch({ type: "LOAD_START" });
 
     import("pdfjs-dist/legacy/build/pdf.mjs")
       .then((pdfjsLib) => {
@@ -60,13 +97,11 @@ export function PdfJsViewer({ sourceUrl, title, onOpenExternally }: PdfJsViewerP
       })
       .then((loadedPdf) => {
         if (!loadedPdf || !isMounted) return;
-        setPdf(loadedPdf);
-        setIsLoadingDocument(false);
+        dispatch({ type: "LOAD_SUCCESS", pdf: loadedPdf });
       })
       .catch(() => {
         if (isMounted) {
-          setError("Unable to load this PDF in the internal viewer.");
-          setIsLoadingDocument(false);
+          dispatch({ type: "LOAD_ERROR", error: "Unable to load this PDF in the internal viewer." });
         }
       });
 
@@ -77,10 +112,7 @@ export function PdfJsViewer({ sourceUrl, title, onOpenExternally }: PdfJsViewerP
   }, [proxyUrl]);
 
   const pageCount = pdf?.numPages || 0;
-  const pageNumbers = useMemo(
-    () => Array.from({ length: pageCount }, (_, index) => index + 1),
-    [pageCount]
-  );
+  const pageNumbers = Array.from({ length: pageCount }, (_, index) => index + 1);
 
   const scrollToPage = useCallback(
     (targetPageNumber: number) => {
@@ -90,7 +122,7 @@ export function PdfJsViewer({ sourceUrl, title, onOpenExternally }: PdfJsViewerP
         behavior: "smooth",
         block: "start",
       });
-      setPageNumber(safePageNumber);
+      dispatch({ type: "SET_PAGE", pageNumber: safePageNumber });
     },
     [pageCount]
   );
@@ -102,16 +134,16 @@ export function PdfJsViewer({ sourceUrl, title, onOpenExternally }: PdfJsViewerP
     scrollToPage(pageNumber + 1);
   }, [pageNumber, scrollToPage]);
   const zoomOut = useCallback(() => {
-    setScale((currentScale) => clamp(Number((currentScale - 0.15).toFixed(2)), 0.6, 2.4));
-  }, []);
+    dispatch({ type: "SET_SCALE", scale: clamp(Number((scale - 0.15).toFixed(2)), 0.6, 2.4) });
+  }, [scale]);
   const zoomIn = useCallback(() => {
-    setScale((currentScale) => clamp(Number((currentScale + 0.15).toFixed(2)), 0.6, 2.4));
-  }, []);
+    dispatch({ type: "SET_SCALE", scale: clamp(Number((scale + 0.15).toFixed(2)), 0.6, 2.4) });
+  }, [scale]);
   const handleRenderStart = useCallback(() => {
-    setRenderingPageCount((currentCount) => currentCount + 1);
+    dispatch({ type: "RENDER_START" });
   }, []);
   const handleRenderEnd = useCallback(() => {
-    setRenderingPageCount((currentCount) => Math.max(0, currentCount - 1));
+    dispatch({ type: "RENDER_END" });
   }, []);
   const handleScroll = useCallback(() => {
     const container = scrollContainerRef.current;
@@ -134,7 +166,7 @@ export function PdfJsViewer({ sourceUrl, title, onOpenExternally }: PdfJsViewerP
     });
 
     if (closestPage !== pageNumber) {
-      setPageNumber(closestPage);
+      dispatch({ type: "SET_PAGE", pageNumber: closestPage });
     }
   }, [pageNumber]);
 

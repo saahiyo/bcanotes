@@ -11,8 +11,8 @@ export default function TermsPage() {
     <div className="container mx-auto px-4 py-12 md:py-24 max-w-3xl">
       <div className="mb-10 space-y-4">
         <div className="flex items-center gap-3">
-          <Scale className="h-8 w-8 text-primary" />
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Terms of Service</h1>
+          <Scale className="size-8 text-primary" />
+          <h1 className="text-4xl md:text-5xl font-semibold tracking-tight">Terms of Service</h1>
         </div>
         <p className="text-muted-foreground text-sm">Last updated: April 2026</p>
       </div>

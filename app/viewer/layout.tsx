@@ -1,14 +1,14 @@
-import type { Metadata } from "next";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Document Viewer",
-  description: "View a BCA YCMOU resource document.",
-  robots: {
-    index: false,
-    follow: true,
-  },
+  title: "Document Viewer – BCA YCMOU",
+  description: "View BCA YCMOU study materials, notes, and question papers online with our integrated document viewer.",
 };
 
-export default function ViewerLayout({ children }: { children: React.ReactNode }) {
+export default function ViewerLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return <>{children}</>;
 }

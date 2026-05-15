@@ -27,7 +27,8 @@ export async function POST(request: Request) {
     // Send payload to the Google Apps Script Web App
     const response = await fetch(scriptUrl, {
       method: 'POST',
-      body: payload
+      body: payload,
+      cache: 'no-store'
     });
 
     const data = await response.json();

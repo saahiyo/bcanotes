@@ -146,7 +146,7 @@ export function StatsCounter() {
                   </div>
 
                   {/* Typography Number */}
-                  <div className="relative z-10 text-4xl lg:text-5xl font-extrabold tracking-tighter mb-2 group-hover:scale-105 transition-transform duration-500 origin-bottom">
+                  <div className="relative z-10 text-4xl lg:text-5xl font-semibold tracking-tighter mb-2 group-hover:scale-105 transition-transform duration-500 origin-bottom">
                     <span className={colors.text}>
                       <AnimatedNumber value={stat.value} suffix={stat.suffix} inView={isInView} />
                     </span>

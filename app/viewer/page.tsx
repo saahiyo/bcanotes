@@ -96,6 +96,7 @@ export default function ViewerPage({
   const resolvedParams = use(searchParams);
   const { url, title, backUrl } = resolvedParams;
   const router = useRouter();
+  const { push, back } = router;
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [iframeStatusState, setIframeStatusState] = useState<{
     url: string;
@@ -128,11 +129,11 @@ export default function ViewerPage({
 
   const handleBack = useCallback(() => {
     if (backTarget) {
-      router.push(backTarget);
+      push(backTarget);
     } else {
-      router.back();
+      back();
     }
-  }, [backTarget, router]);
+  }, [backTarget, push, back]);
 
   const handleIframeLoad = useCallback(() => {
     setIframeStatusState({ url: iframeUrl, value: "loaded" });
@@ -338,7 +339,7 @@ export default function ViewerPage({
           ) : (
             <div className="animate-pulse flex flex-col items-center">
               <div className="size-8 rounded-full border-4 border-primary border-t-transparent animate-spin mb-4" />
-              <p className="text-sm font-semibold">Loading document viewer...</p>
+              <p className="text-sm font-semibold">Loading document viewer…</p>
               <p className="text-xs opacity-70 mt-2 max-w-[250px]">
                 If this takes too long, the provider might be blocking embedded views.
               </p>

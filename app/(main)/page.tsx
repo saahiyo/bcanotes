@@ -75,7 +75,7 @@ export default function Home() {
           >
             <div className="flex w-[max-content] animate-marquee pb-4">
               {[0, 1].map((i) => (
-                <div key={`marquee-${i}`} className="flex gap-12 sm:gap-20 px-6 sm:px-10 items-center flex-nowrap shrink-0">
+                <div key={`marquee-group-${i}`} className="flex gap-12 sm:gap-20 px-6 sm:px-10 items-center flex-nowrap shrink-0">
                   <span className="flex items-center whitespace-nowrap gap-2.5 font-semibold text-muted-foreground text-sm sm:text-base uppercase tracking-wider"><FileText className="size-4 sm:size-5 text-blue-500" /> 100+ PDF Notes</span>
                   <span className="text-muted-foreground/30">•</span>
                   <span className="flex items-center whitespace-nowrap gap-2.5 font-semibold text-muted-foreground text-sm sm:text-base uppercase tracking-wider"><BookOpen className="size-4 sm:size-5 text-orange-500" /> Solved Practicals</span>
@@ -84,7 +84,7 @@ export default function Home() {
                   <span className="text-muted-foreground/30">•</span>
                   <span className="flex items-center whitespace-nowrap gap-2.5 font-semibold text-muted-foreground text-sm sm:text-base uppercase tracking-wider"><Library className="size-4 sm:size-5 text-purple-500" /> Semesters 1 to 6</span>
                   <span className="text-muted-foreground/30">•</span>
-                  <span className="flex items-center whitespace-nowrap gap-2 font-bold text-primary text-sm sm:text-base uppercase tracking-wider bg-primary/10 px-4 py-1.5 rounded-full border border-primary/20 shadow-sm">100% Free Forever</span>
+                  <span className="flex items-center whitespace-nowrap gap-2 font-semibold text-primary text-sm sm:text-base uppercase tracking-wider bg-primary/10 px-4 py-1.5 rounded-full border border-primary/20 shadow-sm">100% Free Forever</span>
                 </div>
               ))}
             </div>

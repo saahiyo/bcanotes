@@ -5,51 +5,87 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, Eye, EyeOff, Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useReducer } from "react";
 import { useAuth } from "@/components/auth-provider";
 
+type State = {
+  showPassword: boolean;
+  email: string;
+  password: string;
+  error: string;
+  loading: boolean;
+};
+
+type Action =
+  | { type: "SET_FIELD"; field: keyof State; value: any }
+  | { type: "SET_ERROR"; error: string }
+  | { type: "START_LOADING" }
+  | { type: "STOP_LOADING" }
+  | { type: "TOGGLE_PASSWORD" };
+
+const initialState: State = {
+  showPassword: false,
+  email: "",
+  password: "",
+  error: "",
+  loading: false,
+};
+
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case "SET_FIELD":
+      return { ...state, [action.field]: action.value };
+    case "SET_ERROR":
+      return { ...state, error: action.error, loading: false };
+    case "START_LOADING":
+      return { ...state, loading: true, error: "" };
+    case "STOP_LOADING":
+      return { ...state, loading: false };
+    case "TOGGLE_PASSWORD":
+      return { ...state, showPassword: !state.showPassword };
+    default:
+      return state;
+  }
+}
+
 export default function LoginPage() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { showPassword, email, password, error, loading } = state;
   const { signIn, signInWithGoogle } = useAuth();
   const router = useRouter();
+  const { push } = router;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    setLoading(true);
+    dispatch({ type: "START_LOADING" });
     try {
       await signIn(email, password);
-      router.push("/");
+      push("/");
     } catch (err: any) {
       const code = err?.code || "";
+      let msg = "Something went wrong. Please try again.";
       if (code === "auth/user-not-found" || code === "auth/wrong-password" || code === "auth/invalid-credential") {
-        setError("Invalid email or password.");
+        msg = "Invalid email or password.";
       } else if (code === "auth/too-many-requests") {
-        setError("Too many attempts. Please try again later.");
-      } else {
-        setError("Something went wrong. Please try again.");
+        msg = "Too many attempts. Please try again later.";
       }
+      dispatch({ type: "SET_ERROR", error: msg });
     } finally {
-      setLoading(false);
+      dispatch({ type: "STOP_LOADING" });
     }
   };
 
   const handleGoogleSignIn = async () => {
-    setError("");
-    setLoading(true);
+    dispatch({ type: "START_LOADING" });
     try {
       await signInWithGoogle();
-      router.push("/");
+      push("/");
     } catch (err: any) {
       if (err?.code !== "auth/popup-closed-by-user") {
-        setError("Google sign-in failed. Please try again.");
+        dispatch({ type: "SET_ERROR", error: "Google sign-in failed. Please try again." });
       }
     } finally {
-      setLoading(false);
+      dispatch({ type: "STOP_LOADING" });
     }
   };
 
@@ -59,10 +95,10 @@ export default function LoginPage() {
         <CardHeader className="text-center space-y-2">
           <div className="flex justify-center mb-2">
             <div className="flex items-center gap-2 text-primary">
-              <BookOpen className="h-8 w-8" />
+              <BookOpen className="size-8" />
             </div>
           </div>
-          <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
+          <CardTitle className="text-2xl font-semibold">Welcome back</CardTitle>
           <CardDescription>Sign in to your BCA YCMOU account</CardDescription>
         </CardHeader>
         <CardContent>
@@ -81,7 +117,7 @@ export default function LoginPage() {
                 type="email"
                 placeholder="you@example.com"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => dispatch({ type: "SET_FIELD", field: "email", value: e.target.value })}
                 required
                 disabled={loading}
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50"
@@ -102,23 +138,23 @@ export default function LoginPage() {
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => dispatch({ type: "SET_FIELD", field: "password", value: e.target.value })}
                   required
                   disabled={loading}
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 pr-10 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50"
                 />
                 <button
                   type="button"
-                  onClick={() => setShowPassword(!showPassword)}
+                  onClick={() => dispatch({ type: "TOGGLE_PASSWORD" })}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                 </button>
               </div>
             </div>
             <Button className="w-full h-10" type="submit" disabled={loading}>
-              {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Sign in"}
+              {loading ? <Loader2 className="size-4 animate-spin" /> : "Sign in"}
             </Button>
           </form>
 
@@ -132,7 +168,7 @@ export default function LoginPage() {
           </div>
 
           <Button variant="outline" className="w-full h-10 gap-2" onClick={handleGoogleSignIn} disabled={loading}>
-            <svg className="h-4 w-4" viewBox="0 0 24 24">
+            <svg className="size-4" viewBox="0 0 24 24">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
               <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
               <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
