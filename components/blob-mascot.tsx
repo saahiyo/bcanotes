@@ -38,20 +38,29 @@ export function BlobMascot({ className = "" }: { className?: string }) {
 
   // Random Mood changes to keep it alive automatically
   useEffect(() => {
+    let mainTimeoutId: NodeJS.Timeout;
+    let resetTimeoutId: NodeJS.Timeout;
+
     const moodLoop = () => {
       const delay = 5000 + Math.random() * 8000;
-      setTimeout(() => {
+      mainTimeoutId = setTimeout(() => {
         const moods: Mood[] = ["neutral", "happy", "surprised", "suspicious"];
         const nextMood = moods[Math.floor(Math.random() * moods.length)];
         setMood(nextMood);
         
         // Reset to neutral after a short while
-        setTimeout(() => setMood("neutral"), 2000 + Math.random() * 2000);
+        resetTimeoutId = setTimeout(() => setMood("neutral"), 2000 + Math.random() * 2000);
         
         moodLoop();
       }, delay);
     };
+
     moodLoop();
+
+    return () => {
+      clearTimeout(mainTimeoutId);
+      clearTimeout(resetTimeoutId);
+    };
   }, []);
 
   const getEyeAttributes = () => {
