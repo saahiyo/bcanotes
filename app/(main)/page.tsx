@@ -17,19 +17,19 @@ import { ScribbleUnderline } from "@/components/scribble-underline";
 export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center">
-      <section className="w-full py-16 md:py-24 lg:py-32 xl:py-40 bg-muted/30 relative overflow-hidden">
+      <section className="w-full py-16 sm:py-20 md:py-24 lg:py-32 xl:py-40 bg-muted/30 relative overflow-hidden">
         
         {/* Technical Grid Background */}
         <div className="absolute inset-0 technical-grid pointer-events-none opacity-80 dark:opacity-50" />
 
         {/* Floating background icons */}
-        <div className="absolute inset-0 pointer-events-none z-0">
-          <Code2 className="absolute top-[10%] left-[10%] md:left-[15%] size-12 text-blue-500/20 animate-float-slow -rotate-12" />
-          <Database className="absolute top-[25%] right-[5%] md:right-[15%] size-16 text-green-500/20 animate-float-medium rotate-12" />
-          <Terminal className="absolute bottom-[30%] left-[5%] md:left-[20%] size-14 text-purple-500/20 animate-float-fast rotate-6" />
-          <Cpu className="absolute bottom-[15%] right-[10%] md:right-[25%] size-10 text-orange-500/20 animate-float-slow -rotate-6" />
-          <ClipboardPen className="absolute top-[40%] left-[8%] md:left-[5%] size-8 text-pink-500/20 animate-float-medium" />
-          <Braces className="absolute top-[15%] right-[25%] size-10 text-yellow-500/20 animate-float-fast rotate-45" />
+        <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+          <Code2 className="absolute top-[10%] left-[5%] md:left-[15%] size-8 sm:size-12 text-blue-500/20 animate-float-slow -rotate-12" />
+          <Database className="absolute top-[25%] right-[5%] md:right-[15%] size-10 sm:size-16 text-green-500/20 animate-float-medium rotate-12" />
+          <Terminal className="absolute bottom-[30%] left-[5%] md:left-[20%] size-10 sm:size-14 text-purple-500/20 animate-float-fast rotate-6 hidden sm:block" />
+          <Cpu className="absolute bottom-[15%] right-[5%] md:right-[25%] size-8 sm:size-10 text-orange-500/20 animate-float-slow -rotate-6 hidden sm:block" />
+          <ClipboardPen className="absolute top-[40%] left-[5%] md:left-[5%] size-6 sm:size-8 text-pink-500/20 animate-float-medium hidden sm:block" />
+          <Braces className="absolute top-[15%] right-[20%] size-8 sm:size-10 text-yellow-500/20 animate-float-fast rotate-45 hidden sm:block" />
         </div>
 
         {/* Mascot - absolutely positioned, completely out of content flow */}
@@ -43,12 +43,12 @@ export default function Home() {
               <div className="w-fit mx-auto inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 mb-4 animate-float-slow">
                 <Sparkles className="size-4 mr-2 text-yellow-500" /> The ultimate hub for YCMOU students
               </div>
-              <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl drop-shadow-sm">
+              <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl drop-shadow-sm">
                 <span className="relative inline-block">
                   BCA
                   <ScribbleUnderline className="text-primary" />
                 </span>{" "}
-                YCMOU <br className="hidden sm:inline" />
+                YCMOU<br />
                 <span className="text-primary">Learning Resources</span>
               </h1>
               <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl leading-relaxed">
@@ -67,7 +67,7 @@ export default function Home() {
           {/* Infinite feature slider */}
           <ScrollReveal delay={0.4}>
           <div 
-            className="w-full overflow-hidden relative pt-16 mt-8 sm:mt-12 opacity-90 border-t border-border/40"
+            className="w-full overflow-hidden relative pt-8 sm:pt-16 mt-6 sm:mt-12 opacity-90 border-t border-border/40"
             style={{ 
               maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)', 
               WebkitMaskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)' 
