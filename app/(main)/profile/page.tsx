@@ -224,8 +224,8 @@ export default function ProfilePage() {
                 size="sm"
                 className="text-xs text-muted-foreground hover:text-foreground shrink-0"
                 onClick={() => {
-                  setNewName(user.displayName || "");
-                  setEditingName(true);
+                  dispatch({ type: "SET_NEW_NAME", name: user.displayName || "" });
+                  dispatch({ type: "SET_EDITING", editing: true });
                 }}
               >
                 Edit
