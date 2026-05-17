@@ -8,6 +8,7 @@ import { CursorFollower } from "@/components/cursor-follower";
 import { BackToTop } from "@/components/back-to-top";
 import { Toaster } from "@/components/ui/toaster";
 import { Analytics } from "@vercel/analytics/next";
+import { DatabuddyWidget } from "@/components/databuddy";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
@@ -80,6 +81,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
             <BackToTop />
             <Toaster />
             {children}
+            <DatabuddyWidget />
           </AuthProvider>
         </ThemeProvider>
         <Analytics />
