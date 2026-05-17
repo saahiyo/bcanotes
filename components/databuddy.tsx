@@ -10,6 +10,7 @@ export function DatabuddyWidget() {
       trackWebVitals={true}
       trackErrors={true}
       trackOutgoingLinks={true}
+      apiUrl="/api/databuddy"
     />
   );
 }
