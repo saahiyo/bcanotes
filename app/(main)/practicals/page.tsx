@@ -13,10 +13,32 @@ import React from "react";
 
 export const revalidate = 86400;
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://bcanotes.tech";
+
 export const metadata: Metadata = {
   title: "Solved Practicals – BCA YCMOU",
   description:
     "Access complete, verified solutions for BCA YCMOU lab practicals from Semester 1 to 6. Covering C, C++, Java, Python, PHP, Android, and more.",
+  keywords: [
+    "BCA practicals",
+    "BCA YCMOU practicals",
+    "BCA solved practicals",
+    "BCA lab solutions",
+    "BCA C++ practical",
+    "BCA Java practical",
+  ],
+  alternates: {
+    canonical: `${siteUrl}/practicals`,
+  },
+  openGraph: {
+    title: "Solved Practicals – BCA YCMOU",
+    description:
+      "Access complete, verified solutions for BCA YCMOU lab practicals from Semester 1 to 6. Covering C, C++, Java, Python, PHP, Android, and more.",
+    url: `${siteUrl}/practicals`,
+    siteName: "BCA YCMOU",
+    type: "website",
+    locale: "en_IN",
+  },
 };
 
 interface DriveFile {

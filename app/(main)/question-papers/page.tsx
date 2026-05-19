@@ -11,10 +11,32 @@ import React from "react";
 
 export const revalidate = 86400;
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://bcanotes.tech";
+
 export const metadata: Metadata = {
   title: "Previous Year Question Papers – BCA YCMOU",
   description:
     "Download BCA YCMOU previous year question papers from 2017 to 2024. Browse PYQs by semester and year to understand exam patterns.",
+  keywords: [
+    "BCA question papers",
+    "BCA YCMOU PYQ",
+    "BCA previous year papers",
+    "YCMOU exam papers",
+    "BCA PYQ 2024",
+    "BCA PYQ 2023",
+  ],
+  alternates: {
+    canonical: `${siteUrl}/question-papers`,
+  },
+  openGraph: {
+    title: "Previous Year Question Papers – BCA YCMOU",
+    description:
+      "Download BCA YCMOU previous year question papers from 2017 to 2024. Browse PYQs by semester and year to understand exam patterns.",
+    url: `${siteUrl}/question-papers`,
+    siteName: "BCA YCMOU",
+    type: "website",
+    locale: "en_IN",
+  },
 };
 
 interface DriveFile {

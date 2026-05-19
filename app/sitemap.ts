@@ -1,37 +1,9 @@
 import type { MetadataRoute } from 'next';
+import { subjectsData } from '@/data/subjects';
+import { generateUnitSlug } from '@/lib/unit-slug';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://bcanotes.tech';
-
-  // All subject IDs from the data file
-  const subjectIds = [
-    // Semester 1
-    'problem-solving-using-computers',
-    'programming-using-cpp',
-    // Semester 2
-    'computer-network',
-    'evs',
-    'dsa',
-    // Semester 3
-    'operating-system',
-    'web-technology',
-    'dbms',
-    'python',
-    // Semester 4
-    'financial-and-investment-skills',
-    'software-engineering',
-    'java',
-    'csa',
-    // Semester 5
-    'linux-administration',
-    'advance-java',
-    'quantitative-aptitude',
-    'ecommerce-technology',
-    // Semester 6
-    'php-programming',
-    'android-programming',
-    'personality-and-career-skills',
-  ];
 
   const now = new Date();
 
@@ -92,12 +64,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const subjectPages: MetadataRoute.Sitemap = subjectIds.map((id) => ({
+  // Subject-level pages: /notes/operating-system
+  const subjectPages: MetadataRoute.Sitemap = Object.keys(subjectsData).map((id) => ({
     url: `${baseUrl}/notes/${id}`,
     lastModified: now,
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   }));
 
-  return [...staticPages, ...subjectPages];
+  // Unit-level pages: /notes/operating-system/unit-1-history-of-the-operating-systems
+  const unitPages: MetadataRoute.Sitemap = Object.entries(subjectsData).flatMap(
+    ([subjectId, subject]) =>
+      subject.units.map((unit) => ({
+        url: `${baseUrl}/notes/${subjectId}/${generateUnitSlug(unit.title)}`,
+        lastModified: now,
+        changeFrequency: 'monthly' as const,
+        priority: 0.6,
+      }))
+  );
+
+  return [...staticPages, ...subjectPages, ...unitPages];
 }

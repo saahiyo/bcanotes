@@ -8,10 +8,31 @@ import { semesterBooks } from "@/data/books";
 
 export const revalidate = 86400;
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://bcanotes.tech";
+
 export const metadata: Metadata = {
   title: "E-Books – BCA YCMOU Textbooks",
   description:
     "Access official BCA YCMOU e-books and reference textbooks online. Read semester-wise digital textbooks covering the entire BCA curriculum.",
+  keywords: [
+    "BCA e-books",
+    "BCA YCMOU textbooks",
+    "BCA online books",
+    "YCMOU digital books",
+    "BCA study material",
+  ],
+  alternates: {
+    canonical: `${siteUrl}/books`,
+  },
+  openGraph: {
+    title: "E-Books – BCA YCMOU Textbooks",
+    description:
+      "Access official BCA YCMOU e-books and reference textbooks online. Read semester-wise digital textbooks covering the entire BCA curriculum.",
+    url: `${siteUrl}/books`,
+    siteName: "BCA YCMOU",
+    type: "website",
+    locale: "en_IN",
+  },
 };
 
 export default function BooksPage() {

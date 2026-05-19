@@ -7,10 +7,34 @@ import Link from "next/link";
 
 export const revalidate = 86400;
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://bcanotes.tech";
+
 export const metadata: Metadata = {
   title: "BCA Notes – Semester 1 to 6",
   description:
     "Browse comprehensive, unit-wise BCA YCMOU notes for all 6 semesters. Covers C, C++, Java, Python, DBMS, OS, Web Technology, and more.",
+  keywords: [
+    "BCA Notes",
+    "BCA YCMOU Notes",
+    "BCA semester notes",
+    "YCMOU study material",
+    "BCA C++ notes",
+    "BCA Java notes",
+    "BCA Python notes",
+    "BCA DBMS notes",
+  ],
+  alternates: {
+    canonical: `${siteUrl}/notes`,
+  },
+  openGraph: {
+    title: "BCA Notes – Semester 1 to 6",
+    description:
+      "Browse comprehensive, unit-wise BCA YCMOU notes for all 6 semesters. Covers C, C++, Java, Python, DBMS, OS, Web Technology, and more.",
+    url: `${siteUrl}/notes`,
+    siteName: "BCA YCMOU",
+    type: "website",
+    locale: "en_IN",
+  },
 };
 
 const semesters = [
