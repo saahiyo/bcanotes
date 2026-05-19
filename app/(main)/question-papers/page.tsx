@@ -9,6 +9,8 @@ import {
 import Link from "next/link";
 import React from "react";
 
+export const revalidate = 86400;
+
 export const metadata: Metadata = {
   title: "Previous Year Question Papers – BCA YCMOU",
   description:

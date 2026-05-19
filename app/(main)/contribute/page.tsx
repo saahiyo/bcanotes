@@ -3,6 +3,8 @@ import { HowItWorks } from "@/components/contribute/how-it-works";
 import { DirectUpload } from "@/components/contribute/direct-upload";
 import { LinkSubmission } from "@/components/contribute/link-submission";
 
+export const dynamic = 'force-static';
+
 export const metadata: Metadata = {
   title: "Contribute | BCA YCMOU",
   description: "Help build the ultimate BCA YCMOU archive. Share your notes, books, or question papers and help hundreds of students.",

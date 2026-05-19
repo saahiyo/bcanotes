@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
     status: 200,
     headers: {
       "content-type": contentType,
-      "cache-control": "public, max-age=3600",
+      "cache-control": "public, s-maxage=3600, stale-while-revalidate=86400",
       "content-disposition": "inline",
     },
   });

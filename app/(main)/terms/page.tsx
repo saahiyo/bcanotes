@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Scale } from "lucide-react";
 
+export const dynamic = 'force-static';
+
 export const metadata = {
   title: "Terms of Service – BCA YCMOU",
   description: "Terms of service for the BCA YCMOU unofficial learning resources portal.",

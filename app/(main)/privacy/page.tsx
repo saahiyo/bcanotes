@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ShieldCheck } from "lucide-react";
 
+export const dynamic = 'force-static';
+
 export const metadata = {
   title: "Privacy Policy – BCA YCMOU",
   description: "Privacy policy for the BCA YCMOU unofficial learning resources portal.",

@@ -6,6 +6,8 @@ import { BookOpen, ExternalLink, Library } from "lucide-react";
 import Link from "next/link";
 import { semesterBooks } from "@/data/books";
 
+export const revalidate = 86400;
+
 export const metadata: Metadata = {
   title: "E-Books – BCA YCMOU Textbooks",
   description:

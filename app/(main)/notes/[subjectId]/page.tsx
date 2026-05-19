@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
 import { subjectsData } from "@/data/subjects";
 import { notFound } from "next/navigation";
+
+export const revalidate = 86400;
+
+export async function generateStaticParams() {
+  return Object.keys(subjectsData).map((subjectId) => ({
+    subjectId,
+  }));
+}
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download, ExternalLink, FileText } from "lucide-react";

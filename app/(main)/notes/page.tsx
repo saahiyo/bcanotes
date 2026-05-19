@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 
+export const revalidate = 86400;
+
 export const metadata: Metadata = {
   title: "BCA Notes – Semester 1 to 6",
   description:

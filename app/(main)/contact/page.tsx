@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact-form";
 
+export const dynamic = 'force-static';
+
 export const metadata: Metadata = {
   title: "Contact Us | BCA YCMOU",
   description: "Get in touch with the BCA YCMOU team for questions, suggestions, or contributions. We're here to help you succeed.",
