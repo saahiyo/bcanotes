@@ -126,38 +126,72 @@ async function getDriveFiles(folderId: string): Promise<DriveFile[] | null> {
   }
 }
 
+interface FolderMetadata {
+  id: string;
+  name: string;
+  parents?: string[];
+}
+
+async function getFolderMetadata(folderId: string): Promise<FolderMetadata | null> {
+  const API_KEY = process.env.GOOGLE_DRIVE_API_KEY;
+  if (!API_KEY) return null;
+
+  try {
+    const res = await fetch(
+      `https://www.googleapis.com/drive/v3/files/${folderId}?fields=id,name,parents&key=${API_KEY}`,
+      { next: { revalidate: 86400 } }
+    );
+
+    if (!res.ok) {
+      console.error(`Failed to fetch metadata for folder ${folderId}:`, await res.text());
+      return null;
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error(`Error fetching folder metadata for ${folderId}:`, error);
+    return null;
+  }
+}
+
+async function buildTrail(folderId: string): Promise<{ id: string; name: string }[]> {
+  const trail: { id: string; name: string }[] = [];
+  let currentId = folderId;
+  const visited = new Set<string>();
+
+  while (currentId && currentId !== ROOT_FOLDER_ID && !visited.has(currentId)) {
+    visited.add(currentId);
+    const meta = await getFolderMetadata(currentId);
+    if (!meta) break;
+
+    trail.unshift({ id: meta.id, name: meta.name });
+
+    if (meta.parents && meta.parents.length > 0) {
+      currentId = meta.parents[0];
+    } else {
+      break;
+    }
+  }
+
+  trail.unshift({ id: ROOT_FOLDER_ID, name: "Question Papers" });
+  return trail;
+}
+
 export default async function QuestionPapersPage({
-  searchParams,
+  params,
 }: {
-  searchParams: Promise<{ folderId?: string; trail?: string }>;
+  params: Promise<{ folderId?: string[] }>;
 }) {
-  const resolvedParams = await searchParams;
-  const currentFolderId = resolvedParams.folderId || ROOT_FOLDER_ID;
+  const resolvedParams = await params;
+  const currentFolderId = resolvedParams.folderId?.[0] || ROOT_FOLDER_ID;
   const isRootFolder = currentFolderId === ROOT_FOLDER_ID;
   
-  let trail: { id: string; name: string }[] = [];
-  if (resolvedParams.trail) {
-    try {
-      trail = JSON.parse(decodeURIComponent(resolvedParams.trail));
-    } catch (e) {
-      trail = [];
-    }
-  }
-
-  if (!Array.isArray(trail) || trail.length === 0) {
-    trail = [{ id: ROOT_FOLDER_ID, name: "Question Papers" }];
-  }
+  const trail = await buildTrail(currentFolderId);
 
   const parentFolder = trail.length > 1 ? trail[trail.length - 2] : null;
-  let backHref = "/question-papers";
-  if (parentFolder) {
-    if (parentFolder.id === ROOT_FOLDER_ID) {
-      backHref = "/question-papers";
-    } else {
-      const parentTrail = trail.slice(0, trail.length - 1);
-      backHref = `/question-papers?folderId=${parentFolder.id}&trail=${encodeURIComponent(JSON.stringify(parentTrail))}`;
-    }
-  }
+  const backHref = parentFolder
+    ? (parentFolder.id === ROOT_FOLDER_ID ? "/question-papers" : `/question-papers/${parentFolder.id}`)
+    : "/question-papers";
 
   const files = await getDriveFiles(currentFolderId);
 
@@ -177,10 +211,9 @@ export default async function QuestionPapersPage({
           <nav aria-label="Breadcrumb" className="flex items-center text-sm font-medium text-muted-foreground overflow-x-auto whitespace-nowrap pb-1 scrollbar-hide">
             {trail.map((item, idx) => {
               const isLast = idx === trail.length - 1;
-              const trailParam = JSON.stringify(trail.slice(0, idx + 1));
               const href = idx === 0 
                 ? "/question-papers" 
-                : `/question-papers?folderId=${item.id}&trail=${encodeURIComponent(trailParam)}`;
+                : `/question-papers/${item.id}`;
               
               return (
                 <div key={item.id} className="flex items-center">
@@ -247,13 +280,11 @@ export default async function QuestionPapersPage({
             const driveViewerUrl = `https://drive.google.com/file/d/${file.id}/preview`;
             const encodedUrl = encodeURIComponent(driveViewerUrl);
             const encodedTitle = encodeURIComponent(file.name);
-            const encodedBackUrl = encodeURIComponent(`/question-papers${currentFolderId !== ROOT_FOLDER_ID ? `?folderId=${currentFolderId}&trail=${encodeURIComponent(JSON.stringify(trail))}` : ""}`);
+            const encodedBackUrl = encodeURIComponent(`/question-papers${currentFolderId !== ROOT_FOLDER_ID ? `/${currentFolderId}` : ""}`);
             
             const viewerHref = `/viewer?url=${encodedUrl}&title=${encodedTitle}&backUrl=${encodedBackUrl}`;
 
-            const nextTrail = [...trail, { id: file.id, name: file.name }];
-            const trailParamStr = encodeURIComponent(JSON.stringify(nextTrail));
-            const href = isFolder ? `/question-papers?folderId=${file.id}&trail=${trailParamStr}` : viewerHref;
+            const href = isFolder ? `/question-papers/${file.id}` : viewerHref;
             
             return (
               <Link 
