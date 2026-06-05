@@ -12,6 +12,7 @@ import {
   RefreshCw,
   Copy,
   Check,
+  Loader2,
 } from "lucide-react";
 import Link from "next/link";
 import { redirect, useRouter } from "next/navigation";
@@ -292,9 +293,8 @@ export default function ViewerPage({
           <iframe
             key={iframeKey}
             src={iframeUrl}
-            className={`absolute inset-0 z-0 w-full h-full border-none transition-opacity duration-500 ${
-              iframeStatus === "loaded" ? "opacity-100" : "opacity-0 pointer-events-none"
-            }`}
+            className="absolute inset-0 z-0 w-full h-full border-none"
+            style={{ display: iframeStatus === "loaded" ? "block" : "none" }}
             title={displayTitle}
             allowFullScreen
             sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
@@ -306,43 +306,50 @@ export default function ViewerPage({
         {!isBlockedProvider && !shouldUsePdfJs && iframeStatus !== "loaded" && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-muted-foreground p-4 text-center">
           {iframeStatus === "error" || iframeStatus === "stalled" ? (
-            <div className="flex flex-col items-center gap-4">
-              <div className="size-12 rounded-full bg-red-500/10 flex items-center justify-center">
-                <AlertTriangle className="size-6 text-red-500" />
+            <div className="flex flex-col items-center space-y-6 max-w-md">
+              <AlertTriangle className="size-16 text-amber-500" />
+              <div className="space-y-3">
+                <h3 className="text-lg font-semibold tracking-tight text-foreground">
+                  {iframeStatus === "stalled" ? "Taking Longer Than Expected" : "Unable to Preview Document"}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Some hosts prevent documents from being embedded. You can reload, download the file, or open it in a new window.
+                </p>
               </div>
-              <p className="text-sm font-medium">
-                {iframeStatus === "stalled" ? "Document is taking longer than expected" : "Failed to load document"}
-              </p>
-              <p className="text-xs opacity-70 max-w-[280px]">
-                Some providers block embedded previews. You can reload the viewer, download the file, or open it externally.
-              </p>
-              <div className="flex flex-wrap items-center justify-center gap-2">
-                <Button variant="outline" size="sm" className="gap-2" onClick={handleReload}>
-                  <RefreshCw className="size-4" /> Reload
-                </Button>
-                <Link href={targetUrl} target="_blank" rel="noopener noreferrer">
-                  <Button variant="outline" size="sm" className="gap-2">
-                    Open externally <ExternalLink className="size-4" />
+              
+              <div className="flex flex-col gap-3 w-full pt-2">
+                <div className="flex gap-3 w-full">
+                  <Button variant="outline" size="sm" className="flex-1 gap-2" onClick={handleReload}>
+                    <RefreshCw className="size-4" /> Retry
                   </Button>
-                </Link>
-                <Link href={downloadUrl} target="_blank" rel="noopener noreferrer">
-                  <Button variant="outline" size="sm" className="gap-2">
-                    Download <Download className="size-4" />
+                  <Link href={targetUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
+                    <Button variant="default" size="sm" className="w-full gap-2">
+                      Open <ExternalLink className="size-4" />
+                    </Button>
+                  </Link>
+                </div>
+                <div className="flex gap-3 w-full">
+                  <Link href={downloadUrl} target="_blank" rel="noopener noreferrer" className="flex-1">
+                    <Button variant="outline" size="sm" className="w-full gap-2">
+                      Download <Download className="size-4" />
+                    </Button>
+                  </Link>
+                  <Button variant="outline" size="sm" className="flex-1 gap-2" onClick={handleCopyLink}>
+                    {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
+                    {copied ? "Copied" : "Copy URL"}
                   </Button>
-                </Link>
+                </div>
               </div>
-              <Button variant="ghost" size="sm" className="gap-2" onClick={handleCopyLink}>
-                {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
-                {copied ? "Copied link" : "Copy link"}
-              </Button>
             </div>
           ) : (
-            <div className="animate-pulse flex flex-col items-center">
-              <div className="size-8 rounded-full border-4 border-primary border-t-transparent animate-spin mb-4" />
-              <p className="text-sm font-semibold">Loading document viewer…</p>
-              <p className="text-xs opacity-70 mt-2 max-w-[250px]">
-                If this takes too long, the provider might be blocking embedded views.
-              </p>
+            <div className="flex flex-col items-center space-y-6 max-w-md">
+              <Loader2 className="size-16 text-primary animate-spin" />
+              <div className="space-y-3">
+                <h3 className="text-lg font-semibold tracking-tight text-foreground">Loading Document</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Establishing a secure connection to the document host. Some providers may block embedded previews.
+                </p>
+              </div>
             </div>
           )}
         </div>
