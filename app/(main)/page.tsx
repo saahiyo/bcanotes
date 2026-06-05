@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, BookOpen, FileText, FolderOpen, Library, Code2, Database, Terminal, Cpu, Monitor, Braces, Sparkles, ClipboardPen } from "lucide-react";
+import { SearchHeroButton } from "@/components/search-hero-button";
 
 export const revalidate = 3600;
 
@@ -57,12 +58,13 @@ export default function Home() {
                 Your one-stop destination for BCA notes, e-books, previous year question papers, and solved practicals.
               </p>
             </ScrollReveal>
-            <ScrollReveal delay={0.2} className="space-x-4 pt-4">
+            <ScrollReveal delay={0.2} className="flex flex-wrap items-center justify-center gap-4 pt-4">
               <Link href="/notes">
                 <Button size="lg" className="h-12 px-8 text-base gap-2 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 active:scale-95 bg-primary overflow-hidden group">
                   <span className="relative z-10 flex items-center gap-2">Get Started <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" /></span>
                 </Button>
               </Link>
+              <SearchHeroButton />
             </ScrollReveal>
           </div>
           
