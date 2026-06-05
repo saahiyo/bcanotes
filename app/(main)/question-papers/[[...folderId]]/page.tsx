@@ -154,28 +154,7 @@ async function getFolderMetadata(folderId: string): Promise<FolderMetadata | nul
   }
 }
 
-async function buildTrail(folderId: string): Promise<{ id: string; name: string }[]> {
-  const trail: { id: string; name: string }[] = [];
-  let currentId = folderId;
-  const visited = new Set<string>();
 
-  while (currentId && currentId !== ROOT_FOLDER_ID && !visited.has(currentId)) {
-    visited.add(currentId);
-    const meta = await getFolderMetadata(currentId);
-    if (!meta) break;
-
-    trail.unshift({ id: meta.id, name: meta.name });
-
-    if (meta.parents && meta.parents.length > 0) {
-      currentId = meta.parents[0];
-    } else {
-      break;
-    }
-  }
-
-  trail.unshift({ id: ROOT_FOLDER_ID, name: "Question Papers" });
-  return trail;
-}
 
 export default async function QuestionPapersPage({
   params,
@@ -183,14 +162,21 @@ export default async function QuestionPapersPage({
   params: Promise<{ folderId?: string[] }>;
 }) {
   const resolvedParams = await params;
-  const currentFolderId = resolvedParams.folderId?.[0] || ROOT_FOLDER_ID;
+  const folderIds = resolvedParams.folderId || [];
+  const currentFolderId = folderIds[folderIds.length - 1] || ROOT_FOLDER_ID;
   const isRootFolder = currentFolderId === ROOT_FOLDER_ID;
   
-  const trail = await buildTrail(currentFolderId);
+  // Build breadcrumb trail in parallel by resolving names of each folderId in path segments
+  const trailPromises = folderIds.map(async (id) => {
+    const meta = await getFolderMetadata(id);
+    return { id, name: meta ? meta.name : "Folder" };
+  });
+  const resolvedTrail = await Promise.all(trailPromises);
+  const trail = [{ id: ROOT_FOLDER_ID, name: "Question Papers" }, ...resolvedTrail];
 
-  const parentFolder = trail.length > 1 ? trail[trail.length - 2] : null;
-  const backHref = parentFolder
-    ? (parentFolder.id === ROOT_FOLDER_ID ? "/question-papers" : `/question-papers/${parentFolder.id}`)
+  const parentFolderIds = folderIds.slice(0, folderIds.length - 1);
+  const backHref = parentFolderIds.length > 0
+    ? `/question-papers/${parentFolderIds.join("/")}`
     : "/question-papers";
 
   const files = await getDriveFiles(currentFolderId);
@@ -213,7 +199,7 @@ export default async function QuestionPapersPage({
               const isLast = idx === trail.length - 1;
               const href = idx === 0 
                 ? "/question-papers" 
-                : `/question-papers/${item.id}`;
+                : `/question-papers/${folderIds.slice(0, idx).join("/")}`;
               
               return (
                 <div key={item.id} className="flex items-center">
@@ -280,11 +266,11 @@ export default async function QuestionPapersPage({
             const driveViewerUrl = `https://drive.google.com/file/d/${file.id}/preview`;
             const encodedUrl = encodeURIComponent(driveViewerUrl);
             const encodedTitle = encodeURIComponent(file.name);
-            const encodedBackUrl = encodeURIComponent(`/question-papers${currentFolderId !== ROOT_FOLDER_ID ? `/${currentFolderId}` : ""}`);
+            const encodedBackUrl = encodeURIComponent(`/question-papers${folderIds.length > 0 ? `/${folderIds.join("/")}` : ""}`);
             
             const viewerHref = `/viewer?url=${encodedUrl}&title=${encodedTitle}&backUrl=${encodedBackUrl}`;
 
-            const href = isFolder ? `/question-papers/${file.id}` : viewerHref;
+            const href = isFolder ? `/question-papers/${[...folderIds, file.id].join("/")}` : viewerHref;
             
             return (
               <Link 
