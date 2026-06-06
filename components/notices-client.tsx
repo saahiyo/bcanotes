@@ -15,7 +15,6 @@ import {
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useAuth } from "@/components/auth-provider";
-import { isAdmin } from "@/lib/admin";
 import { toast } from "@/hooks/use-toast";
 import { 
   Bell, 
@@ -81,12 +80,27 @@ const typeConfig = {
 
 export function NoticesClient() {
   const { user } = useAuth();
-  const admin = isAdmin(user?.email);
+  const [admin, setAdmin] = useState(false);
 
   const [notices, setNotices] = useState<Notice[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState<"all" | "alert" | "update" | "notice" | "event">("all");
+
+  // Check admin privileges via secure server-side API
+  useEffect(() => {
+    if (user?.email) {
+      fetch(`/api/admin?email=${encodeURIComponent(user.email)}`)
+        .then((res) => res.json())
+        .then((data) => setAdmin(data.isAdmin))
+        .catch((err) => {
+          console.error("Error checking admin privileges:", err);
+          setAdmin(false);
+        });
+    } else {
+      setAdmin(false);
+    }
+  }, [user]);
 
   // Form States
   const [isModalOpen, setIsModalOpen] = useState(false);
