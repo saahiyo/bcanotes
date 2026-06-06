@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { ArrowUpRight, BookOpen, FileText, FolderOpen, Home, Library, LogIn, LogOut, Menu, Heart, MessageSquare, User, Search, ChevronDown } from "lucide-react";
+import { ArrowUpRight, BookOpen, FileText, FolderOpen, Home, Library, LogIn, LogOut, Menu, Heart, MessageSquare, User, Search, ChevronDown, Bell } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -55,6 +55,7 @@ export function Navbar() {
   // Mobile drawer links
   const allNavLinks = [
     { href: "/", label: "Home", icon: Home },
+    { href: "/notices", label: "Updates", icon: Bell },
     { href: "/notes", label: "Notes", icon: FileText },
     { href: "/books", label: "E-Books", icon: Library },
     { href: "/question-papers", label: "Question Papers", icon: FolderOpen },
@@ -161,6 +162,19 @@ export function Navbar() {
                 )}
               </AnimatePresence>
             </div>
+
+            <Link 
+              href="/notices" 
+              className={cn(
+                "relative flex items-center gap-2 px-3 py-2 rounded-md transition-colors",
+                pathname.startsWith("/notices")
+                  ? "text-primary font-semibold after:absolute after:bottom-0 after:left-3 after:right-3 after:h-[1.5px] after:bg-gradient-to-r after:from-[#4285f4] after:to-[#1a73e8] after:rounded-t-full"
+                  : "text-foreground/60 hover:text-foreground hover:bg-muted/50"
+              )}
+            >
+              <Bell className="size-5 md:size-4" />
+              Updates
+            </Link>
 
             <Link 
               href="/contribute" 

@@ -16,6 +16,7 @@ import { BlobMascot } from "@/components/blob-mascot";
 import { StatsCounter } from "@/components/stats-counter";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { ScribbleUnderline } from "@/components/scribble-underline";
+import { NoticesSection } from "@/components/notices-section";
 
 export default function Home() {
   return (
@@ -99,6 +100,8 @@ export default function Home() {
       </section>
 
       <StatsCounter />
+
+      <NoticesSection />
 
       <section className="w-full py-16 md:py-24 lg:py-32 relative overflow-hidden">
         {/* Technical Grid */}

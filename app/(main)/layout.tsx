@@ -1,4 +1,5 @@
 import { Navbar } from '@/components/navbar';
+import { ImportantAlert } from '@/components/important-alert';
 import Link from 'next/link';
 import { BookOpen, Github, Twitter, Globe, MessageSquare } from 'lucide-react';
 
@@ -6,6 +7,7 @@ export default function MainLayout({children}: {children: React.ReactNode}) {
   return (
     <>
       <Navbar />
+      <ImportantAlert />
       <main className="flex-1">
         {children}
       </main>

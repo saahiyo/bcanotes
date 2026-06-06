@@ -16,7 +16,7 @@ const firebaseConfig = {
 // Initialize Firebase for SSR compatibility
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
+const db = getFirestore(app, "bcanotesx");
 
 // Initialize Analytics only on the client side
 const analytics = typeof window !== "undefined" 
