@@ -270,7 +270,7 @@ export function NoticesClient() {
   ] as const;
 
   return (
-    <div className="container mx-auto px-4 py-12 md:py-20 relative">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 max-w-7xl relative">
       {/* Background patterns */}
       <div className="absolute inset-0 technical-grid pointer-events-none opacity-30 dark:opacity-15" />
       <div className="absolute top-[20%] left-[-10%] size-96 rounded-full bg-primary/5 blur-3xl pointer-events-none" />
