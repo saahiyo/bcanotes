@@ -44,6 +44,9 @@ export function CommandMenu() {
       { id: "page-practicals", title: "Solved Practicals", subtitle: "Lab practical files & solutions", url: "/practicals" },
       { id: "page-contribute", title: "Contribute Material", subtitle: "Submit study resources", url: "/contribute" },
       { id: "page-contact", title: "Contact Us", subtitle: "Get in touch with us", url: "/contact" },
+      { id: "page-tools", title: "Student Toolkit", subtitle: "Tools, links & utilities", url: "/tools" },
+      { id: "page-results", title: "Result Checker", subtitle: "Check examination results", url: "/tools/results" },
+      { id: "page-hallticket", title: "Hall Ticket Download", subtitle: "Download admit card", url: "/tools/hall-ticket" },
     ];
     pages.forEach((p) => {
       items.push({ ...p, category: "Pages" });
