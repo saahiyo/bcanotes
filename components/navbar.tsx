@@ -189,32 +189,6 @@ export function Navbar() {
               <Wrench className="size-5 md:size-4" />
               Tools
             </Link>
-
-            <Link 
-              href="/contribute" 
-              className={cn(
-                "relative flex items-center gap-2 px-3 py-2 rounded-md transition-colors",
-                pathname.startsWith("/contribute")
-                  ? "text-primary font-semibold after:absolute after:bottom-0 after:left-3 after:right-3 after:h-[1.5px] after:bg-gradient-to-r after:from-[#4285f4] after:to-[#1a73e8] after:rounded-t-full"
-                  : "text-foreground/60 hover:text-foreground hover:bg-muted/50"
-              )}
-            >
-              <Heart className="size-5 md:size-4" />
-              Contribute
-            </Link>
-
-            <Link 
-              href="/contact" 
-              className={cn(
-                "relative flex items-center gap-2 px-3 py-2 rounded-md transition-colors",
-                pathname.startsWith("/contact")
-                  ? "text-primary font-semibold after:absolute after:bottom-0 after:left-3 after:right-3 after:h-[1.5px] after:bg-gradient-to-r after:from-[#4285f4] after:to-[#1a73e8] after:rounded-t-full"
-                  : "text-foreground/60 hover:text-foreground hover:bg-muted/50"
-              )}
-            >
-              <MessageSquare className="size-5 md:size-4" />
-              Contact
-            </Link>
           </nav>
 
           {/* Desktop Right Side Controls */}
@@ -237,7 +211,12 @@ export function Navbar() {
             {/* Profile Avatar Dropdown */}
             {!loading && (
               user ? (
-                <div className="relative shrink-0" ref={profileRef}>
+                <div
+                  className="relative shrink-0"
+                  ref={profileRef}
+                  onMouseEnter={() => setShowProfile(true)}
+                  onMouseLeave={() => setShowProfile(false)}
+                >
                   <button
                     onClick={() => {
                       setShowProfile(!showProfile);
@@ -283,7 +262,14 @@ export function Navbar() {
                             <User className="size-4 text-muted-foreground" />
                             View Profile
                           </Link>
-                          
+                          <Link
+                            href="/contribute"
+                            onClick={() => setShowProfile(false)}
+                            className="flex items-center gap-2 px-2.5 py-2 rounded-lg text-xs font-medium text-foreground/80 hover:text-foreground hover:bg-muted/60 transition-colors"
+                          >
+                            <Heart className="size-4 text-muted-foreground" />
+                            Contribute
+                          </Link>
                           <button
                             onClick={handleSignOut}
                             className="flex items-center gap-2 px-2.5 py-2 rounded-lg text-xs font-medium text-red-600 dark:text-red-400 hover:bg-red-500/10 transition-colors w-full text-left"

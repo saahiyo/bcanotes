@@ -61,7 +61,7 @@ export default function Home() {
             </ScrollReveal>
             <ScrollReveal delay={0.2} className="flex flex-wrap items-center justify-center gap-4 pt-4">
               <Link href="/notes">
-                <Button size="lg" className="h-12 px-8 text-base gap-2 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 active:scale-95 bg-primary overflow-hidden group">
+                <Button size="lg" className="h-10 sm:h-12 px-6 sm:px-8 text-sm sm:text-base gap-2 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 active:scale-95 bg-primary overflow-hidden group">
                   <span className="relative z-10 flex items-center gap-2">Get Started <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" /></span>
                 </Button>
               </Link>
