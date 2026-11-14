@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download, ExternalLink, FileText } from "lucide-react";
 import Link from "next/link";
 
-export const revalidate = 86400;
+import { siteUrl } from "@/lib/site";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://bcanotes.tech";
+export const revalidate = 86400;
 
 export async function generateStaticParams() {
   return Object.keys(subjectsData).map((subjectId) => ({
@@ -25,7 +25,8 @@ export async function generateMetadata({ params }: { params: Promise<{ subjectId
     return { title: "Subject Not Found" };
   }
 
-  const pageTitle = `${subject.title} Notes – BCA YCMOU`;
+  const pageTitle = `${subject.title} Notes`;
+  const ogTitle = `${subject.title} Notes – BCA YCMOU`;
   const pageDescription = `Read unit-wise ${subject.title} notes for BCA YCMOU. ${subject.units.length} units covering the complete syllabus. Free to access.`;
   const canonicalUrl = `${siteUrl}/notes/${subjectId}`;
 
@@ -44,7 +45,7 @@ export async function generateMetadata({ params }: { params: Promise<{ subjectId
       canonical: canonicalUrl,
     },
     openGraph: {
-      title: pageTitle,
+      title: ogTitle,
       description: pageDescription,
       url: canonicalUrl,
       siteName: "BCA YCMOU",
@@ -52,8 +53,8 @@ export async function generateMetadata({ params }: { params: Promise<{ subjectId
       locale: "en_IN",
     },
     twitter: {
-      card: "summary",
-      title: pageTitle,
+      card: "summary_large_image",
+      title: ogTitle,
       description: pageDescription,
     },
   };
@@ -67,25 +68,51 @@ export default async function SubjectNotesPage({ params }: { params: Promise<{ s
     notFound();
   }
 
-  // JSON-LD structured data
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Course",
-    name: `${subject.title} – BCA YCMOU`,
-    description: `Comprehensive unit-wise study notes for ${subject.title} in the BCA YCMOU curriculum.`,
-    provider: {
-      "@type": "Organization",
-      name: "BCA YCMOU",
-      url: siteUrl,
+  // JSON-LD structured data (Course + BreadcrumbList)
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Course",
+      name: `${subject.title} – BCA YCMOU`,
+      description: `Comprehensive unit-wise study notes for ${subject.title} in the BCA YCMOU curriculum.`,
+      provider: {
+        "@type": "Organization",
+        name: "BCA YCMOU",
+        url: siteUrl,
+      },
+      educationalLevel: "Undergraduate",
+      numberOfCredits: subject.units.length,
+      hasCourseInstance: subject.units.map((unit) => ({
+        "@type": "CourseInstance",
+        name: unit.title,
+        url: `${siteUrl}/notes/${subjectId}/${generateUnitSlug(unit.title)}`,
+      })),
     },
-    educationalLevel: "Undergraduate",
-    numberOfCredits: subject.units.length,
-    hasCourseInstance: subject.units.map((unit, idx) => ({
-      "@type": "CourseInstance",
-      name: unit.title,
-      url: `${siteUrl}/notes/${subjectId}/${generateUnitSlug(unit.title)}`,
-    })),
-  };
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: siteUrl,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Notes",
+          item: `${siteUrl}/notes`,
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: subject.title,
+          item: `${siteUrl}/notes/${subjectId}`,
+        },
+      ],
+    },
+  ];
 
   return (
     <>

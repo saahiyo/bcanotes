@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Document Viewer – BCA YCMOU",
+  title: "Document Viewer",
   description: "View BCA YCMOU study materials, notes, and question papers online with our integrated document viewer.",
   robots: {
     index: false,

@@ -9,35 +9,59 @@ import {
 import Link from "next/link";
 import React from "react";
 
+import { siteUrl } from "@/lib/site";
+
 export const revalidate = 86400;
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://bcanotes.tech";
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ folderId?: string[] }>;
+}): Promise<Metadata> {
+  const resolvedParams = await params;
+  const folderIds = resolvedParams.folderId || [];
+  const currentFolderId = folderIds[folderIds.length - 1];
+  const canonicalPath =
+    folderIds.length > 0
+      ? `/question-papers/${folderIds.join("/")}`
+      : "/question-papers";
+  const canonicalUrl = `${siteUrl}${canonicalPath}`;
 
-export const metadata: Metadata = {
-  title: "Previous Year Question Papers – BCA YCMOU",
-  description:
-    "Download BCA YCMOU previous year question papers from 2017 to 2024. Browse PYQs by semester and year to understand exam patterns.",
-  keywords: [
-    "BCA question papers",
-    "BCA YCMOU PYQ",
-    "BCA previous year papers",
-    "YCMOU exam papers",
-    "BCA PYQ 2024",
-    "BCA PYQ 2023",
-  ],
-  alternates: {
-    canonical: `${siteUrl}/question-papers`,
-  },
-  openGraph: {
-    title: "Previous Year Question Papers – BCA YCMOU",
-    description:
-      "Download BCA YCMOU previous year question papers from 2017 to 2024. Browse PYQs by semester and year to understand exam patterns.",
-    url: `${siteUrl}/question-papers`,
-    siteName: "BCA YCMOU",
-    type: "website",
-    locale: "en_IN",
-  },
-};
+  let folderTitle = "Previous Year Question Papers (2017–2024)";
+  if (currentFolderId) {
+    const meta = await getFolderMetadata(currentFolderId);
+    if (meta?.name) {
+      folderTitle = `${meta.name} – Question Papers`;
+    }
+  }
+
+  const description =
+    "Download BCA YCMOU previous year question papers from 2017 to 2024. Browse PYQs by semester and year to understand exam patterns.";
+
+  return {
+    title: folderTitle,
+    description,
+    keywords: [
+      "BCA question papers",
+      "BCA YCMOU PYQ",
+      "BCA previous year papers",
+      "YCMOU exam papers",
+      "BCA PYQ 2024",
+      "BCA PYQ 2023",
+    ],
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: `${folderTitle} | BCA YCMOU`,
+      description,
+      url: canonicalUrl,
+      siteName: "BCA YCMOU",
+      type: "website",
+      locale: "en_IN",
+    },
+  };
+}
 
 interface DriveFile {
   id: string;

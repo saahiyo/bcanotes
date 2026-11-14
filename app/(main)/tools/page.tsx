@@ -11,12 +11,26 @@ import {
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { OfficialLinks } from "@/components/official-links";
 
+import { siteUrl } from "@/lib/site";
+
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Student Toolkit | BCA YCMOU",
+  title: "Student Toolkit",
   description:
     "Access essential student tools — check results, download hall tickets, grab the BCA syllabus, and find official YCMOU links all in one place.",
+  alternates: {
+    canonical: `${siteUrl}/tools`,
+  },
+  openGraph: {
+    title: "Student Toolkit | BCA YCMOU",
+    description:
+      "Access essential student tools — check results, download hall tickets, grab the BCA syllabus, and find official YCMOU links all in one place.",
+    url: `${siteUrl}/tools`,
+    siteName: "BCA YCMOU",
+    type: "website",
+    locale: "en_IN",
+  },
 };
 
 const tools = [

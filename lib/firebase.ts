@@ -1,7 +1,6 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { getAnalytics, isSupported } from "firebase/analytics";
+import type { Auth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -10,17 +9,19 @@ const firebaseConfig = {
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase for SSR compatibility
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-const auth = getAuth(app);
 const db = getFirestore(app, "bcanotesx");
 
-// Initialize Analytics only on the client side
-const analytics = typeof window !== "undefined" 
-  ? isSupported().then((supported) => supported ? getAnalytics(app) : null)
-  : null;
+let authInstance: Auth | null = null;
 
-export { app, auth, db, analytics };
+export async function getFirebaseAuth(): Promise<Auth> {
+  if (authInstance) return authInstance;
+  const { getAuth } = await import("firebase/auth");
+  authInstance = getAuth(app);
+  return authInstance;
+}
+
+export { app, db };

@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 
-export const revalidate = 86400;
+import { siteUrl } from "@/lib/site";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://bcanotes.tech";
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "BCA Notes – Semester 1 to 6",
@@ -120,7 +120,7 @@ export default function NotesPage() {
         </TabsList>
         
         {semesters.map((sem) => (
-          <TabsContent key={sem.id} value={sem.id} className="mt-8">
+          <TabsContent key={sem.id} value={sem.id} keepMounted className="mt-8">
             <div className="grid gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3">
               {sem.subjects.map((subject) => (
                 <Card key={subject.link}>

@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ExternalLink, FileText, ChevronLeft, ChevronRight, BookOpen } from "lucide-react";
 import Link from "next/link";
 
-export const revalidate = 86400;
+import { siteUrl } from "@/lib/site";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://bcanotes.tech";
+export const revalidate = 86400;
 
 export async function generateStaticParams() {
   return getAllUnitParams();
@@ -28,7 +28,8 @@ export async function generateMetadata({
   }
 
   const { subject, unit } = result;
-  const pageTitle = `${unit.title} – ${subject.title} Notes | BCA YCMOU`;
+  const pageTitle = `${unit.title} – ${subject.title} Notes`;
+  const ogTitle = `${unit.title} – ${subject.title} Notes | BCA YCMOU`;
   const pageDescription = `Read ${unit.title} notes for ${subject.title}. Comprehensive BCA YCMOU study material covering the complete unit syllabus. Free to access.`;
   const canonicalUrl = `${siteUrl}/notes/${subjectId}/${unitSlug}`;
 
@@ -48,7 +49,7 @@ export async function generateMetadata({
       canonical: canonicalUrl,
     },
     openGraph: {
-      title: pageTitle,
+      title: ogTitle,
       description: pageDescription,
       url: canonicalUrl,
       siteName: "BCA YCMOU",
@@ -56,8 +57,8 @@ export async function generateMetadata({
       locale: "en_IN",
     },
     twitter: {
-      card: "summary",
-      title: `${unit.title} – ${subject.title}`,
+      card: "summary_large_image",
+      title: ogTitle,
       description: pageDescription,
     },
     robots: {
@@ -94,29 +95,61 @@ export default async function UnitNotesPage({
   const encodedBackUrl = encodeURIComponent(`/notes/${subjectId}/${unitSlug}`);
   const viewerHref = `/viewer?url=${encodedUrl}&title=${encodedTitle}&backUrl=${encodedBackUrl}`;
 
-  // JSON-LD structured data
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: `${unit.title} – ${subject.title} Notes`,
-    description: `Comprehensive BCA YCMOU study notes for ${unit.title} in ${subject.title}.`,
-    author: {
-      "@type": "Organization",
-      name: "BCA YCMOU Community",
+  // JSON-LD structured data (Article + BreadcrumbList)
+  const structuredData = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      headline: `${unit.title} – ${subject.title} Notes`,
+      description: `Comprehensive BCA YCMOU study notes for ${unit.title} in ${subject.title}.`,
+      author: {
+        "@type": "Organization",
+        name: "BCA YCMOU Community",
+      },
+      publisher: {
+        "@type": "Organization",
+        name: "BCA YCMOU",
+        url: siteUrl,
+      },
+      mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": `${siteUrl}/notes/${subjectId}/${unitSlug}`,
+      },
+      educationalLevel: "Undergraduate",
+      learningResourceType: "Study Notes",
+      inLanguage: "en",
     },
-    publisher: {
-      "@type": "Organization",
-      name: "BCA YCMOU",
-      url: siteUrl,
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: siteUrl,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Notes",
+          item: `${siteUrl}/notes`,
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: subject.title,
+          item: `${siteUrl}/notes/${subjectId}`,
+        },
+        {
+          "@type": "ListItem",
+          position: 4,
+          name: unit.title,
+          item: `${siteUrl}/notes/${subjectId}/${unitSlug}`,
+        },
+      ],
     },
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": `${siteUrl}/notes/${subjectId}/${unitSlug}`,
-    },
-    educationalLevel: "Undergraduate",
-    learningResourceType: "Study Notes",
-    inLanguage: "en",
-  };
+  ];
 
   return (
     <>

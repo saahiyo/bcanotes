@@ -125,12 +125,21 @@ export function CommandMenu() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // Custom DOM event listener to toggle from click triggers
+  // Custom DOM event listener to toggle from click triggers, plus support ?q= URL search param
   useEffect(() => {
     const handleOpen = () => {
       setIsOpen(true);
     };
     window.addEventListener("open-search", handleOpen);
+
+    const params = new URLSearchParams(window.location.search);
+    const urlQuery = params.get("q");
+    if (urlQuery && urlQuery.trim()) {
+      setQuery(urlQuery.trim());
+      setSelectedIndex(0);
+      setIsOpen(true);
+    }
+
     return () => window.removeEventListener("open-search", handleOpen);
   }, []);
 

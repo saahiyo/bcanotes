@@ -60,13 +60,12 @@ function AnimatedNumber({ value, suffix, inView }: { value: number; suffix: stri
 
   useEffect(() => {
     if (inView) {
-      motionValue.set(value);
-    } else {
       motionValue.set(0);
+      motionValue.set(value);
     }
   }, [inView, motionValue, value]);
 
-  // Update DOM directly for performance
+  // Update DOM directly for performance while keeping real server HTML numbers for SEO
   useEffect(() => {
     const unsubscribe = display.on("change", (v) => {
       if (ref.current) {
@@ -76,7 +75,12 @@ function AnimatedNumber({ value, suffix, inView }: { value: number; suffix: stri
     return unsubscribe;
   }, [display]);
 
-  return <span ref={ref}>0{suffix}</span>;
+  return (
+    <span ref={ref}>
+      {value}
+      {suffix}
+    </span>
+  );
 }
 
 const colorMap: Record<string, { bg: string; ring: string; text: string; glow: string }> = {
@@ -128,8 +132,8 @@ export function StatsCounter() {
               return (
                 <motion.div
                   key={stat.label}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+                  initial={false}
+                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
                   transition={{
                     duration: 0.5,
                     delay: index * 0.12,
@@ -153,7 +157,7 @@ export function StatsCounter() {
                   </div>
 
                   {/* Sleek Uppercase Label */}
-                  <p className="relative z-10 text-xs sm:text-sm text-foreground/60 font-semibold uppercase tracking-[0.15em] sm:tracking-[0.2em] group-hover:text-foreground/80 transition-colors">
+                  <p className="relative z-10 text-xs sm:text-sm text-foreground/75 font-semibold uppercase tracking-[0.15em] sm:tracking-[0.2em] group-hover:text-foreground transition-colors">
                     {stat.label}
                   </p>
                 </motion.div>

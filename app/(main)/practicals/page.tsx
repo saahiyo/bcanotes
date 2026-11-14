@@ -11,12 +11,12 @@ import {
 import Link from "next/link";
 import React from "react";
 
+import { siteUrl } from "@/lib/site";
+
 export const revalidate = 86400;
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://bcanotes.tech";
-
 export const metadata: Metadata = {
-  title: "Solved Practicals – BCA YCMOU",
+  title: "Solved Practicals (Semester 1 to 6)",
   description:
     "Access complete, verified solutions for BCA YCMOU lab practicals from Semester 1 to 6. Covering C, C++, Java, Python, PHP, Android, and more.",
   keywords: [

@@ -6,12 +6,12 @@ import { BookOpen, ExternalLink, Library } from "lucide-react";
 import Link from "next/link";
 import { semesterBooks } from "@/data/books";
 
+import { siteUrl } from "@/lib/site";
+
 export const revalidate = 86400;
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://bcanotes.tech";
-
 export const metadata: Metadata = {
-  title: "E-Books – BCA YCMOU Textbooks",
+  title: "E-Books & Textbooks (Semester 1 to 6)",
   description:
     "Access official BCA YCMOU e-books and reference textbooks online. Read semester-wise digital textbooks covering the entire BCA curriculum.",
   keywords: [
@@ -61,7 +61,7 @@ export default function BooksPage() {
         </TabsList>
 
         {semesterBooks.map((sem) => (
-          <TabsContent key={sem.id} value={sem.id} className="mt-8">
+          <TabsContent key={sem.id} value={sem.id} keepMounted className="mt-8">
             <div className="grid gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3">
               {sem.books.map((book, index) => {
                 const encodedUrl = encodeURIComponent(book.pdfUrl);

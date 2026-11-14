@@ -1,11 +1,17 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Scale } from "lucide-react";
 
+import { siteUrl } from "@/lib/site";
+
 export const dynamic = 'force-static';
 
-export const metadata = {
-  title: "Terms of Service – BCA YCMOU",
+export const metadata: Metadata = {
+  title: "Terms of Service",
   description: "Terms of service for the BCA YCMOU unofficial learning resources portal.",
+  alternates: {
+    canonical: `${siteUrl}/terms`,
+  },
 };
 
 export default function TermsPage() {

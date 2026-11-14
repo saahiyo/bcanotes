@@ -26,7 +26,7 @@ export default function MainLayout({children}: {children: React.ReactNode}) {
             </div>
             
             <div className="space-y-4">
-              <h4 className="text-sm font-semibold uppercase tracking-wider text-foreground">Resources</h4>
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">Resources</h3>
               <ul className="space-y-3 text-sm text-muted-foreground">
                 <li><Link href="/notes" className="hover:text-primary transition-colors">Subject Notes</Link></li>
                 <li><Link href="/books" className="hover:text-primary transition-colors">E-Books Reference</Link></li>
@@ -36,13 +36,10 @@ export default function MainLayout({children}: {children: React.ReactNode}) {
             </div>
 
             <div className="space-y-4">
-              <h4 className="text-sm font-semibold uppercase tracking-wider text-foreground">Connect</h4>
+              <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">Connect</h3>
               <div className="flex items-center gap-4 text-muted-foreground">
-                <Link href="https://github.com/saahiyo" className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-colors" aria-label="GitHub" target='_blank'>
+                <Link href="https://github.com/saahiyo/bcanotes" className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-colors" aria-label="GitHub" target='_blank'>
                   <Github className="size-5" />
-                </Link>
-                <Link href="https://twitter.com/saahiyo75" className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-colors" aria-label="Twitter" target="_blank">
-                  <Twitter className="size-5" />
                 </Link>
                 <Link href="/contact" className="p-2 rounded-full hover:bg-primary/10 hover:text-primary transition-colors" aria-label="Contact">
                   <MessageSquare className="size-5" />

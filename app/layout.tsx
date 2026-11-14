@@ -1,4 +1,5 @@
 import type {Metadata} from 'next';
+import Script from 'next/script';
 import './globals.css';
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
@@ -9,25 +10,26 @@ import { BackToTop } from "@/components/back-to-top";
 import { Toaster } from "@/components/ui/toaster";
 import { Analytics } from "@vercel/analytics/next";
 import { CommandMenu } from "@/components/command-menu";
+import { siteUrl } from "@/lib/site";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://bcanotes.tech';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'BCA YCMOU - Learning Resources',
+    default: 'BCA YCMOU Notes PDF – Sem 1-6 Notes, PYQs & Practicals (Free)',
     template: '%s | BCA YCMOU',
   },
   description:
-    'The ultimate learning resources portal for BCA YCMOU students. Access notes, e-books, previous year question papers, and solved practicals — 100% free.',
+    'Free BCA YCMOU notes for Semester 1–6: unit-wise PDF notes, previous year question papers 2017–2024, solved practicals and e-books. 100% free.',
   keywords: [
     'BCA',
     'YCMOU',
     'BCA notes',
     'YCMOU notes',
     'BCA YCMOU notes',
+    'BCA YCMOU notes PDF',
+    'UGP08 BCA syllabus',
     'BCA question papers',
     'BCA practicals',
     'BCA e-books',
@@ -41,18 +43,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_IN',
-    url: siteUrl,
+    url: `${siteUrl}/`,
     siteName: 'BCA YCMOU',
-    title: 'BCA YCMOU - Learning Resources',
+    title: 'BCA YCMOU Notes PDF – Sem 1-6 Notes, PYQs & Practicals (Free)',
     description:
-      'Your one-stop destination for BCA notes, e-books, previous year question papers, and solved practicals — 100% free.',
+      'Free BCA YCMOU notes for Semester 1–6: unit-wise PDF notes, previous year question papers 2017–2024, solved practicals and e-books. 100% free.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'BCA YCMOU - Learning Resources',
+    title: 'BCA YCMOU Notes PDF – Sem 1-6 Notes, PYQs & Practicals (Free)',
     description:
-      'Your one-stop destination for BCA notes, e-books, previous year question papers, and solved practicals — 100% free.',
-    creator: '@saahiyo75',
+      'Free BCA YCMOU notes for Semester 1–6: unit-wise PDF notes, previous year question papers 2017–2024, solved practicals and e-books. 100% free.',
   },
   robots: {
     index: true,
@@ -65,29 +66,25 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  alternates: {
-    canonical: siteUrl,
-  },
   category: 'education',
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en" className={cn("font-sans", geist.variable)} suppressHydrationWarning>
-      <head>
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-S0ZS7FXJEE" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-S0ZS7FXJEE');
-            `,
-          }}
-        />
-      </head>
       <body className="min-h-screen bg-background font-sans antialiased flex flex-col" suppressHydrationWarning>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-S0ZS7FXJEE"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-S0ZS7FXJEE');
+          `}
+        </Script>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <AuthProvider>
             <CursorFollower />

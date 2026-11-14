@@ -1,11 +1,17 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ShieldCheck } from "lucide-react";
 
+import { siteUrl } from "@/lib/site";
+
 export const dynamic = 'force-static';
 
-export const metadata = {
-  title: "Privacy Policy – BCA YCMOU",
+export const metadata: Metadata = {
+  title: "Privacy Policy",
   description: "Privacy policy for the BCA YCMOU unofficial learning resources portal.",
+  alternates: {
+    canonical: `${siteUrl}/privacy`,
+  },
 };
 
 export default function PrivacyPage() {

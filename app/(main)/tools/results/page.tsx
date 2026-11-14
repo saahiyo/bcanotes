@@ -3,12 +3,21 @@ import Link from "next/link";
 import { GraduationCap, ArrowLeft, Construction } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+import { siteUrl } from "@/lib/site";
+
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Result Checker | BCA YCMOU",
+  title: "Result Checker",
   description:
     "Check your BCA YCMOU examination results online. This tool will be available soon.",
+  alternates: {
+    canonical: `${siteUrl}/tools/results`,
+  },
+  robots: {
+    index: false,
+    follow: true,
+  },
 };
 
 export default function ResultsPage() {

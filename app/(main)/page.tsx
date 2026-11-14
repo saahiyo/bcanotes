@@ -3,12 +3,19 @@ import Link from "next/link";
 import { ArrowRight, BookOpen, FileText, FolderOpen, Library, Code2, Database, Terminal, Cpu, Monitor, Braces, Sparkles, ClipboardPen } from "lucide-react";
 import { SearchHeroButton } from "@/components/search-hero-button";
 
+import { siteUrl } from "@/lib/site";
+
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "BCA YCMOU - The Ultimate Learning Hub",
+  title: {
+    absolute: "BCA YCMOU – Notes, E-Books, Question Papers & Practicals",
+  },
   description:
     "The one-stop destination for BCA YCMOU students. Access comprehensive notes, official e-books, previous year question papers, and solved practicals — 100% free.",
+  alternates: {
+    canonical: siteUrl,
+  },
 };
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,8 +26,38 @@ import { ScribbleUnderline } from "@/components/scribble-underline";
 import { NoticesSection } from "@/components/notices-section";
 
 export default function Home() {
+  const websiteStructuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": `${siteUrl}/#website`,
+        name: "BCA YCMOU",
+        alternateName: ["BCA YCMOU Learning Resources", "bcanotes.tech"],
+        url: siteUrl,
+        description:
+          "The one-stop destination for BCA YCMOU students. Access comprehensive notes, official e-books, previous year question papers, and solved practicals — 100% free.",
+        inLanguage: "en-IN",
+      },
+      {
+        "@type": "EducationalOrganization",
+        "@id": `${siteUrl}/#organization`,
+        name: "BCA YCMOU Community",
+        url: siteUrl,
+        sameAs: [
+          "https://github.com/saahiyo/bcanotes",
+          "https://twitter.com/saahiyo75",
+        ],
+      },
+    ],
+  };
+
   return (
     <div className="flex flex-col items-center justify-center">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteStructuredData) }}
+      />
       <section className="w-full py-16 sm:py-20 md:py-24 lg:py-32 xl:py-40 bg-muted/30 relative overflow-hidden">
         
         {/* Technical Grid Background */}

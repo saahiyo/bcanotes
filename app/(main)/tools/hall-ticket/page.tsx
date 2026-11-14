@@ -3,12 +3,21 @@ import Link from "next/link";
 import { Ticket, ArrowLeft, Construction } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+import { siteUrl } from "@/lib/site";
+
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Hall Ticket Download | BCA YCMOU",
+  title: "Hall Ticket Download",
   description:
     "Download your BCA YCMOU hall ticket / admit card for upcoming examinations. This tool will be available soon.",
+  alternates: {
+    canonical: `${siteUrl}/tools/hall-ticket`,
+  },
+  robots: {
+    index: false,
+    follow: true,
+  },
 };
 
 export default function HallTicketPage() {
